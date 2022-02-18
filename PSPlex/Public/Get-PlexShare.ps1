@@ -46,7 +46,7 @@ function Get-PlexShare
 	#############################################################################
 	try
 	{
-		$global:Data = Invoke-RestMethod -Uri "https://plex.tv/api/servers/$($Server.machineIdentifier)/shared_servers`?`X-Plex-Token=7U3PLsL3XHwVhw_q47B7" -Method GET -ErrorAction Stop
+		$Data = Invoke-RestMethod -Uri "https://plex.tv/api/servers/$($Server.machineIdentifier)/shared_servers`?`X-Plex-Token=7U3PLsL3XHwVhw_q47B7" -Method GET -ErrorAction Stop
 		if($Data.MediaContainer.Size -eq 0)
 		{
 			return

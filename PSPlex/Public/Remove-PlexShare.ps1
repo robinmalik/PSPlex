@@ -60,7 +60,7 @@ function Remove-PlexShare
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Checking User Access to Library"
 	try
 	{
-		$global:DataForUser = Invoke-RestMethod -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer`?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method GET -ErrorAction Stop
+		$DataForUser = Invoke-RestMethod -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer`?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method GET -ErrorAction Stop
 		if(($Null -eq $DataForUser.libraries) -or ($DataForUser.libraries.count -eq 0))
 		{
 			throw "No shared libraries with user: $Username"

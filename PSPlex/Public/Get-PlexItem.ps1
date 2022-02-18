@@ -59,7 +59,7 @@ function Get-PlexItem
 		Write-Verbose -Message "Get item by ID"
 		$RestEndpoint = "library/metadata/$Id"
 	}
-	else
+	elseif($All)
 	{
 		Write-Verbose -Message "Get items in library"
 		$Library = Get-PlexLibrary | Where-Object { $_.title -eq $LibraryTitle }
@@ -79,6 +79,10 @@ function Get-PlexItem
 			}
 			[String]$ExtraParamString = (($Params.GetEnumerator() | ForEach-Object { $_.Name + '=' + $_.Value }) -join '&') + "&"
 		}
+	}
+	else
+	{
+
 	}
 
 	try

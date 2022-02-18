@@ -71,7 +71,7 @@ function Find-PlexItem
 	Write-Verbose -Message "Searching for $ItemName."
 	try
 	{
-		[array]$global:data = Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?`includeCollections=0&sectionId=&query=$($ItemNameEncoded)&limit=50&X-Plex-Token=$($DefaultPlexServer.Token)" -Method GET -ErrorAction Stop
+		[array]$Data = Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?`includeCollections=0&sectionId=&query=$($ItemNameEncoded)&limit=50&X-Plex-Token=$($DefaultPlexServer.Token)" -Method GET -ErrorAction Stop
 	}
 	catch
 	{
