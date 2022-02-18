@@ -24,7 +24,7 @@ function Get-PlexLibrary
 		Get-PlexLibrary
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $false)]
 		[String]

@@ -1,6 +1,6 @@
 function Get-PlexCollection
 {
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true, ParameterSetName = "LibraryId")]
 		[PSObject]

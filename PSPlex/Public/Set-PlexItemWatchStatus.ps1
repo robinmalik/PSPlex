@@ -1,5 +1,6 @@
 function Set-PlexItemWatchStatus
 {
+    [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true)]
         [String]

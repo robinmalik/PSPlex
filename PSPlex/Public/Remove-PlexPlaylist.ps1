@@ -1,5 +1,6 @@
 function Remove-PlexPlaylist
 {
+	[CmdletBinding(SupportsShouldProcess)]
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true)]

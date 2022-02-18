@@ -1,6 +1,6 @@
 function Remove-PlexShare
 {
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]

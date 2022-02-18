@@ -28,7 +28,7 @@ function Copy-PlexPlaylist
 		Copy-PlexPlaylist -PlaylistName 'MARVEL' -User 'user@domain.com'
 	#>
 
-
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
@@ -109,7 +109,7 @@ function Copy-PlexPlaylist
 		else
 		{
 			# We got a playlist. Now make another lookup by playlist ID and get the items in it:
-			$Playlist = Get-PlexPlaylist -ID $Playlist.ratingKey -IncludeItems -ErrorAction Stop
+			$Playlist = Get-PlexPlaylist -Id $Playlist.ratingKey -IncludeItems -ErrorAction Stop
 		}
 	}
 	catch
@@ -188,7 +188,7 @@ function Copy-PlexPlaylist
 		# by the playlist name. With this, we're not given a property called .content which contains the data that defines *how* the playlist is smart.
 
 		# So, make an additional lookup to get the playlist explicitly by ID, and include the items this time:
-		$PlaylistData = Get-PlexPlaylist -ID $Playlist.ratingKey -IncludeItems -ErrorAction Stop | Where-Object { $_.title -eq $PlaylistName }
+		$PlaylistData = Get-PlexPlaylist -Id $Playlist.ratingKey -IncludeItems -ErrorAction Stop | Where-Object { $_.title -eq $PlaylistName }
 
 		# Parse the data in the playlist to establish what parameters were used to create the smart playlist.
 		# Split on the 'all?':

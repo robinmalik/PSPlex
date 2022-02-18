@@ -43,7 +43,7 @@ function Get-PlexServer
 		home              : 0
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $false)]
 		[String]

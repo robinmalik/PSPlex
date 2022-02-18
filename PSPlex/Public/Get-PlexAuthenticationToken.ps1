@@ -15,7 +15,7 @@ function Get-PlexAuthenticationToken
 		Get-PlexAuthenticationToken -Credential (Get-Credential)
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $false)]
 		[PSCredential]

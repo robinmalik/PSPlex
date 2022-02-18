@@ -20,7 +20,7 @@ function Get-PlexUser
 			The API at plex.tv/api will return XML, not JSON.
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $false)]
 		[String]

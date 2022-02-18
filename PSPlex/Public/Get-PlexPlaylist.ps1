@@ -1,6 +1,6 @@
 function Get-PlexPlaylist
 {
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $false)]
 		[String]

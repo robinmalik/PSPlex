@@ -1,6 +1,6 @@
 function Get-PlexSession
 {
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 	)
 

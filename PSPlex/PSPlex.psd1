@@ -12,7 +12,7 @@
     RootModule        = 'PSPlex.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.0'
+    ModuleVersion     = '1.0.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -30,7 +30,7 @@
     Copyright         = '(c) 2022 Robin Malik. All rights reserved.'
 
     # Description of the functionality provided by this module
-    # Description = ''
+    Description       = 'A PowerShell module to aid Plex server management.'
 
     # Minimum version of the Windows PowerShell engine required by this module
     # PowerShellVersion = ''
@@ -115,13 +115,13 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags       = @('Plex')
 
             # A URL to the license for this module.
             # LicenseUri = ''
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri = 'https://github.com/robinmalik/PSPlex'
 
             # A URL to an icon representing this module.
             # IconUri = ''

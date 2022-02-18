@@ -7,7 +7,7 @@ function Get-PlexConfigFileLocation
 			Returns config file location.
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 	)
 

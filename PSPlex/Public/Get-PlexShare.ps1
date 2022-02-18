@@ -1,6 +1,6 @@
 function Get-PlexShare
 {
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $false)]
 		[String]
