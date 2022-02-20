@@ -49,8 +49,15 @@ function Get-PlexPlaylist
 		# To work around this, we have to use Invoke-WebRequest and take the RawContentStream property
 		# and use that.
 		$Data = Invoke-WebRequest -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?`X-Plex-Token=$($Token)" -ErrorAction Stop
-		$UTF8String = [system.Text.Encoding]::UTF8.GetString($Data.RawContentStream.ToArray())
-		[array]$Results = ($UTF8String | ConvertFrom-Json).MediaContainer.Metadata
+		if($Data)
+		{
+			$UTF8String = [system.Text.Encoding]::UTF8.GetString($Data.RawContentStream.ToArray())
+			[array]$Results = ($UTF8String | ConvertFrom-Json).MediaContainer.Metadata
+		}
+		else
+		{
+			return
+		}
 	}
 	catch
 	{

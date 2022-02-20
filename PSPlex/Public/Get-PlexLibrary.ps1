@@ -2,26 +2,20 @@ function Get-PlexLibrary
 {
 	<#
 		.SYNOPSIS
-		By default, returns a list of libraries on a Plex server.
-
+			By default, returns a list of libraries on a Plex server.
 		.DESCRIPTION
-		By default, returns a list of libraries on a Plex server.
-		If -ID is specified, a single library is returned with
-
+			By default, returns a list of libraries on a Plex server.
+			If -ID is specified, a single library is returned with
 		.PARAMETER PlexServerHostname
-		Fully qualified hostname for the Plex server (e.g. myserver.mydomain.com)
-
+			Fully qualified hostname for the Plex server (e.g. myserver.mydomain.com)
 		.PARAMETER Protocol
-		http or https
-
+			http or https
 		.PARAMETER Port
-		Parameter description
-
+			Parameter description
 		.PARAMETER ID
-		If specified, returns a specific library.
-
+			If specified, returns a specific library.
 		.EXAMPLE
-		Get-PlexLibrary
+			Get-PlexLibrary
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]

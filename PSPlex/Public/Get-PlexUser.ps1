@@ -2,22 +2,15 @@ function Get-PlexUser
 {
 	<#
 		.SYNOPSIS
-		Short description
-
+			Short description
 		.DESCRIPTION
-		Long description
-
+			Long description
 		.PARAMETER Username
-		Parameter description
-
+			Parameter description
 		.PARAMETER IncludeToken
-		Parameter description
-
+			Parameter description
 		.EXAMPLE
-		An example
-
-		.NOTES
-			The API at plex.tv/api will return XML, not JSON.
+			Get-PlexUser
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
