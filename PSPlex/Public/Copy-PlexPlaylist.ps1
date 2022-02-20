@@ -2,37 +2,30 @@ function Copy-PlexPlaylist
 {
 	<#
 		.SYNOPSIS
-		This function will copy a playlist from your account to another user account on your server.
-
+			This function will copy a playlist from your account to another user account on your server.
+			Note: If the destination user already has a playlist with this name, a second one will be created.
+			To overwrite, use the -Force switch.
 		.DESCRIPTION
-		This function will copy a playlist from your account to another user account on your server.
-		Alternatively, if you wish to overwrite the destination playlist, use the -Force switch.
-
-		.PARAMETER PlexServer
-		The name of your Plex Server as you name it, within Plex Media Server (not the hostname of the machine it's running on).
-
-		.PARAMETER PlaylistName
-		Parameter description
-
-		.PARAMETER NewPlayListName
-		Create the playlist with a different name.
-
-		.PARAMETER User
-		The user you wish to copy the playlist to. Note: This can sometimes be a username, but at other times it will be an
-		email address.
-
+			This function will copy a playlist from your account to another user account on your server.
+			Note: If the destination user already has a playlist with this name, a second one will be created.
+			To overwrite, use the -Force switch.
+		.PARAMETER Id
+			Id of the playlist you wish to copy. To get this, use 'Get-PlexPlaylist'.
+		.PARAMETER NewPlaylistName
+			Create the playlist with a different name.
+		.PARAMETER Username
+			The username for the account you wish to copy the playlist to.
 		.PARAMETER Force
-		Overwrite the contents of the destination playlist.
-
+			Overwrite the contents of an existing playlist.
 		.EXAMPLE
-		Copy-PlexPlaylist -PlaylistName 'MARVEL' -User 'user@domain.com'
+			Copy-PlexPlaylist -Id 12345 -User 'user@domain.com'
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
-		$PlaylistName,
+		$Id,
 
 		[Parameter(Mandatory = $false)]
 		[String]
@@ -62,54 +55,15 @@ function Copy-PlexPlaylist
 
 
 	#############################################################################
-	# Get the machine ID property for the current plex server we're working with:
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting list of Plex servers"
-	try
-	{
-		$CurrentPlexServer = Get-PlexServer -Name $DefaultPlexServer.PlexServer -ErrorAction Stop
-		if(!$CurrentPlexServer)
-		{
-			throw "Could not find $CurrentPlexServer in $($Servers -join ', ')"
-		}
-	}
-	catch
-	{
-		throw $_
-	}
-
-
-	#############################################################################
-	# Use the machine ID to get the server access tokens for the user we're targetting:
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting server access token for user $Username"
-	try
-	{
-		$UserServerToken = Get-PlexUserToken -machineIdentifier $CurrentPlexServer.machineIdentifier -Username $Username
-		if(!$UserServerToken)
-		{
-			throw "Could not find an access token for user $Username on server $($DefaultPlexServer.PlexServer). Check the username/email and whether they have access."
-		}
-	}
-	catch
-	{
-		throw $_
-	}
-
-
-	#############################################################################
 	# Get the Playlist we want to copy:
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting playlist $PlaylistName, including playlist items"
+	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting playlist $Id, including playlist items"
 	try
 	{
 		# Get and filter:
-		$Playlist = Get-PlexPlaylist -ErrorAction Stop | Where-Object { $_.title -eq $PlaylistName }
+		$Playlist = Get-PlexPlaylist -Id $Id -IncludeItems -ErrorAction Stop
 		if(!$Playlist)
 		{
-			throw "Could not find playlist $PlaylistName."
-		}
-		else
-		{
-			# We got a playlist. Now make another lookup by playlist ID and get the items in it:
-			$Playlist = Get-PlexPlaylist -Id $Playlist.ratingKey -IncludeItems -ErrorAction Stop
+			throw "Could not find playlist with id $Id."
 		}
 	}
 	catch
@@ -119,6 +73,24 @@ function Copy-PlexPlaylist
 
 
 	#############################################################################
+	# Get the target user along with user token for our server:
+	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting user."
+	try
+	{
+		$User = Get-PlexUser -User $Username -IncludeToken -ErrorAction Stop
+		if(($Null -eq $User) -or ($User.count -eq 0))
+		{
+			throw "Could not get user: $Username"
+		}
+	}
+	catch
+	{
+		throw $_
+	}
+
+
+	#############################################################################
+	# Create a new variable to store the destination playlist name:
 	if($NewPlaylistName)
 	{
 		$PlaylistTitle = $NewPlaylistName
@@ -130,28 +102,63 @@ function Copy-PlexPlaylist
 
 
 	#############################################################################
-	# Check whether the user already has a playlist by this name:
+	# Check whether the user already has a playlist by this name. It's worth noting
+	# that you can have multiple playlists with the same name (sigh).
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Checking $Username account for existing playlist"
 	try
 	{
-		[array]$Data = Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/playlists`?`X-Plex-Token=$($UserServerToken.Token)"
-
-		$ExistingPlaylistsWithSameName = $Data.MediaContainer.Playlist | Where-Object { $_.title -eq $PlaylistTitle }
-		if($ExistingPlaylistsWithSameName)
+		[Array]$ExistingPlaylistsWithSameName = Get-PlexPlaylist -AlternativeToken $User.token -ErrorAction Stop | Where-Object { $_.title -eq $PlaylistTitle }
+		if($ExistingPlaylistsWithSameName.Count -gt 1)
 		{
-			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing existing playlist."
-			foreach($PL in $ExistingPlaylistsWithSameName)
+			# If there is more than 1 playlist with the same name in the destination account, we
+			# 1) wouldn't know which we wanted to overwrite and
+			# 2) wouldn't want to remove them automatically when -Force is used, so warn and exit.
+			Write-Warning -Message "Multiple playlists with the name '$PlaylistTitle' exist under the destination account $Username. You can review these with 'Get-PlexPlaylist' and remove with 'Remove-PlexPlaylist' (after obtaining a user token for $Username with 'Get-PlexUser -Username $Username -IncludeToken')."
+			return
+		}
+		elseif($ExistingPlaylistsWithSameName.Count -eq 1)
+		{
+			if($Force)
 			{
-				try
+				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Playlist already exists in destination account. Removing."
+				foreach($PL in $ExistingPlaylistsWithSameName)
 				{
-					Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/playlists/$($PL.ratingKey)`?`X-Plex-Token=$($UserServerToken.Token)" -Method DELETE | Out-Null
-				}
-				catch
-				{
-					Write-Warning -Message "Could not delete existing playlist."
-					throw $_
+					try
+					{
+						Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/playlists/$($PL.ratingKey)`?`X-Plex-Token=$($User.Token)" -Method DELETE | Out-Null
+					}
+					catch
+					{
+						Write-Warning -Message "Could not delete existing playlist."
+						throw $_
+					}
 				}
 			}
+			else
+			{
+				Write-Warning -Message "The destination account already has a Playlist with the name '$PlaylistTitle'. To overwrite it, call this function with the -Force parameter."
+				return
+			}
+		}
+		else
+		{
+		}
+	}
+	catch
+	{
+		throw $_
+	}
+
+
+	#############################################################################
+	# Get the machine ID property for the current plex server we're working with:
+	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting list of Plex servers"
+	try
+	{
+		$CurrentPlexServer = Get-PlexServer -Name $DefaultPlexServer.PlexServer -ErrorAction Stop
+		if(!$CurrentPlexServer)
+		{
+			throw "Could not find $CurrentPlexServer in $($Servers -join ', ')"
 		}
 	}
 	catch
@@ -172,7 +179,8 @@ function Copy-PlexPlaylist
 		{
 			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
 			$ItemsToAdd = $Playlist.Items.Metadata.ratingKey -join ','
-			$Data = Invoke-RestMethod -Uri "http://$($CurrentPlexServer.address)`:$($CurrentPlexServer.port)/playlists?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd&title=$PlaylistTitle&smart=0&type=video&X-Plex-Token=$($UserServerToken.Token)" -Method "POST"
+			#$Data = Invoke-RestMethod -Uri "http://$($CurrentPlexServer.address)`:$($CurrentPlexServer.port)/playlists?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd&title=$PlaylistTitle&smart=0&type=video&X-Plex-Token=$($User.Token)" -Method "POST"
+			$Data = Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/playlists?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd&title=$PlaylistTitle&smart=0&type=$($PlayList.playlistType)&X-Plex-Token=$($User.Token)" -Method "POST"
 			return $Data.MediaContainer.Playlist
 		}
 		catch
@@ -196,14 +204,13 @@ function Copy-PlexPlaylist
 		try
 		{
 			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
-			$Data = Invoke-RestMethod -Uri "http://$($CurrentPlexServer.address)`:$($CurrentPlexServer.port)/playlists?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$SmartPlaylistParams&title=$PlaylistTitle&smart=1&type=video&X-Plex-Product=Plex%20Web&X-Plex-Version=3.95.2&X-Plex-Client-Identifier=ni91ijrs5miuwc37d5esdrr3&X-Plex-Platform=Chrome&X-Plex-Platform-Version=75.0&X-Plex-Sync-Version=2&X-Plex-Model=bundled&X-Plex-Device=Windows&X-Plex-Device-Name=Chrome&X-Plex-Device-Screen-Resolution=1088x937%2C1920x1080&X-Plex-Token=$($UserServerToken.Token)&X-Plex-Language=en&X-Plex-Text-Format=plain" -Method "POST"
+			$Data = Invoke-RestMethod -Uri "http://$($CurrentPlexServer.address)`:$($CurrentPlexServer.port)/playlists?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$SmartPlaylistParams&title=$PlaylistTitle&smart=1&type=video&X-Plex-Product=Plex%20Web&X-Plex-Version=3.95.2&X-Plex-Client-Identifier=ni91ijrs5miuwc37d5esdrr3&X-Plex-Platform=Chrome&X-Plex-Platform-Version=75.0&X-Plex-Sync-Version=2&X-Plex-Model=bundled&X-Plex-Device=Windows&X-Plex-Device-Name=Chrome&X-Plex-Device-Screen-Resolution=1088x937%2C1920x1080&X-Plex-Token=$($User.Token)&X-Plex-Language=en&X-Plex-Text-Format=plain" -Method "POST"
 			return $Data.MediaContainer.Playlist
 		}
 		catch
 		{
 			throw $_
 		}
-
 	}
 	else
 	{

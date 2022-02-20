@@ -6,6 +6,7 @@ This project started out as a script to copy a playlist from my account as a Ple
 
 1. Install the module from the PowerShell Gallery: `Install-Module -Name PSPlex`.
 2. Run: `Get-PlexAuthenticationToken`. You will be prompted to enter your Plex account name and password.
+    * To inspect the code for this function, see: [Get-PlexAuthenticationToken.ps1](/PSPlex/Public/Get-PlexAuthenticationToken.ps1).
 3. Run: `Save-PlexConfiguration` and provide your Plex server name, the Plex hostname (or IP address), protocol and port.
     * Example 1: `Save-PlexConfiguration -PlexServer myserver -PlexServerHostname namaste.yourdomain.com -Protocol https -Port 32400`
     * Example 2: `Save-PlexConfiguration -PlexServer myserver -PlexServerHostname 86.123.105.18 -Protocol https -Port 32400`
@@ -18,7 +19,7 @@ This project started out as a script to copy a playlist from my account as a Ple
 
 # Simple Examples:
 
-**Get a list of users invited to your server:**
+**Get a list of users you've shared with:**
 
 `Get-PlexUser`
 
@@ -59,16 +60,16 @@ This project started out as a script to copy a playlist from my account as a Ple
 
 **Copy a playlist from your account to another account (e.g. a friend you have shared content with):**
 
-`Copy-PlexPlaylist -PlaylistName 'Family' -Username 'yourfriend@theiremail.com' -verbose`
+`Copy-PlexPlaylist -Id 54321 -Username 'yourfriend@theiremail.com' -verbose`
 
 **Copy *all* playlists from your account to another account:**
 
-`Get-PlexPlaylist | Foreach-Object { Copy-PlexPlaylist -PlaylistName $_.title -Username 'yourfriend@theiremail.com' }`
+`Get-PlexPlaylist | Foreach-Object { Copy-PlexPlaylist -Id $_.ratingKey -Username 'yourfriend@theiremail.com' }`
 
 **Copy a single playlist to *all* users:**
 
 `$Users = Get-PlexUser`<br>
-`$Users | Foreach-Object { Copy-PlexPlaylist -PlaylistName 'Family' -Username $_.username }`
+`$Users | Foreach-Object { Copy-PlexPlaylist -Id 54321 -Username $_.username }`
 
 **Stop sessions where Safari is being used:**
 
