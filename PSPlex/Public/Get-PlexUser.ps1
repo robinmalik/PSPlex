@@ -2,13 +2,14 @@ function Get-PlexUser
 {
 	<#
 		.SYNOPSIS
-			Short description
+			Gets a list of users associated with your account (e.g those you have shared with).
 		.DESCRIPTION
-			Long description
+			Gets a list of users associated with your account (e.g those you have shared with).
+			This can include users who do not currently have access to libraries.
 		.PARAMETER Username
-			Parameter description
+			Refine by username (note: all users must be obtained from the Plex API first).
 		.PARAMETER IncludeToken
-			Parameter description
+			Get access token(s) that accounts use to access your server.
 		.EXAMPLE
 			Get-PlexUser
 	#>

@@ -11,8 +11,10 @@ function Find-PlexItem
 			Name of what you wish to find.
 		.PARAMETER ItemType
 			Refines the output by type.
+		.PARAMETER Year
+			Refine by year.
 		.PARAMETER ExactNameMatch
-			Return only items matching exactly what is specified as ItemName
+			Return only items matching exactly what is specified as ItemName.
 		.EXAMPLE
 			# Find only 'movies' from the Plex server that (fuzzy)match 'The Dark Knight'.
 			Find-PlexItem -ItemName 'The Dark Knight' -ItemType 'movie'

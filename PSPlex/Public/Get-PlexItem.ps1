@@ -2,9 +2,9 @@ function Get-PlexItem
 {
 	<#
 		.SYNOPSIS
-
+			Get a specific item from Plex.
 		.DESCRIPTION
-
+			Get a specific item from Plex.
 		.EXAMPLE
 			# Get a single item by ID:
 			Get-PlexItem -ItemID 204
@@ -20,7 +20,7 @@ function Get-PlexItem
 			$ToRefresh = $AllData | Where-Object { $_.guid[0] -notmatch "plex://movie"}
 			foreach($Item in $ToRefresh)
 			{
-				Update-PlexItemMetadata -ItemID $Item.ratingKey
+				Update-PlexItemMetadata -Id $Item.ratingKey
 			}
 	#>
 

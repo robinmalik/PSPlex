@@ -2,17 +2,14 @@ function Get-PlexAuthenticationToken
 {
 	<#
 		.SYNOPSIS
-		Gets the authentication token from Plex.tv for your account.
-
+			Gets the authentication token from Plex.tv for your account.
 		.DESCRIPTION
-		Gets the authentication token from Plex.tv for your account.
-		Creates a script scoped variable that is used by the other functions.
-
+			Gets the authentication token from Plex.tv for your account.
+			Creates a script scoped variable that is used by the other functions.
 		.PARAMETER Credential
-		A PScredential object (usually obtained by running Get-Credential).
-
+			A PScredential object (usually obtained by running Get-Credential).
 		.EXAMPLE
-		Get-PlexAuthenticationToken -Credential (Get-Credential)
+			Get-PlexAuthenticationToken -Credential (Get-Credential)
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
