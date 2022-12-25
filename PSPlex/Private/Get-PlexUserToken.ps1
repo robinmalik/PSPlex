@@ -1,6 +1,6 @@
 function Get-PlexUserToken
 {
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]

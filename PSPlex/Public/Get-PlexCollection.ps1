@@ -17,7 +17,7 @@ function Get-PlexCollection
 			Get-PlexCollection -Id 723 -IncludeItems
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true, ParameterSetName = "CollectionId")]
 		[PSObject]
