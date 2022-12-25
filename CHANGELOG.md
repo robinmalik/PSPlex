@@ -1,6 +1,10 @@
 # Changelog
 
-## [1.0.9] - 2022-11-23
+## [1.0.10] - 2022-12-25
+
+* 🐛 [Fixed] Fixed some PSScriptAnalyzer issues (to complete later).
+
+## [1.0.9] - 2022-12-18
 
 * 🔨 [Changed] MAJOR: Functions now construct the URi for calls using a private function.
 * ✨ [New] `Get-PlexItem` can now get album track data. Example: `Get-PlexItem -Id 123 -IncludeTracks`

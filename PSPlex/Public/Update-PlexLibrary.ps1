@@ -11,7 +11,7 @@ function Update-PlexLibrary
 			Update-PlexLibrary -Id 123
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
