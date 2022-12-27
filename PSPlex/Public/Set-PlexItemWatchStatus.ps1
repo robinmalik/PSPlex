@@ -17,7 +17,7 @@ function Set-PlexItemWatchStatus
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{

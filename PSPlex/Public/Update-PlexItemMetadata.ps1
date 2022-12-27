@@ -24,7 +24,7 @@ function Update-PlexItemMetadata
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{
