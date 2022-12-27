@@ -31,7 +31,7 @@ function Add-PlexItemToPlaylist
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{
@@ -65,7 +65,10 @@ function Add-PlexItemToPlaylist
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding item to playlist."
 	try
 	{
-		Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?&X-Plex-Token=$($DefaultPlexServer.Token)" -Method PUT -ErrorAction Stop | Out-Null
+		if($PSCmdlet.ShouldProcess($PlaylistId, "Add item $ItemId to playlist"))
+		{
+			Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?&X-Plex-Token=$($DefaultPlexServer.Token)" -Method PUT -ErrorAction Stop | Out-Null
+		}
 	}
 	catch
 	{
