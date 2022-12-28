@@ -24,7 +24,7 @@ function Update-PlexItemMetadata
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{
@@ -34,16 +34,19 @@ function Update-PlexItemMetadata
 	#EndRegion
 
 	#############################################################################
-	#Region Get data
-	Write-Verbose -Message "Initiating metadata refresh for item Id $Id"
-	try
+	#Region Make request
+	if($PSCmdlet.ShouldProcess("Update metadata for item $Id"))
 	{
-		$Uri = Get-PlexAPIUri -RestEndpoint "library/metadata/$Id/refresh"
-		Invoke-RestMethod -Uri $Uri -Method PUT -ErrorAction Stop
-	}
-	catch
-	{
-		throw $_
+		Write-Verbose -Message "Initiating metadata refresh for item Id $Id"
+		try
+		{
+			$Uri = Get-PlexAPIUri -RestEndpoint "library/metadata/$Id/refresh"
+			Invoke-RestMethod -Uri $Uri -Method PUT -ErrorAction Stop
+		}
+		catch
+		{
+			throw $_
+		}
 	}
 	#EndRegion
 }

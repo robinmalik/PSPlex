@@ -34,7 +34,7 @@ function Remove-PlexLabel
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{
@@ -47,7 +47,7 @@ function Remove-PlexLabel
 	#Region Get the item
 	try
 	{
-		$Item = Get-PlexItem -Id $Id -ErrorAction Stop
+		$Item = Get-PlexItem -Id $Id
 	}
 	catch
 	{
@@ -80,25 +80,24 @@ function Remove-PlexLabel
 	#Region Construct Uri
 	try
 	{
-		# Keep the existing labels (if there are any, force casting to an array) except
-		# for the user specified label, and construct a parameter string:
-		$Index = 0
-		foreach($String in ([Array]$Item.Label.Tag | Where-Object { $_ -ne $Label }))
-		{
-			$LabelString += "&label[$($Index)].tag.tag=$($String)"
-			$Index++
-		}
-		# Finally, to remove the label we need to add it like so:
-		$LabelString += "&label[].tag.tag-=$Label"
-
 		$Params = [Ordered]@{
 			id                   = $Item.ratingKey
 			type                 = $Type
 			includeExternalMedia = 1
 		}
 
+		# Keep the existing labels (if there are any, force casting to an array) except
+		# for the user specified label:
+		$Index = 0
+		foreach($String in ([Array]$Item.Label.Tag | Where-Object { $_ -ne $Label }))
+		{
+			$Params.Add("label[$($Index)].tag.tag", $String)
+			$Index++
+		}
+		# Finally, to remove the label we need to add it like so:
+		$Params.Add('label[].tag.tag-', $Label)
+
 		$DataUri = Get-PlexAPIUri -RestEndpoint "$($Item.librarySectionKey)/all" -Params $Params
-		$DataUri = $DataUri + $LabelString
 	}
 	catch
 	{
@@ -107,15 +106,18 @@ function Remove-PlexLabel
 	#EndRegion
 
 	#############################################################################
-	#Region Make request to remove label:
-	Write-Verbose -Message "Removing label '$Label' from item '$($Item.title)'"
-	try
+	#Region Make request
+	if($PSCmdlet.ShouldProcess($Item.title, "Remove label '$Label'"))
 	{
-		Invoke-RestMethod -Uri $DataUri -Method PUT
-	}
-	catch
-	{
-		throw $_
+		Write-Verbose -Message "Removing label '$Label' from item '$($Item.title)'"
+		try
+		{
+			Invoke-RestMethod -Uri $DataUri -Method PUT
+		}
+		catch
+		{
+			throw $_
+		}
 	}
 	#EndRegion
 }

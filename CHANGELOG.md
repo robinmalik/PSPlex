@@ -1,12 +1,17 @@
 # Changelog
 
+## [1.0.11] - 2022-12-28
+
+* 🐛 [Fixed] Finished fixing (relevant) PSScriptAnalyzer issues.
+* 🔨 [Changed] Finished migration of functions to internal Uri constructor.
+
 ## [1.0.10] - 2022-12-25
 
 * 🐛 [Fixed] Fixed some PSScriptAnalyzer issues (to complete later).
 
 ## [1.0.9] - 2022-12-18
 
-* 🔨 [Changed] MAJOR: Functions now construct the URi for calls using a private function.
+* 🔨 [Changed] MAJOR: Most functions now construct the URi for calls using a private function.
 * ✨ [New] `Get-PlexItem` can now get album track data. Example: `Get-PlexItem -Id 123 -IncludeTracks`
 * ✨ [New] `Set-PlexItemRating` for rating items from 1-5. Whilst the Plex API will accept 0, the UI won't display that accurately so I've prevented it.
 * 📚 [Added] Completed syntax blocks for _all_ functions.

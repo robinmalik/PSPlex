@@ -38,7 +38,7 @@ function Stop-PlexSession
 		{
 			try
 			{
-				Import-PlexConfiguration
+				Import-PlexConfiguration -WhatIf:$False
 			}
 			catch
 			{
@@ -64,22 +64,25 @@ function Stop-PlexSession
 	{
 		foreach($Session in $SessionObject)
 		{
-			Write-Verbose -Message "Terminating session: $($Session.Id)"
-			try
+			if($PSCmdlet.ShouldProcess($Session.Session.Id, 'Stop Plex Session'))
 			{
-				$RestEndpoint = "status/sessions/terminate"
-				$Params = [Ordered]@{
-					reason    = $Reason
-					sessionId = $Session.Session.Id
-				}
-				$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
+				Write-Verbose -Message "Terminating session: $($Session.Id)"
+				try
+				{
+					$RestEndpoint = "status/sessions/terminate"
+					$Params = [Ordered]@{
+						reason    = $Reason
+						sessionId = $Session.Session.Id
+					}
+					$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
 
-				# A successful termination returns nothing from the API
-				Invoke-RestMethod -Uri $Uri -Method GET -ErrorAction Stop
-			}
-			catch
-			{
-				throw $_
+					# A successful termination returns nothing from the API
+					Invoke-RestMethod -Uri $Uri -Method GET -ErrorAction Stop
+				}
+				catch
+				{
+					throw $_
+				}
 			}
 		}
 	}

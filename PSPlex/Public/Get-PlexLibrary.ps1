@@ -31,7 +31,7 @@ function Get-PlexLibrary
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{

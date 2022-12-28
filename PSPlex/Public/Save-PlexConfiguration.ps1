@@ -109,7 +109,7 @@ function Save-PlexConfiguration
 	try
 	{
 		# If found, $script:PlexConfigData will exist. Else error.
-		Import-PlexConfiguration -ErrorAction Stop -Verbose:$VerbosePreference
+		Import-PlexConfiguration -WhatIf:$False -ErrorAction Stop -Verbose:$VerbosePreference
 		$ConfigExists = $true
 		Write-Verbose -Message "Plex configuration file already exists."
 	}
@@ -231,7 +231,7 @@ function Save-PlexConfiguration
 	{
 		ConvertTo-Json -InputObject $PlexConfigData | Out-File -FilePath $ConfigFile -Force -ErrorAction Stop
 		Start-Sleep -Milliseconds 500
-		Import-PlexConfiguration
+		Import-PlexConfiguration -WhatIf:$False
 	}
 	catch
 	{

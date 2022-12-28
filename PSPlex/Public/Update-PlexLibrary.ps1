@@ -11,7 +11,7 @@ function Update-PlexLibrary
 			Update-PlexLibrary -Id 123
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
@@ -24,7 +24,7 @@ function Update-PlexLibrary
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{
@@ -35,15 +35,18 @@ function Update-PlexLibrary
 
 	#############################################################################
 	#Region Update
-	Write-Verbose -Message "Initiating library update for library Id $Id"
-	try
+	if($PSCmdlet.ShouldProcess("Update library $Id"))
 	{
-		$Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$Id/refresh" -Token $AlternativeToken
-		Invoke-RestMethod -Uri $Uri -Method GET -ErrorAction Stop
-	}
-	catch
-	{
-		throw $_
+		Write-Verbose -Message "Initiating library update for library Id $Id"
+		try
+		{
+			$Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$Id/refresh" -Token $AlternativeToken
+			Invoke-RestMethod -Uri $Uri -Method GET -ErrorAction Stop
+		}
+		catch
+		{
+			throw $_
+		}
 	}
 	#EndRegion
 }

@@ -13,7 +13,7 @@ function Set-PlexItemRating
 			Set-PlexItemRating -Id 12345 -Rating 3
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
@@ -25,12 +25,13 @@ function Set-PlexItemRating
 		$Rating
 	)
 
+	#############################################################################
 	#Region Import Plex Configuration
 	if(!$script:PlexConfigData)
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{
@@ -41,21 +42,24 @@ function Set-PlexItemRating
 
 	#############################################################################
 	#Region Submit rating
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Submitting rating"
-	try
+	if($PSCmdlet.ShouldProcess($Id, "Set rating to $Rating"))
 	{
-		$RestEndpoint = ":/rate"
-		$Params = [Ordered]@{
-			key        = $Id
-			rating     = $($Rating * 2)
-			identifier = 'com.plexapp.plugins.library'
+		Write-Verbose -Message "Submitting rating"
+		try
+		{
+			$RestEndpoint = ":/rate"
+			$Params = [Ordered]@{
+				key        = $Id
+				rating     = $($Rating * 2)
+				identifier = 'com.plexapp.plugins.library'
+			}
+			$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
+			Invoke-RestMethod -Uri $Uri -Method Put
 		}
-		$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
-		Invoke-RestMethod -Uri $Uri -Method Put
-	}
-	catch
-	{
-		throw $_
+		catch
+		{
+			throw $_
+		}
 	}
 	#EndRegion
 }

@@ -51,7 +51,7 @@ function Get-PlexServer
 	#Region Import Plex Configuration
 	try
 	{
-		Import-PlexConfiguration
+		Import-PlexConfiguration -WhatIf:$False
 		$DefaultPlexServer = $PlexConfigData | Where-Object { $_.Default -eq $True }
 	}
 	catch

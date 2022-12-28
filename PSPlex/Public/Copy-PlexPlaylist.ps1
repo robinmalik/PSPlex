@@ -46,7 +46,7 @@ function Copy-PlexPlaylist
 	{
 		try
 		{
-			Import-PlexConfiguration
+			Import-PlexConfiguration -WhatIf:$False
 		}
 		catch
 		{
@@ -129,7 +129,6 @@ function Copy-PlexPlaylist
 				{
 					try
 					{
-						#Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/playlists/$($PL.ratingKey)`?`X-Plex-Token=$($User.Token)" -Method DELETE | Out-Null
 						Remove-PlexPlaylist -Id $PL.ratingKey -AlternativeToken $User.Token -ErrorAction Stop | Out-Null
 					}
 					catch
@@ -171,7 +170,7 @@ function Copy-PlexPlaylist
 	{
 		throw $_
 	}
-
+	#EndRegion
 
 	#############################################################################
 	# Establish whether the playlist is smart or not; this will determine how we create it:
@@ -181,16 +180,26 @@ function Copy-PlexPlaylist
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Original playlist is NOT smart."
 
 		# Create a new playlist on the server, under the user's account:
-		try
+		if($PSCmdlet.ShouldProcess("Playlist: $PlaylistTitle", "Create playlist on server $($DefaultPlexServer.PlexServer) under user $Username"))
 		{
-			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
-			$ItemsToAdd = $Playlist.Items.ratingKey -join ','
-			$Data = Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/playlists?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd&title=$PlaylistTitle&smart=0&type=$($PlayList.playlistType)&X-Plex-Token=$($User.Token)" -Method POST
-			return $Data.MediaContainer.Playlist
-		}
-		catch
-		{
-			throw $_
+			try
+			{
+				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
+				$ItemsToAdd = $Playlist.Items.ratingKey -join ','
+				$Params = [Ordered]@{
+					type  = $Playlist.playlistType
+					title = $PlaylistTitle
+					smart = 0
+					uri   = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd"
+				}
+				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params -Token $User.token
+				$Data = Invoke-RestMethod -Uri $DataUri -Method POST
+				return $Data.MediaContainer.Playlist
+			}
+			catch
+			{
+				throw $_
+			}
 		}
 	}
 	elseif($Playlist.smart -eq 1)
@@ -200,21 +209,29 @@ function Copy-PlexPlaylist
 		# Although we have the playlist object from Get-PlexPlaylist, this function makes a query for all playlists before returning based on a match
 		# by the playlist name. With this, we're not given a property called .content which contains the data that defines *how* the playlist is smart.
 
-		# So, make an additional lookup to get the playlist explicitly by Id, and include the items this time:
-		$PlaylistData = Get-PlexPlaylist -Id $Playlist.ratingKey -IncludeItems -ErrorAction Stop | Where-Object { $_.title -eq $PlaylistName }
-
 		# Parse the data in the playlist to establish what parameters were used to create the smart playlist.
 		# Split on the 'all?':
-		$SmartPlaylistParams = ($PlaylistData.content -split 'all%3F')[1]
-		try
+		$SmartPlaylistParams = ($Playlist.content -split 'all%3F')[1]
+
+		if($PSCmdlet.ShouldProcess("Playlist: $PlaylistTitle", "Create playlist on server $($DefaultPlexServer.PlexServer) under user $Username"))
 		{
-			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
-			$Data = Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/playlists?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$SmartPlaylistParams&title=$PlaylistTitle&smart=1&type=video&X-Plex-Product=Plex%20Web&X-Plex-Version=3.95.2&X-Plex-Client-Identifier=ni91ijrs5miuwc37d5esdrr3&X-Plex-Platform=Chrome&X-Plex-Platform-Version=75.0&X-Plex-Sync-Version=2&X-Plex-Model=bundled&X-Plex-Device=Windows&X-Plex-Device-Name=Chrome&X-Plex-Device-Screen-Resolution=1088x937%2C1920x1080&X-Plex-Token=$($User.Token)&X-Plex-Language=en&X-Plex-Text-Format=plain" -Method POST
-			return $Data.MediaContainer.Playlist
-		}
-		catch
-		{
-			throw $_
+			try
+			{
+				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
+				$Params = [Ordered]@{
+					type  = $Playlist.playlistType
+					title = $PlaylistTitle
+					smart = 1
+					uri   = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$($SmartPlaylistParams)"
+				}
+				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params -Token $User.token
+				$Data = Invoke-RestMethod -Uri $DataUri -Method POST
+				return $Data.MediaContainer.Playlist
+			}
+			catch
+			{
+				throw $_
+			}
 		}
 	}
 	else
