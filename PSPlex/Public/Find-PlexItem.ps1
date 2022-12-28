@@ -65,23 +65,40 @@ function Find-PlexItem
 	}
 	#EndRegion
 
-	$RestEndpoint = "hubs/search/"
-
-	# URLEncode the title, otherwise we'll get '400 bad request' errors when searching for things like: Bill and Ted's ...
-	$ItemNameEncoded = [System.Web.HttpUtility]::UrlEncode($ItemName)
-
 
 	#############################################################################
-	Write-Verbose -Message "Searching for $ItemName."
+	#Region Construct Uri
 	try
 	{
-		[array]$Data = Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?`includeCollections=0&sectionId=&query=$($ItemNameEncoded)&limit=50&X-Plex-Token=$($DefaultPlexServer.Token)" -Method GET -ErrorAction Stop
+		# URLEncode the title, otherwise we'll get '400 bad request' errors when searching for things like: Bill and Ted's ...
+		$ItemNameEncoded = [System.Web.HttpUtility]::UrlEncode($ItemName)
+		$Params = [Ordered]@{
+			'includeCollections' = 0
+			'sectionId'          = ''
+			'query'              = $ItemNameEncoded
+			'limit'              = 50
+		}
+
+		$DataUri = Get-PlexAPIUri -RestEndpoint "hubs/search" -Params $Params
 	}
 	catch
 	{
 		throw $_
 	}
+	#EndRegion
 
+	#############################################################################
+	#Region Make request
+	Write-Verbose -Message "Searching for $ItemName."
+	try
+	{
+		[Array]$Data = Invoke-RestMethod -Uri $DataUri -Method GET
+	}
+	catch
+	{
+		throw $_
+	}
+	#EndRegion
 
 	#############################################################################
 	# Refine by type:
