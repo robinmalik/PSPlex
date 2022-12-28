@@ -70,21 +70,17 @@ function Add-PlexLabel
 	$Type = Get-PlexItemTypeId -Type $Item.Type
 
 	#############################################################################
-	#Region Construct $Params:
-	$Params = [Ordered]@{
-		id                   = $Item.ratingKey
-		type                 = $Type
-		includeExternalMedia = 1
-	}
-	#EndRegion
-
-	#############################################################################
 	#Region Construct Uri
-	# Combine existing labels (if there are any, force casting to an array)
-	# and the user specified label. Append to params.
-	# Format: &label[0].tag.tag=MyLabel&label[1].tag.tag=AnotherLabel
 	try
 	{
+		$Params = [Ordered]@{
+			id                   = $Item.ratingKey
+			type                 = $Type
+			includeExternalMedia = 1
+		}
+		# Combine existing labels (if there are any, force casting to an array)
+		# and the user specified label. Append to params.
+		# Format: &label[0].tag.tag=MyLabel&label[1].tag.tag=AnotherLabel
 		$Index = 0
 		foreach($String in ([Array]$Item.Label.Tag + $Label))
 		{
@@ -100,13 +96,13 @@ function Add-PlexLabel
 	#EndRegion
 
 	#############################################################################
-	#Region Make request to add label:
-	Write-Verbose -Message "Adding label '$Label' to item '$($Item.title)'"
+	#Region Make request
 	if($PSCmdlet.ShouldProcess($Item.title, "Add label '$Label'"))
 	{
+		Write-Verbose -Message "Adding label '$Label' to item '$($Item.title)'"
 		try
 		{
-			Invoke-RestMethod -Uri $DataUri -Method Put
+			Invoke-RestMethod -Uri $DataUri -Method PUT
 		}
 		catch
 		{

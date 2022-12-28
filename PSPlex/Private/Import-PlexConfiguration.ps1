@@ -17,6 +17,7 @@ function Import-PlexConfiguration
 
 	#############################################################################
 	# Set some defaults for all cmdlet calls
+	$PSDefaultParameterValues["Import-PlexConfiguration:WhatIf"] = $false
 	$PSDefaultParameterValues["Invoke-RestMethod:UseBasicParsing"] = $true
 	$PSDefaultParameterValues["Invoke-RestMethod:Headers"] = @{"Accept" = "application/json, text/plain, */*" }
 	$PSDefaultParameterValues["Invoke-RestMethod:ErrorAction"] = "Stop"

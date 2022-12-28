@@ -40,18 +40,20 @@ function Remove-PlexPlaylist
 	}
 	#EndRegion
 
-
 	#############################################################################
-	#Region Remove
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing playlist"
-	try
+	#Region Make request
+	if($PSCmdlet.ShouldProcess("Remove playlist with Id '$Id'"))
 	{
-		$Uri = Get-PlexAPIUri -RestEndpoint "playlists/$Id" -Token $AlternativeToken
-		Invoke-RestMethod -Uri $Uri -Method DELETE -ErrorAction Stop | Out-Null
-	}
-	catch
-	{
-		throw $_
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing playlist"
+		try
+		{
+			$Uri = Get-PlexAPIUri -RestEndpoint "playlists/$Id" -Token $AlternativeToken
+			Invoke-RestMethod -Uri $Uri -Method DELETE -ErrorAction Stop | Out-Null
+		}
+		catch
+		{
+			throw $_
+		}
 	}
 	#EndRegion
 }

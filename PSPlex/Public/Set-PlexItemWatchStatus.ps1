@@ -12,6 +12,7 @@ function Set-PlexItemWatchStatus
 		$Status
 	)
 
+	#############################################################################
 	#Region Import Plex Configuration
 	if(!$script:PlexConfigData)
 	{
@@ -26,7 +27,8 @@ function Set-PlexItemWatchStatus
 	}
 	#EndRegion
 
-
+	#############################################################################
+	#Region Construct Uri
 	if($Status -eq 'played')
 	{
 		$RestEndpoint = ":/scrobble"
@@ -36,13 +38,27 @@ function Set-PlexItemWatchStatus
 		$RestEndpoint = ":/unscrobble"
 	}
 
-	Write-Verbose -Message "Setting watch status for item Id $Id to $Status"
-	try
-	{
-		Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?identifier=com.plexapp.plugins.library&key=$($Id)&X-Plex-Token=$($DefaultPlexServer.Token)" -Method "GET" | Out-Null
+	$Params = [Ordered]@{
+		identifier = 'com.plexapp.plugins.library'
+		key        = $Id
 	}
-	catch
+
+	$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
+	#EndRegion
+
+	#############################################################################
+	#Region Make Request
+	if($PSCmdlet.ShouldProcess("Set watch status for item Id $Id to $Status"))
 	{
-		throw $_
+		Write-Verbose -Message "Setting watch status for item Id $Id to $Status"
+		try
+		{
+			Invoke-RestMethod -Uri $DataUri -Method "GET" | Out-Null
+		}
+		catch
+		{
+			throw $_
+		}
 	}
+	#EndRegion
 }

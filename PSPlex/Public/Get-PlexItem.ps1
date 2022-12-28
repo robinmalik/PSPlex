@@ -23,7 +23,7 @@ function Get-PlexItem
 			$AllData = $Items | % { Get-PlexItem -Id $_.ratingKey }
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true, ParameterSetName = 'Id')]
 		[String]

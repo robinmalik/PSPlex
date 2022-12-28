@@ -47,7 +47,7 @@ function Remove-PlexLabel
 	#Region Get the item
 	try
 	{
-		$Item = Get-PlexItem -Id $Id -ErrorAction Stop
+		$Item = Get-PlexItem -Id $Id
 	}
 	catch
 	{
@@ -77,38 +77,25 @@ function Remove-PlexLabel
 	$Type = Get-PlexItemTypeId -Type $Item.Type
 
 	#############################################################################
-	#Region Construct $Params:
-	$Params = [Ordered]@{
-		id                   = $Item.ratingKey
-		type                 = $Type
-		includeExternalMedia = 1
-	}
-	#EndRegion
-
-	#############################################################################
 	#Region Construct Uri
-	# Keep the existing labels (if there are any, force casting to an array) except
-	# for the user specified label:
 	try
 	{
+		$Params = [Ordered]@{
+			id                   = $Item.ratingKey
+			type                 = $Type
+			includeExternalMedia = 1
+		}
+
+		# Keep the existing labels (if there are any, force casting to an array) except
+		# for the user specified label:
 		$Index = 0
 		foreach($String in ([Array]$Item.Label.Tag | Where-Object { $_ -ne $Label }))
 		{
 			$Params.Add("label[$($Index)].tag.tag", $String)
 			$Index++
 		}
-
 		# Finally, to remove the label we need to add it like so:
 		$Params.Add('label[].tag.tag-', $Label)
-
-		#$Index = 0
-		#foreach($String in ([Array]$Item.Label.Tag | Where-Object { $_ -ne $Label }))
-		#{
-		#	$LabelString += "&label[$($Index)].tag.tag=$($String)"
-		#	$Index++
-		#}
-		# Finally, to remove the label we need to add it like so:
-		#$LabelString += "&label[].tag.tag-=$Label"
 
 		$DataUri = Get-PlexAPIUri -RestEndpoint "$($Item.librarySectionKey)/all" -Params $Params
 	}
@@ -119,10 +106,10 @@ function Remove-PlexLabel
 	#EndRegion
 
 	#############################################################################
-	#Region Make request to remove label:
-	Write-Verbose -Message "Removing label '$Label' from item '$($Item.title)'"
+	#Region Make request
 	if($PSCmdlet.ShouldProcess($Item.title, "Remove label '$Label'"))
 	{
+		Write-Verbose -Message "Removing label '$Label' from item '$($Item.title)'"
 		try
 		{
 			Invoke-RestMethod -Uri $DataUri -Method PUT
