@@ -18,7 +18,6 @@ function Get-PlexItem
 			# Get all items from the library called 'Films'.
 			# NOTE: Not all data for an item is returned this way.
 			$Items = Get-PlexItem -LibraryTitle Films
-
 			# Get all data for the above items:
 			$AllData = $Items | % { Get-PlexItem -Id $_.ratingKey }
 	#>

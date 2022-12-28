@@ -5,52 +5,46 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-PlexItem
+# Get-PlexCollection
 
 ## SYNOPSIS
-Get a specific item.
+Gets collections.
 
 ## SYNTAX
 
-### Id
+### CollectionId
 ```
-Get-PlexItem -Id <String> [-IncludeTracks] [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-PlexCollection -Id <PSObject> [-IncludeItems] [<CommonParameters>]
 ```
 
-### Library
+### LibraryId
 ```
-Get-PlexItem -LibraryTitle <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-PlexCollection -LibraryId <PSObject> [-IncludeItems] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get a specific item.
+Gets collections.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-# Get a single item by Id:
-Get-PlexItem -Id 204
+Get-PlexCollection -LibraryId 1
 ```
 
 ### EXAMPLE 2
 ```
-# Get all items from the library called 'Films'.
-# NOTE: Not all data for an item is returned this way.
-$Items = Get-PlexItem -LibraryTitle Films
+Get-PlexCollection -Id 723 -IncludeItems
 ```
-
-# Get all data for the above items:
-$AllData = $Items | % { Get-PlexItem -Id $_.ratingKey }
 
 ## PARAMETERS
 
 ### -Id
-The id of the item to get.
+The id of the collection to get.
 
 ```yaml
-Type: String
-Parameter Sets: Id
+Type: PSObject
+Parameter Sets: CollectionId
 Aliases:
 
 Required: True
@@ -60,64 +54,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeTracks
-Only valid for albums.
-If specified, the tracks in the album are returned.
+### -LibraryId
+The id of the library to get collections from.
+
+```yaml
+Type: PSObject
+Parameter Sets: LibraryId
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -IncludeItems
+If specified, the items in the collection are returned.
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: Id
+Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -LibraryTitle
-Gets all items from a library with the specified title.
-
-```yaml
-Type: String
-Parameter Sets: Library
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WhatIf
-Shows what would happen if the cmdlet runs.
-The cmdlet is not run.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
