@@ -41,7 +41,7 @@ function Update-PlexItemMetadata
 		try
 		{
 			$Uri = Get-PlexAPIUri -RestEndpoint "library/metadata/$Id/refresh"
-			Invoke-RestMethod -Uri $Uri -Method PUT -ErrorAction Stop
+			Invoke-RestMethod -Uri $Uri -Method PUT | Out-Null
 		}
 		catch
 		{
