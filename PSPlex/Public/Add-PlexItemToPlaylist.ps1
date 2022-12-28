@@ -42,6 +42,7 @@ function Add-PlexItemToPlaylist
 
 
 	#############################################################################
+	#Region Get machine identifier
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting list of Plex servers (to get machine identifier)"
 	try
 	{
@@ -55,23 +56,38 @@ function Add-PlexItemToPlaylist
 	{
 		throw $_
 	}
-
-
-	#############################################################################
-	$RestEndpoint = "playlists/$PlaylistID/items?uri=server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemID"
-
+	#EndRegion
 
 	#############################################################################
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding item to playlist."
+	#Region Construct Uri
 	try
 	{
-		if($PSCmdlet.ShouldProcess($PlaylistId, "Add item $ItemId to playlist"))
-		{
-			Invoke-RestMethod -Uri "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?&X-Plex-Token=$($DefaultPlexServer.Token)" -Method PUT -ErrorAction Stop | Out-Null
+		$Params = [Ordered]@{
+			uri = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemID"
 		}
+
+		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$PlaylistID/items" -Params $Params
 	}
 	catch
 	{
 		throw $_
 	}
+	#EndRegion
+
+	#############################################################################
+	#Region Make request
+	if($PSCmdlet.ShouldProcess($PlaylistId, "Add item $ItemId to playlist"))
+	{
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding item to playlist."
+		try
+		{
+			Invoke-RestMethod -Uri $DataUri -Method PUT | Out-Null
+		}
+		catch
+		{
+			throw $_
+		}
+	}
+
+	#EndRegion
 }
