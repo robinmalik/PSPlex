@@ -224,7 +224,7 @@ function Copy-PlexPlaylist
 					smart = 1
 					uri   = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$($SmartPlaylistParams)"
 				}
-				$global:DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params -Token $User.token
+				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params -Token $User.token
 				$Data = Invoke-RestMethod -Uri $DataUri -Method POST
 				return $Data.MediaContainer.Playlist
 			}
