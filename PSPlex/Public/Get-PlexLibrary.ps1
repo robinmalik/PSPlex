@@ -41,7 +41,7 @@ function Get-PlexLibrary
 	#EndRegion
 
 	#############################################################################
-	#Region Get data
+	#Region Make request
 	try
 	{
 		$DataUri = Get-PlexAPIUri -RestEndpoint "library/sections/$Id"

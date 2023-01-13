@@ -42,7 +42,7 @@ function Set-PlexWebhook
 	#EndRegion
 
 	#############################################################################
-	#Region Make request to set webhook
+	#Region Make request
 	$string = "urls[]=" + $Url
 	Add-Type -AssemblyName System.Web
 	$stringencoded = [System.Web.HttpUtility]::UrlEncode($string)
