@@ -12,6 +12,7 @@ function Update-PlexItemMetadata
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'False Positive')]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
