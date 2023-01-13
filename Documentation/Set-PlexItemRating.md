@@ -5,81 +5,87 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-PlexCollection
+# Set-PlexItemRating
 
 ## SYNOPSIS
-Gets collections.
+Sets the rating on a Plex item.
 
 ## SYNTAX
 
-### CollectionId
 ```
-Get-PlexCollection -Id <PSObject> [-IncludeItems] [<CommonParameters>]
-```
-
-### LibraryId
-```
-Get-PlexCollection -LibraryId <PSObject> [-IncludeItems] [<CommonParameters>]
+Set-PlexItemRating [-Id] <String> [-Rating] <Int32> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Gets collections.
+Sets the rating on a Plex item.
+Must be between 1-5.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-PlexCollection -LibraryId 1
-```
-
-### EXAMPLE 2
-```
-Get-PlexCollection -Id 723 -IncludeItems
+Set-PlexItemRating -Id 12345 -Rating 3
 ```
 
 ## PARAMETERS
 
 ### -Id
-The id of the collection to get.
+The id of the item.
 
 ```yaml
-Type: PSObject
-Parameter Sets: CollectionId
+Type: String
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -LibraryId
-The id of the library to get collections from.
+### -Rating
+Rating value.
 
 ```yaml
-Type: PSObject
-Parameter Sets: LibraryId
+Type: Int32
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
-Default value: None
+Position: 2
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -IncludeItems
-If specified, the items in the collection are returned.
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
 
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
-Aliases:
+Aliases: wi
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

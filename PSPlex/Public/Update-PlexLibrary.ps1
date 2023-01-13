@@ -34,7 +34,7 @@ function Update-PlexLibrary
 	#EndRegion
 
 	#############################################################################
-	#Region Update
+	#Region Make request
 	if($PSCmdlet.ShouldProcess("Update library $Id"))
 	{
 		Write-Verbose -Message "Initiating library update for library Id $Id"

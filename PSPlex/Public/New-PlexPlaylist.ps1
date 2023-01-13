@@ -1,24 +1,33 @@
-function Add-PlexItemToPlaylist
+function New-PlexPlaylist
 {
 	<#
 		.SYNOPSIS
-			Copies a single item to a playlist.
+			Creates a new playlist.
 		.DESCRIPTION
-			Copies a single item to a playlist.
-		.PARAMETER PlaylistId
-			The id of the playlist.
-		.PARAMETER ItemId
+			Creates a new playlist.
+		.PARAMETER Name
+			Name of the playlist.
+		.PARAMETER Type
+			Type of playlist. Currently only 'video' is supported.
+		.PARAMETER Id
 			Id (ratingKey) of the Plex items to add. Can be a single item, comma separated list, or an array.
 		.EXAMPLE
-			# Add an item to a playlist on the default plex server
-			Add-PlexItemToPlaylist -PlaylistId 12345 -ItemId 7204
+			New-PlexPlaylist -Name "My Playlist" -Type video -Id 123,456,789
+		.EXAMPLE
+			$Item = Find-PlexItem -Name "Some Movie"
+			New-PlexPlaylist -Name "My Playlist" -Type video -Id $Item.ratingKey
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
-		$PlaylistId,
+		$Name,
+
+		[Parameter(Mandatory = $true)]
+		[ValidateSet('video')]
+		[String]
+		$Type,
 
 		[Parameter(Mandatory = $true)]
 		[String[]]
@@ -37,6 +46,22 @@ function Add-PlexItemToPlaylist
 		{
 			throw $_
 		}
+	}
+	#EndRegion
+
+	#############################################################################
+	#Region Check if playlist already exists
+	try
+	{
+		$Playlists = Get-PlexPlaylist
+		if($Playlists.title -contains $Name)
+		{
+			throw "Playlist '$Name' already exists"
+		}
+	}
+	catch
+	{
+		throw $_
 	}
 	#EndRegion
 
@@ -63,9 +88,12 @@ function Add-PlexItemToPlaylist
 	{
 		$Items = $ItemId -join ","
 		$Params = [Ordered]@{
-			uri = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$Items"
+			title = $Name
+			type  = $Type
+			smart = 0
+			uri   = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$Items"
 		}
-		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$PlaylistID/items" -Params $Params
+		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params
 	}
 	catch
 	{
@@ -75,18 +103,18 @@ function Add-PlexItemToPlaylist
 
 	#############################################################################
 	#Region Make request
-	if($PSCmdlet.ShouldProcess($PlaylistId, "Add item $ItemId to playlist"))
+	if($PSCmdlet.ShouldProcess($Item.title, "Add label '$Label'"))
 	{
-		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding item to playlist."
+		Write-Verbose -Message "Adding label '$Label' to item '$($Item.title)'"
 		try
 		{
-			Invoke-RestMethod -Uri $DataUri -Method PUT | Out-Null
+			$Data = Invoke-RestMethod -Uri $DataUri -Method POST
+			return $Data.mediacontainer.metadata
 		}
 		catch
 		{
 			throw $_
 		}
 	}
-
 	#EndRegion
 }

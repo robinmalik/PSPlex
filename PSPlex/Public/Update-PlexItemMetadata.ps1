@@ -12,6 +12,7 @@ function Update-PlexItemMetadata
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'False Positive')]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]
@@ -41,7 +42,7 @@ function Update-PlexItemMetadata
 		try
 		{
 			$Uri = Get-PlexAPIUri -RestEndpoint "library/metadata/$Id/refresh"
-			Invoke-RestMethod -Uri $Uri -Method PUT -ErrorAction Stop
+			Invoke-RestMethod -Uri $Uri -Method PUT | Out-Null
 		}
 		catch
 		{

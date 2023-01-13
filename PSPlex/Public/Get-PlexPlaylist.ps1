@@ -84,6 +84,12 @@ function Get-PlexPlaylist
 	{
 		foreach($Playlist in $Results)
 		{
+			# If the playlist is smart skip it, as it doesn't have a static item list:
+			if($Playlist.smart)
+			{
+				continue
+			}
+
 			# We don't need -AlternativeToken here as the playlists have unique IDs
 			$ItemsUri = Get-PlexAPIUri -RestEndpoint "playlists/$($Playlist.ratingKey)/items"
 			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting and appending playlist item(s)"

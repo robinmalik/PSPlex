@@ -5,32 +5,38 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-PlexItemToPlaylist
+# New-PlexPlaylist
 
 ## SYNOPSIS
-Copies a single item to a playlist.
+Creates a new playlist.
 
 ## SYNTAX
 
 ```
-Add-PlexItemToPlaylist [-PlaylistId] <String> [-ItemId] <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
+New-PlexPlaylist [-Name] <String> [-Type] <String> [-ItemId] <String[]> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copies a single item to a playlist.
+Creates a new playlist.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-# Add an item to a playlist on the default plex server
-Add-PlexItemToPlaylist -PlaylistId 12345 -ItemId 7204
+New-PlexPlaylist -Name "My Playlist" -Type video -Id 123,456,789
+```
+
+### EXAMPLE 2
+```
+$Item = Find-PlexItem -Name "Some Movie"
+New-PlexPlaylist -Name "My Playlist" -Type video -Id $Item.ratingKey
 ```
 
 ## PARAMETERS
 
-### -PlaylistId
-The id of the playlist.
+### -Name
+Name of the playlist.
 
 ```yaml
 Type: String
@@ -44,9 +50,24 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Type
+Type of playlist.
+Currently only 'video' is supported.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -ItemId
-Id (ratingKey) of the Plex items to add.
-Can be a single item, comma separated list, or an array.
+{{ Fill ItemId Description }}
 
 ```yaml
 Type: String[]
@@ -54,7 +75,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 2
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

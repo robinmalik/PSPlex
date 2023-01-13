@@ -14,12 +14,12 @@ Get a specific item.
 
 ### Id
 ```
-Get-PlexItem -Id <String> [-IncludeTracks] [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-PlexItem -Id <String> [-IncludeTracks] [<CommonParameters>]
 ```
 
 ### Library
 ```
-Get-PlexItem -LibraryTitle <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-PlexItem -LibraryTitle <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,15 +38,14 @@ Get-PlexItem -Id 204
 # Get all items from the library called 'Films'.
 # NOTE: Not all data for an item is returned this way.
 $Items = Get-PlexItem -LibraryTitle Films
-```
-
 # Get all data for the above items:
 $AllData = $Items | % { Get-PlexItem -Id $_.ratingKey }
+```
 
 ## PARAMETERS
 
 ### -Id
-The id of the item to get.
+The id of the item.
 
 ```yaml
 Type: String
@@ -85,37 +84,6 @@ Parameter Sets: Library
 Aliases:
 
 Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WhatIf
-Shows what would happen if the cmdlet runs.
-The cmdlet is not run.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
