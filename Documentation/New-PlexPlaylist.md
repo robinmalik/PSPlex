@@ -13,7 +13,8 @@ Creates a new playlist.
 ## SYNTAX
 
 ```
-New-PlexPlaylist [-Name] <String> [-Type] <String> [-Id] <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
+New-PlexPlaylist [-Name] <String> [-Type] <String> [-ItemId] <String[]> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -65,9 +66,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Id
-IDs of the Plex items to add.
-Can be an array or comma separated list.
+### -ItemId
+{{ Fill ItemId Description }}
 
 ```yaml
 Type: String[]
