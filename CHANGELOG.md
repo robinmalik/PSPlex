@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.12] - 2023-13-01
+
+* ✨ [New] `New-PlexPlaylist` for creating new (video) playlists.
+* 🐛 [Fixed] Ensure `Get-PlexPlaylist -IncludeItems` doesn't throw an error for 'Smart' playlists.
+* 🔨 [Changed] `Add-PlexItemToPlaylist` handles adding multiple plex items.
+
 ## [1.0.11] - 2022-12-28
 
 * 🐛 [Fixed] Finished fixing (relevant) PSScriptAnalyzer issues.
