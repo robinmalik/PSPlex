@@ -13,7 +13,7 @@ Copies a single item to a playlist.
 ## SYNTAX
 
 ```
-Add-PlexItemToPlaylist [-PlaylistId] <String> [-ItemId] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Add-PlexItemToPlaylist [-PlaylistId] <String> [-ItemId] <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -45,10 +45,11 @@ Accept wildcard characters: False
 ```
 
 ### -ItemId
-The id of the item.
+Id (ratingKey) of the Plex items to add.
+Can be a single item, comma separated list, or an array.
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

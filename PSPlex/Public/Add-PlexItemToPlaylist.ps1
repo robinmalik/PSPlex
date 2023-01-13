@@ -8,7 +8,7 @@ function Add-PlexItemToPlaylist
 		.PARAMETER PlaylistId
 			The id of the playlist.
 		.PARAMETER ItemId
-			The id of the item.
+			Id (ratingKey) of the Plex items to add. Can be a single item, comma separated list, or an array.
 		.EXAMPLE
 			# Add an item to a playlist on the default plex server
 			Add-PlexItemToPlaylist -PlaylistId 12345 -ItemId 7204
@@ -21,7 +21,7 @@ function Add-PlexItemToPlaylist
 		$PlaylistId,
 
 		[Parameter(Mandatory = $true)]
-		[String]
+		[String[]]
 		$ItemId
 	)
 
@@ -39,7 +39,6 @@ function Add-PlexItemToPlaylist
 		}
 	}
 	#EndRegion
-
 
 	#############################################################################
 	#Region Get machine identifier
@@ -62,10 +61,10 @@ function Add-PlexItemToPlaylist
 	#Region Construct Uri
 	try
 	{
+		$Items = $ItemId -join ","
 		$Params = [Ordered]@{
-			uri = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemID"
+			uri = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$Items"
 		}
-
 		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$PlaylistID/items" -Params $Params
 	}
 	catch
