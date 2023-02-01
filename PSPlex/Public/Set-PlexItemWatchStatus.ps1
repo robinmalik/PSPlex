@@ -9,7 +9,12 @@ function Set-PlexItemWatchStatus
 		[Parameter(Mandatory = $true)]
 		[ValidateSet('played', 'unplayed')]
 		[String]
-		$Status
+		$Status,
+
+		[Parameter(Mandatory = $false)]
+		[ValidateNotNullOrEmpty()]
+		[String]
+		$AlternativeToken
 	)
 
 	#############################################################################
@@ -41,6 +46,11 @@ function Set-PlexItemWatchStatus
 	$Params = [Ordered]@{
 		identifier = 'com.plexapp.plugins.library'
 		key        = $Id
+	}
+
+	if($AlternativeToken)
+	{
+		$Params.Add('X-Plex-Token', $AlternativeToken)
 	}
 
 	$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params

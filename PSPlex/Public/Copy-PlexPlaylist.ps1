@@ -129,7 +129,7 @@ function Copy-PlexPlaylist
 				{
 					try
 					{
-						Remove-PlexPlaylist -Id $PL.ratingKey -AlternativeToken $User.Token -ErrorAction Stop | Out-Null
+						Remove-PlexPlaylist -Id $PL.ratingKey -AlternativeToken $User.token -ErrorAction Stop | Out-Null
 					}
 					catch
 					{
@@ -187,12 +187,13 @@ function Copy-PlexPlaylist
 				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
 				$ItemsToAdd = $Playlist.Items.ratingKey -join ','
 				$Params = [Ordered]@{
-					type  = $Playlist.playlistType
-					title = $PlaylistTitle
-					smart = 0
-					uri   = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd"
+					type           = $Playlist.playlistType
+					title          = $PlaylistTitle
+					smart          = 0
+					uri            = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd"
+					'X-Plex-Token' = $User.token
 				}
-				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params -Token $User.token
+				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params
 				$Data = Invoke-RestMethod -Uri $DataUri -Method POST
 				return $Data.MediaContainer.Playlist
 			}
@@ -219,12 +220,13 @@ function Copy-PlexPlaylist
 			{
 				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
 				$Params = [Ordered]@{
-					type  = $Playlist.playlistType
-					title = $PlaylistTitle
-					smart = 1
-					uri   = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$($SmartPlaylistParams)"
+					type           = $Playlist.playlistType
+					title          = $PlaylistTitle
+					smart          = 1
+					uri            = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$($SmartPlaylistParams)"
+					'X-Plex-Token' = $User.token
 				}
-				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params -Token $User.token
+				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params
 				$Data = Invoke-RestMethod -Uri $DataUri -Method POST
 				return $Data.MediaContainer.Playlist
 			}

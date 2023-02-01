@@ -8,6 +8,14 @@
 			</ViewSelectedBy>
 			<TableControl>
 				<TableHeaders>
+					<TableColumnHeader>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>9</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>5</Width>
+					</TableColumnHeader>
 				</TableHeaders>
 				<TableRowEntries>
 					<TableRowEntry>
