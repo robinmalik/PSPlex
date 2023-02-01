@@ -40,7 +40,7 @@ function Update-PlexLibrary
 		Write-Verbose -Message "Initiating library update for library Id $Id"
 		try
 		{
-			$Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$Id/refresh" -Token $AlternativeToken
+			$Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$Id/refresh"
 			Invoke-RestMethod -Uri $Uri -Method GET -ErrorAction Stop
 		}
 		catch

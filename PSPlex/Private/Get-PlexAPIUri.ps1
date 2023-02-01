@@ -30,11 +30,7 @@ function Get-PlexAPIUri
 
 		[Parameter(Mandatory = $false)]
 		[System.Collections.IDictionary]
-		$Params,
-
-		[Parameter(Mandatory = $false)]
-		[String]
-		$Token
+		$Params
 	)
 
 	# If the endpoint starts with /, strip it off:
@@ -46,13 +42,18 @@ function Get-PlexAPIUri
 	# Join the parameters as key=value pairs, and concatenate them with &
 	if($Params)
 	{
+		# If the calling function hasn't passed a token as part of $Params, then add the default token to function as the default user:
+		if($Null -eq $Params["X-Plex-Token"])
+		{
+			$Params.Add("X-Plex-Token", $DefaultPlexServer.Token)
+		}
+
 		[String]$ExtraParamString = (($Params.GetEnumerator() | ForEach-Object { $_.Name + '=' + $_.Value }) -join '&') + "&"
 	}
-
-	if(!$Token)
+	else
 	{
-		$Token = $DefaultPlexServer.Token
+		[String]$ExtraParamString = "X-Plex-Token=$($DefaultPlexServer.Token)"
 	}
 
-	return "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?$($ExtraParamString)X-Plex-Token=$Token"
+	return "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?$($ExtraParamString)"
 }

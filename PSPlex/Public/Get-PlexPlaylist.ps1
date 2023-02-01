@@ -59,8 +59,12 @@ function Get-PlexPlaylist
 		# When calling Invoke-RestMethod, PowerShell ends up converting these to squiggly a characters.
 		# To work around this, we have to use Invoke-WebRequest and take the RawContentStream property
 		# and use that.
+		if($AlternativeToken)
+		{
+			$Params = @{'X-Plex-Token' = $AlternativeToken }
+		}
 
-		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$Id" -Token $AlternativeToken
+		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$Id" -Params $Params
 		$Data = Invoke-WebRequest -Uri $DataUri -ErrorAction Stop
 		if($Data)
 		{
@@ -92,7 +96,7 @@ function Get-PlexPlaylist
 
 			# We don't need -AlternativeToken here as the playlists have unique IDs
 			$ItemsUri = Get-PlexAPIUri -RestEndpoint "playlists/$($Playlist.ratingKey)/items"
-			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting and appending playlist item(s)"
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting and appending playlist item(s) for playlist $($playlist.title)"
 			try
 			{
 				[array]$Items = Invoke-RestMethod -Uri $ItemsUri -ErrorAction Stop
