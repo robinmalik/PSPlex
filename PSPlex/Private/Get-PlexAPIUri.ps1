@@ -55,5 +55,5 @@ function Get-PlexAPIUri
 		[String]$ExtraParamString = "X-Plex-Token=$($DefaultPlexServer.Token)"
 	}
 
-	return "$($DefaultPlexServer.Protocol)`://$($DefaultPlexServer.PlexServerHostname)`:$($DefaultPlexServer.Port)/$RestEndpoint`?$($ExtraParamString)"
+	return "$($DefaultPlexServer.Uri)/$RestEndpoint`?$($ExtraParamString)"
 }

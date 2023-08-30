@@ -7,12 +7,9 @@ This project started out as a script to copy a playlist from my account as a Ple
 # Getting Started:
 
 1. Install the module from the PowerShell Gallery: `Install-Module -Name PSPlex`.
-2. Run: `Get-PlexAuthenticationToken`. You will be prompted to enter your Plex account name and password.
-    * To inspect the code for this function, see: [Get-PlexAuthenticationToken.ps1](/PSPlex/Public/Get-PlexAuthenticationToken.ps1).
-3. Run: `Save-PlexConfiguration` and provide your Plex server name, the Plex hostname (or IP address), protocol and port.
-    * Example 1: `Save-PlexConfiguration -PlexServer myserver -PlexServerHostname namaste.yourdomain.com -Protocol https -Port 32400`
-    * Example 2: `Save-PlexConfiguration -PlexServer myserver -PlexServerHostname 86.123.105.18 -Protocol https -Port 32400`
-4. Try a command from the 'Simple Examples' below.
+2. Run: `Set-PlexConfiguration`. You will be prompted to enter your Plex account name and password.
+    * To inspect the code for this function, see: [Get-PlexAuthenticationToken.ps1](/PSPlex/Public/Set-PlexConfiguration.ps1).
+3. Try a command from the 'Simple Examples' below.
 
 <br>
 

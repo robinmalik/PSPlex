@@ -7,6 +7,7 @@ function Import-PlexConfiguration
 			Imports configuration from disk.
 			The aim of this function is to keep the config in a scoped variable for implicit use rather than expecting
 			the user to pass details around. As such, nothing is explicitly returned from this function.
+			It runs at the beginning of every function.
 		.EXAMPLE
 			Import-PlexConfiguration
 	#>
@@ -26,7 +27,7 @@ function Import-PlexConfiguration
 	$PSDefaultParameterValues["Invoke-WebRequest:ErrorAction"] = "Stop"
 
 	#############################################################################
-	# Path to the config file varies on OS. Get the location:
+	#Region Get path to the config file (varies by OS):
 	try
 	{
 		$ConfigFile = Get-PlexConfigFileLocation -ErrorAction Stop
@@ -35,50 +36,53 @@ function Import-PlexConfiguration
 	{
 		throw $_
 	}
+	#EndRegion
 
 	#############################################################################
-	# Known issue that this will not work on Linux/MacOS. Will adapt later.
 	if(Test-Path -Path $ConfigFile)
 	{
 		Write-Verbose -Message "Importing Configuration from $ConfigFile"
 		try
 		{
 			$script:PlexConfigData = Get-Content -Path $ConfigFile -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
-
-			# A few checks on the config:
-			$script:DefaultPlexServer = $script:PlexConfigData | Where-Object { $_.Default -eq $True }
-			if(!$script:DefaultPlexServer)
-			{
-				throw "No default server defined in the configuration file: $ConfigFile"
-			}
-
-			if($script:DefaultPlexServer.Count -gt 1)
-			{
-				throw "You cannot have more than 1 default server. This shouldn't happen. Have you been manually editing the config file?: $ConfigFile"
-			}
 		}
 		catch
 		{
 			throw $_
 		}
 
-		# If Windows, select the default server and decode the token:
-		if($IsWindows -or ([version]$PSVersionTable.PSVersion -lt [version]"5.99.0" ))
+		try
 		{
-			try
+			# Perform some file checking to be sure we can actually use it:
+
+			# See if there is a default server set:
+			$script:DefaultPlexServer = $script:PlexConfigData | Where-Object { $_.Default -eq $True }
+
+			# If there's more than 1 default set then exit:
+			if($script:DefaultPlexServer.Count -gt 1)
 			{
-				$DecodedToken = $(
-					$SP = ConvertTo-SecureString -String $script:DefaultPlexServer.Token -ErrorAction Stop
-					$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SP)
-					[System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
-				)
-				$script:DefaultPlexServer.Token = $DecodedToken
-				Remove-Variable DecodedToken
+				throw "You cannot have more than 1 default server. This shouldn't happen. Have you been manually editing the config file?: $ConfigFile"
 			}
-			catch
+
+			# If there's no default server, and there's only 1 server in the config file set it as the default, save the file and then declare $script:DefaultPlexServer
+			if(!$script:DefaultPlexServer -and $script:PlexConfigData.Count -eq 1)
 			{
-				throw $_
+				$script:PlexConfigData.Default = $True
+				Write-Warning -Message "Only 1 server defined in the configuration file. Default was set to false. Setting to true."
+				ConvertTo-Json -InputObject @($script:PlexConfigData) -Depth 3 | Out-File -FilePath $ConfigFile -Force -ErrorAction Stop
+				# Set the default server:
+				$script:DefaultPlexServer = $script:PlexConfigData | Where-Object { $_.Default -eq $True }
 			}
+
+			# If there's no default server, and there's more than 1 server in the config file, exit:
+			if(!$script:DefaultPlexServer -and $script:PlexConfigData.Count -gt 1)
+			{
+				throw "There are $($script:PlexConfigData.Count) servers configured but none are set to the default. This shouldn't happen. You can inspect the config file here: $ConfigFile"
+			}
+		}
+		catch
+		{
+			throw $_
 		}
 	}
 	else
