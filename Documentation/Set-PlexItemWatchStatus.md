@@ -13,7 +13,8 @@ schema: 2.0.0
 ## SYNTAX
 
 ```
-Set-PlexItemWatchStatus [-Id] <String> [-Status] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-PlexItemWatchStatus [-Id] <String> [-Status] <String> [[-AlternativeToken] <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,6 +30,21 @@ PS C:\> {{ Add example code here }}
 {{ Add example description here }}
 
 ## PARAMETERS
+
+### -AlternativeToken
+{{ Fill AlternativeToken Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -Confirm
 Prompts you for confirmation before running the cmdlet.
