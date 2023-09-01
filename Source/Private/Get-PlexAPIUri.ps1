@@ -45,15 +45,15 @@ function Get-PlexAPIUri
 		# If the calling function hasn't passed a token as part of $Params, then add the default token to function as the default user:
 		if($Null -eq $Params["X-Plex-Token"])
 		{
-			$Params.Add("X-Plex-Token", $DefaultPlexServer.Token)
+			$Params.Add("X-Plex-Token", $Script:DefaultPlexServer.Token)
 		}
 
 		[String]$ExtraParamString = (($Params.GetEnumerator() | ForEach-Object { $_.Name + '=' + $_.Value }) -join '&') + "&"
 	}
 	else
 	{
-		[String]$ExtraParamString = "X-Plex-Token=$($DefaultPlexServer.Token)"
+		[String]$ExtraParamString = "X-Plex-Token=$($Script:DefaultPlexServer.Token)"
 	}
 
-	return "$($DefaultPlexServer.Uri)/$RestEndpoint`?$($ExtraParamString)"
+	return "$($Script:DefaultPlexServer.Uri)/$RestEndpoint`?$($ExtraParamString)"
 }
