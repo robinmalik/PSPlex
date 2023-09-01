@@ -2,6 +2,8 @@
 
 This project started out as a script to copy a playlist from my account as a Plex Server owner to another user's account (on the same server). Slowly it got broken up into separate functions and became a simple PowerShell module.
 
+See the [Changelog](CHANGELOG.md) for a list of changes.
+
 <br>
 
 # Getting Started:
