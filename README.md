@@ -85,6 +85,13 @@ See the [Changelog](CHANGELOG.md) for a list of changes.
 
 <br>
 
+# Helper Scripts:
+
+A [repository has been created](https://github.com/robinmalik/PSPlexHelperScripts) designed to host a collection of helper scripts built around this module, for performing tasks that may be useful. Will grow over time.
+
+
+<br>
+
 # Notes:
 
 1. The Plex API has a little inconsistency with the naming of unique indentifiers for certain objects. For example, users have `id` properties, whereas libraries have `key` properties. Other objects have `ratingKey`. This makes passing identifiers sometimes odd/confusing. Please raise an issue if you get stuck.
