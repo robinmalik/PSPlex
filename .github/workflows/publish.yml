@@ -15,4 +15,4 @@ jobs:
         shell: pwsh
         run: |
           echo "The current path is: $($pwd.path)"
-          Publish-Module -Path "./Source" -NuGetApiKey $env:NUGET_KEY -Verbose
+          Publish-Module -Path "../Source" -NuGetApiKey $env:NUGET_KEY -Verbose
