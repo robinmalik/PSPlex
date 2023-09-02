@@ -87,10 +87,21 @@ function Get-PlexItem
 			}
 
 			$Params = [Ordered]@{
-				sort         = 'titleSort'
-				#includeCollections = 1
-				#includeExternalMedia = 0
-				includeGuids = 1
+				sort                        = 'titleSort'
+				includeGuids                = 1
+				includeConcerts             = 0
+				includeExtras               = 0
+				includeOnDeck               = 0
+				includePopularLeaves        = 0
+				includePreferences          = 0
+				includeReviews              = 0
+				includeChapters             = 0
+				includeStations             = 0
+				includeExternalMedia        = 0
+				asyncAugmentMetadata        = 0
+				asyncCheckFiles             = 0
+				asyncRefreshAnalysis        = 0
+				asyncRefreshLocalMediaAgent = 0
 			}
 			$DataUri = Get-PlexAPIUri -RestEndpoint "library/sections/$Key/all" -Params $Params
 		}

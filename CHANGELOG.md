@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.13] - 2023-01-09
+
+* 🔨 [Changed] BREAKING CHANGES: Removed `Get-PlexAuthenticationToken` and `Save-PlexConfiguration`. We now have a single function: `Set-PlexConfiguration`.
+* 🔨 [Changed] BREAKING CHANGES: Reworked credential file structure, including removal of token encryption for Windows.
+* ✨ [New] `Set-PlexItemEdition` for setting the 'edition' of movie items.
+
 ## [1.0.12] - 2023-13-01
 
 * ✨ [New] `New-PlexPlaylist` for creating new (video) playlists.
