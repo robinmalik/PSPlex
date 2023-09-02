@@ -106,12 +106,14 @@ function Set-PlexConfiguration
 	try
 	{
 		$ConfigFile = Get-PlexConfigFileLocation -ErrorAction Stop
-		# Create folder:
+
+		# Create folder if it doesn't exist:
 		if(-not (Test-Path (Split-Path $ConfigFile)))
 		{
 			New-Item -ItemType Directory -Path (Split-Path $ConfigFile) | Out-Null
 		}
 
+		# Write the configuration data to disk:
 		ConvertTo-Json -InputObject @($ConfigurationData) -Depth 3 -ErrorAction Stop | Out-File -FilePath $ConfigFile -Force -ErrorAction Stop
 	}
 	catch
