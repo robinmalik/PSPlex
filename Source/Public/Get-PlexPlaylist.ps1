@@ -112,6 +112,9 @@ function Get-PlexPlaylist
 
 	#############################################################################
 	# Append type and return results
-	$Results | ForEach-Object { $_.psobject.TypeNames.Insert(0, "PSPlex.Playlist") }
-	return $Results
+	if($Results)
+	{
+		$Results | ForEach-Object { $_.psobject.TypeNames.Insert(0, "PSPlex.Playlist") }
+		return $Results
+	}
 }
