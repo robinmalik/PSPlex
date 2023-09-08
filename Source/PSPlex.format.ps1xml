@@ -16,6 +16,9 @@
 					<TableColumnHeader>
 						<Width>5</Width>
 					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>9</Width>
+					</TableColumnHeader>
 				</TableHeaders>
 				<TableRowEntries>
 					<TableRowEntry>
@@ -28,6 +31,9 @@
 							</TableColumnItem>
 							<TableColumnItem>
 								<PropertyName>smart</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>leafCount</PropertyName>
 							</TableColumnItem>
 						</TableColumnItems>
 					</TableRowEntry>
