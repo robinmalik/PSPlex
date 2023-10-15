@@ -75,7 +75,7 @@ function Get-PlexShare
 		[array]$Results = $Data.MediaContainer.SharedServer | Where-Object { $_."$($PsCmdlet.ParameterSetName)" -eq $($PSBoundParameters[$PsCmdlet.ParameterSetName]) }
 		if(!$Results)
 		{
-			Write-Verbose -Message "No results found for specified username"
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): No results found for specified username"
 			return
 		}
 	}

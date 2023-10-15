@@ -44,7 +44,7 @@ function Set-PlexItemRating
 	#Region Submit rating
 	if($PSCmdlet.ShouldProcess($Id, "Set rating to $Rating"))
 	{
-		Write-Verbose -Message "Submitting rating"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Submitting rating"
 		try
 		{
 			$RestEndpoint = ":/rate"

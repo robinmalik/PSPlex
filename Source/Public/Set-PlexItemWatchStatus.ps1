@@ -60,7 +60,7 @@ function Set-PlexItemWatchStatus
 	#Region Make Request
 	if($PSCmdlet.ShouldProcess("Set watch status for item Id $Id to $Status"))
 	{
-		Write-Verbose -Message "Setting watch status for item Id $Id to $Status"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Setting watch status for item Id $Id to $Status"
 		try
 		{
 			Invoke-RestMethod -Uri $DataUri -Method "GET" | Out-Null

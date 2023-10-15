@@ -106,7 +106,7 @@ function Get-PlexUser
 				$_.username = $_.title
 			}
 
-			Write-Verbose -Message "$($UserTokens.count) user tokens received"
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): $($UserTokens.count) user tokens received"
 		}
 		catch
 		{

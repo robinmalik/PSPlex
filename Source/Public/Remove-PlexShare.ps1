@@ -126,7 +126,7 @@ function Remove-PlexShare
 		if($DataForUser.libraries.count -eq 1)
 		{
 			$Method = 'DELETE'
-			Write-Verbose -Message "Removing library with $($Method)"
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing library with $($Method)"
 			Invoke-RestMethod -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer`?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method $Method -ErrorAction Stop | Out-Null
 			return
 		}
@@ -153,7 +153,7 @@ function Remove-PlexShare
 					librarySectionIds = @($LibraryIdsToKeep)
 				} | ConvertTo-Json -Compress
 			}
-			Write-Verbose -Message "Removing library with $($Method): $LibraryTitle"
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing library with $($Method): $LibraryTitle"
 			Invoke-RestMethod -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer`?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method $Method -ContentType "application/json" -Body $Body -ErrorAction Stop | Out-Null
 		}
 	}

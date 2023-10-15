@@ -60,7 +60,7 @@ function Add-PlexLabel
 	# If the item already has this label:
 	if($Item.Label.Tag -contains $Label)
 	{
-		Write-Verbose -Message "Item already has label '$Label'"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Item already has label '$Label'"
 		return
 	}
 	#EndRegion
@@ -99,7 +99,7 @@ function Add-PlexLabel
 	#Region Make request
 	if($PSCmdlet.ShouldProcess($Item.title, "Add label '$Label'"))
 	{
-		Write-Verbose -Message "Adding label '$Label' to item '$($Item.title)'"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding label '$Label' to item '$($Item.title)'"
 		try
 		{
 			Invoke-RestMethod -Uri $DataUri -Method PUT

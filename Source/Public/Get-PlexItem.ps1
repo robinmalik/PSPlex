@@ -136,7 +136,7 @@ function Get-PlexItem
 		# If this is an album, respect -IncludeTracks and get track data:
 		if($Data.MediaContainer.Metadata.type -eq 'album' -and $IncludeTracks)
 		{
-			Write-Verbose -Message "Making additional lookup for album tracks"
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Making additional lookup for album tracks"
 			# $Data returned above has a key property on albums which equals: /library/metadata/{ratingKey}/children
 			$TrackURi = Get-PlexAPIUri -RestEndpoint $Data.MediaContainer.Metadata.key
 			$ChildData = Invoke-RestMethod -Uri $TrackURi -Method GET

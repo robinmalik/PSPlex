@@ -41,7 +41,7 @@ function Import-PlexConfiguration
 	#############################################################################
 	if(Test-Path -Path $ConfigFile)
 	{
-		Write-Verbose -Message "Importing Configuration from $ConfigFile"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Importing Configuration from $ConfigFile"
 		try
 		{
 			$script:PlexConfigData = Get-Content -Path $ConfigFile -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop

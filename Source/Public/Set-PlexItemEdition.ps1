@@ -59,7 +59,7 @@ function Set-PlexItemEdition
 	#Region Submit rating
 	if($PSCmdlet.ShouldProcess($Id, "Set edition to $Edition"))
 	{
-		Write-Verbose -Message "Setting edition"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Setting edition"
 		try
 		{
 			$RestEndpoint = "$($Item.librarySectionKey)/all"
