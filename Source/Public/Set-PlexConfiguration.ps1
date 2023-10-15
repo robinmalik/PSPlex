@@ -2,9 +2,13 @@ function Set-PlexConfiguration
 {
 	<#
 		.SYNOPSIS
+			Obtains an access token for your account and saves it and your server details.
 		.DESCRIPTION
+			Used to save Plex configuration to disk, which is used by all other functions.
 		.PARAMETER Credential
+			Credential object containing your Plex username and password.
 		.EXAMPLE
+			Set-PlexConfiguration -Credential (Get-Credential)
 	#>
 
 	[CmdletBinding()]

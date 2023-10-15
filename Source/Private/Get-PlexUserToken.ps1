@@ -1,5 +1,19 @@
 function Get-PlexUserToken
 {
+	<#
+		.SYNOPSIS
+			Gets the authorisation token for a user used to access your Plex server.
+		.DESCRIPTION
+			Gets the authorisation token for a user used to access your Plex server.
+		.PARAMETER MachineIdentifier
+			The machine identifier of the server to get the access tokens for.
+		.PARAMETER Username
+			The username of the user to get the access token for.
+			If not specified, all access tokens for the server will be returned.
+		.EXAMPLE
+			Get-PlexUserToken -MachineIdentifier "1234567890" -Username "someuser"
+	#>
+
 	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true)]

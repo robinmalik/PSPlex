@@ -12,8 +12,19 @@ By default, returns a list of libraries on a Plex server.
 
 ## SYNTAX
 
+### All (Default)
 ```
-Get-PlexLibrary [[-Id] <String>] [<CommonParameters>]
+Get-PlexLibrary [<CommonParameters>]
+```
+
+### Id
+```
+Get-PlexLibrary [-Id <String>] [<CommonParameters>]
+```
+
+### Name
+```
+Get-PlexLibrary [-Name <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,11 +45,26 @@ If specified, returns a specific library.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Id
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+{{ Fill Name Description }}
+
+```yaml
+Type: String
+Parameter Sets: Name
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
