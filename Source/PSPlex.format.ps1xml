@@ -182,5 +182,45 @@
 				</TableRowEntries>
 			</TableControl>
 		</View>
+		<View>
+			<Name>DefaultView</Name>
+			<ViewSelectedBy>
+				<TypeName>PSPlex.WatchHistory</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Width>40</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>30</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>20</Width>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>title</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>grandparenttitle</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>type</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>lastViewedAtDateTime</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
 	</ViewDefinitions>
 </Configuration>
