@@ -18,11 +18,15 @@ function Get-PlexLibrary
 			Get-PlexLibrary
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParameterSetName = "All")]
 	param(
-		[Parameter(Mandatory = $false)]
+		[Parameter(Mandatory = $false, ParameterSetName = "Id")]
 		[String]
-		$Id
+		$Id,
+
+		[Parameter(Mandatory = $false, ParameterSetName = "Name")]
+		[String]
+		$Name
 	)
 
 	#############################################################################
@@ -52,7 +56,14 @@ function Get-PlexLibrary
 		}
 		else
 		{
-			[array]$Results = $Data.MediaContainer.Directory
+			if($Name)
+			{
+				$Data.MediaContainer.Directory | Where-Object -FilterScript { $_.title -eq $Name }
+			}
+			else
+			{
+				[array]$Results = $Data.MediaContainer.Directory
+			}
 		}
 	}
 	catch

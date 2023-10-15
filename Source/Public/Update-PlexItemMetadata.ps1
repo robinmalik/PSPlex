@@ -38,7 +38,7 @@ function Update-PlexItemMetadata
 	#Region Make request
 	if($PSCmdlet.ShouldProcess("Update metadata for item $Id"))
 	{
-		Write-Verbose -Message "Initiating metadata refresh for item Id $Id"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Initiating metadata refresh for item Id $Id"
 		try
 		{
 			$Uri = Get-PlexAPIUri -RestEndpoint "library/metadata/$Id/refresh"

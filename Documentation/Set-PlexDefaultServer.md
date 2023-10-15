@@ -5,66 +5,39 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-PlexLibrary
+# Set-PlexDefaultServer
 
 ## SYNOPSIS
-By default, returns a list of libraries on a Plex server.
+Set the default Plex server.
 
 ## SYNTAX
 
-### All (Default)
 ```
-Get-PlexLibrary [<CommonParameters>]
-```
-
-### Id
-```
-Get-PlexLibrary [-Id <String>] [<CommonParameters>]
-```
-
-### Name
-```
-Get-PlexLibrary [-Name <String>] [<CommonParameters>]
+Set-PlexDefaultServer [-Name] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-By default, returns a list of libraries on a Plex server.
-If -Id is specified, a single library is returned with
+Set the default Plex server.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-PlexLibrary
+An example
 ```
 
 ## PARAMETERS
 
-### -Id
-If specified, returns a specific library.
-
-```yaml
-Type: String
-Parameter Sets: Id
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Name
-{{ Fill Name Description }}
+Name of the server to set as default.
 
 ```yaml
 Type: String
-Parameter Sets: Name
+Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
+Required: True
+Position: 1
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -78,5 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
+General notes
 
 ## RELATED LINKS

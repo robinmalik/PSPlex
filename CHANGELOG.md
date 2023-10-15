@@ -1,12 +1,19 @@
 # Changelog
 
-## [1.0.13] - 2023-01-09
+## [1.0.14] - 2023-10-15
+
+* ✨ [New] `Set-PlexDefaultServer` for setting the default server to use for all future calls.
+    * Context: `Set-PlexConfiguration` is called, a default is set as part of this. This function allows you to change it.
+* ✨ [New] `Get-PlexPlaylist` and `Get-PlexLibrary` now support `-Name`. The Plex API doesn't support this natively, so it's client side filtered.
+* ✨ [New] `Get-PlexWatchHistory` for returning the watch history for either yourself or another user (with `-Username`).
+
+## [1.0.13] - 2023-09-02
 
 * 🔨 [Changed] BREAKING CHANGES: Removed `Get-PlexAuthenticationToken` and `Save-PlexConfiguration`. We now have a single function: `Set-PlexConfiguration`.
 * 🔨 [Changed] BREAKING CHANGES: Reworked credential file structure, including removal of token encryption for Windows.
 * ✨ [New] `Set-PlexItemEdition` for setting the 'edition' of movie items.
 
-## [1.0.12] - 2023-13-01
+## [1.0.12] - 2023-01-13
 
 * ✨ [New] `New-PlexPlaylist` for creating new (video) playlists.
 * 🐛 [Fixed] Ensure `Get-PlexPlaylist -IncludeItems` doesn't throw an error for 'Smart' playlists.

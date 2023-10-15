@@ -5,48 +5,53 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-PlexLibrary
+# Get-PlexWatchHistory
 
 ## SYNOPSIS
-By default, returns a list of libraries on a Plex server.
+Returns a list of watched/listened to items from the Plex server.
 
 ## SYNTAX
 
-### All (Default)
 ```
-Get-PlexLibrary [<CommonParameters>]
-```
-
-### Id
-```
-Get-PlexLibrary [-Id <String>] [<CommonParameters>]
-```
-
-### Name
-```
-Get-PlexLibrary [-Name <String>] [<CommonParameters>]
+Get-PlexWatchHistory [[-Username] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-By default, returns a list of libraries on a Plex server.
-If -Id is specified, a single library is returned with
+Returns a list of watched/listened to items from the Plex server.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-PlexLibrary
+Get-PlexWatchHistory
 ```
 
 ## PARAMETERS
 
-### -Id
-If specified, returns a specific library.
+### -Username
+Optional.
+If specified, only return items watched by this user.
 
 ```yaml
 Type: String
-Parameter Sets: Id
+Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
 
 Required: False
 Position: Named
@@ -55,13 +60,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Name
-{{ Fill Name Description }}
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
 
 ```yaml
-Type: String
-Parameter Sets: Name
-Aliases:
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
 
 Required: False
 Position: Named

@@ -12,8 +12,20 @@ Gets playlists.
 
 ## SYNTAX
 
+### All (Default)
 ```
-Get-PlexPlaylist [[-Id] <String>] [-IncludeItems] [[-AlternativeToken] <String>] [-WhatIf] [-Confirm]
+Get-PlexPlaylist [-IncludeItems] [-AlternativeToken <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### Id
+```
+Get-PlexPlaylist [-Id <String>] [-IncludeItems] [-AlternativeToken <String>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
+### Name
+```
+Get-PlexPlaylist [-Name <String>] [-IncludeItems] [-AlternativeToken <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -40,11 +52,26 @@ The id of the playlist to get.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Id
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Name
+{{ Fill Name Description }}
+
+```yaml
+Type: String
+Parameter Sets: Name
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -76,7 +103,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

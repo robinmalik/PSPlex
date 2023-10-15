@@ -2,9 +2,9 @@ function Get-PlexServer
 {
 	<#
 		.SYNOPSIS
-			Returns a list of online Plex Servers that you have access to.
+			Returns a list of online Plex Servers that you have access to (remote access must be enabled).
 		.DESCRIPTION
-			Returns a list of online Plex Servers that you have access to.
+			Returns a list of online Plex Servers that you have access to (remote access must be enabled).
 		.EXAMPLE
 			Get-PlexServer
 		.OUTPUTS

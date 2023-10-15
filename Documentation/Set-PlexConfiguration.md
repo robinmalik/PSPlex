@@ -8,6 +8,7 @@ schema: 2.0.0
 # Set-PlexConfiguration
 
 ## SYNOPSIS
+Obtains an access token for your account and saves it and your server details.
 
 ## SYNTAX
 
@@ -16,19 +17,19 @@ Set-PlexConfiguration [-Credential] <PSCredential> [-DefaultServerName] <String>
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Used to save Plex configuration to disk, which is used by all other functions.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-
+Set-PlexConfiguration -Credential (Get-Credential)
 ```
 
 ## PARAMETERS
 
 ### -Credential
-{{ Fill Credential Description }}
+Credential object containing your Plex username and password.
 
 ```yaml
 Type: PSCredential

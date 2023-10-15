@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-PlexServer
 
 ## SYNOPSIS
-Returns a list of online Plex Servers that you have access to.
+Returns a list of online Plex Servers that you have access to (remote access must be enabled).
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-PlexServer [[-Name] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a list of online Plex Servers that you have access to.
+Returns a list of online Plex Servers that you have access to (remote access must be enabled).
 
 ## EXAMPLES
 
@@ -50,6 +50,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
+### ```
 ### accessToken       : abcd123456ABCDEFG
 ### name              : thor
 ### address           : 87.50.66.123
@@ -79,6 +80,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### sourceTitle       : username_of_friend
 ### ownerId           : 6728195
 ### home              : 0
+### ```
 ## NOTES
 
 ## RELATED LINKS

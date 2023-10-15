@@ -1,5 +1,20 @@
 function Set-PlexItemWatchStatus
 {
+	<#
+		.SYNOPSIS
+			Set the watch status for a Plex item.
+		.DESCRIPTION
+			Set the watch status for a Plex item.
+		.PARAMETER Id
+			Id of the item to set the watch status for.
+		.PARAMETER Status
+			Status to set the item to. Valid values are 'played' and 'unplayed'.
+		.PARAMETER AlternativeToken
+			Token for another user.
+		.EXAMPLE
+			Set-PlexItemWatchStatus -Id 1234 -Status played
+	#>
+
 	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
@@ -60,7 +75,7 @@ function Set-PlexItemWatchStatus
 	#Region Make Request
 	if($PSCmdlet.ShouldProcess("Set watch status for item Id $Id to $Status"))
 	{
-		Write-Verbose -Message "Setting watch status for item Id $Id to $Status"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Setting watch status for item Id $Id to $Status"
 		try
 		{
 			Invoke-RestMethod -Uri $DataUri -Method "GET" | Out-Null

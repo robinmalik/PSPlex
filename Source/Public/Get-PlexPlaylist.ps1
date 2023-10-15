@@ -19,11 +19,15 @@ function Get-PlexPlaylist
 			Get-PlexPlaylist -AlternativeToken $User.Token
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "All")]
 	param(
-		[Parameter(Mandatory = $false)]
+		[Parameter(Mandatory = $false, ParameterSetName = "Id")]
 		[String]
 		$Id,
+
+		[Parameter(Mandatory = $false, ParameterSetName = "Name")]
+		[String]
+		$Name,
 
 		[Parameter(Mandatory = $false)]
 		[Switch]
@@ -64,12 +68,19 @@ function Get-PlexPlaylist
 			$Params = @{'X-Plex-Token' = $AlternativeToken }
 		}
 
+		# If called with -Id, use the $Id, otherwise it'll return all playlists (and we can refine by name if specified)
 		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$Id" -Params $Params
 		$Data = Invoke-WebRequest -Uri $DataUri -ErrorAction Stop
+
 		if($Data)
 		{
 			$UTF8String = [system.Text.Encoding]::UTF8.GetString($Data.RawContentStream.ToArray())
 			[array]$Results = ($UTF8String | ConvertFrom-Json).MediaContainer.Metadata
+			if($Name)
+			{
+				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Filtering for name '$Name'"
+				$Results = $Results | Where-Object { $_.title -eq $Name }
+			}
 		}
 		else
 		{
@@ -112,6 +123,9 @@ function Get-PlexPlaylist
 
 	#############################################################################
 	# Append type and return results
-	$Results | ForEach-Object { $_.psobject.TypeNames.Insert(0, "PSPlex.Playlist") }
-	return $Results
+	if($Results)
+	{
+		$Results | ForEach-Object { $_.psobject.TypeNames.Insert(0, "PSPlex.Playlist") }
+		return $Results
+	}
 }

@@ -37,7 +37,7 @@ function Update-PlexLibrary
 	#Region Make request
 	if($PSCmdlet.ShouldProcess("Update library $Id"))
 	{
-		Write-Verbose -Message "Initiating library update for library Id $Id"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Initiating library update for library Id $Id"
 		try
 		{
 			$Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$Id/refresh"

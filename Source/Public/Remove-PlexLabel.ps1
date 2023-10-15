@@ -60,14 +60,14 @@ function Remove-PlexLabel
 	# If the item has no labels:
 	if(!$Item.Label.Tag)
 	{
-		Write-Verbose -Message "Item has no labels"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Item has no labels"
 		return
 	}
 
 	# If the item doesn't have this label:
 	if($Item.Label.Tag -notcontains $Label)
 	{
-		Write-Verbose -Message "Item does not have the label '$Label'"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Item does not have the label '$Label'"
 		return
 	}
 	#EndRegion
@@ -109,7 +109,7 @@ function Remove-PlexLabel
 	#Region Make request
 	if($PSCmdlet.ShouldProcess($Item.title, "Remove label '$Label'"))
 	{
-		Write-Verbose -Message "Removing label '$Label' from item '$($Item.title)'"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing label '$Label' from item '$($Item.title)'"
 		try
 		{
 			Invoke-RestMethod -Uri $DataUri -Method PUT

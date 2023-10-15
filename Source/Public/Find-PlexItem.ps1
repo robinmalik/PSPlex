@@ -70,6 +70,8 @@ function Find-PlexItem
 	#Region Construct Uri
 	try
 	{
+		$RestEndpoint = "hubs/search"
+
 		# URLEncode the title, otherwise we'll get '400 bad request' errors when searching for things like: Bill and Ted's ...
 		$ItemNameEncoded = [System.Web.HttpUtility]::UrlEncode($ItemName)
 		$Params = [Ordered]@{
@@ -79,7 +81,7 @@ function Find-PlexItem
 			'limit'              = 50
 		}
 
-		$DataUri = Get-PlexAPIUri -RestEndpoint "hubs/search" -Params $Params
+		$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
 	}
 	catch
 	{
@@ -89,7 +91,7 @@ function Find-PlexItem
 
 	#############################################################################
 	#Region Make request
-	Write-Verbose -Message "Searching for $ItemName."
+	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Searching for $ItemName."
 	try
 	{
 		[Array]$Data = Invoke-RestMethod -Uri $DataUri -Method GET
@@ -151,7 +153,7 @@ function Find-PlexItem
 	}
 	else
 	{
-		Write-Verbose -Message "No result found."
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): No result found."
 		return
 	}
 }
