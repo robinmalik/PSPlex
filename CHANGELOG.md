@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.XX] - 2023-xx-xx
+## [1.0.14] - 2023-10-15
 
 * ✨ [New] `Set-PlexDefaultServer` for setting the default server to use for all future calls.
     * Context: `Set-PlexConfiguration` is called, a default is set as part of this. This function allows you to change it.
