@@ -71,7 +71,7 @@ Get-PlexShare -Username 'friendusername' | Select username,@{Name='Shared';Expre
 **Get a user and their access token (for use in further automation, see the next few examples):**
 
 ```powershell
-$User = Get-PlexUser -Username 'friendusername' -IncludeToken`<br>
+$User = Get-PlexUser -Username 'friendusername' -IncludeToken
 `$User.Token
 ```
 
