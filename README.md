@@ -19,7 +19,9 @@ See the [Changelog](CHANGELOG.md) for a list of changes.
 
 **Get a list of users you've shared with:**
 
-`Get-PlexUser`
+```powershell
+Get-PlexUser
+```
 
 **Get a list of libraries and select the title, type and key (Id):**
 
