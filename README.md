@@ -10,7 +10,7 @@ See the [Changelog](CHANGELOG.md) for a list of changes.
 
 1. Install the module from the PowerShell Gallery: `Install-Module -Name PSPlex`.
 2. Run: `Set-PlexConfiguration`. You will be prompted to enter your Plex account name and password.
-    * To inspect the code for this function, see: [Get-PlexAuthenticationToken.ps1](/PSPlex/Public/Set-PlexConfiguration.ps1).
+    * To inspect the code for this function, see: [Set-PlexConfiguration.ps1](/Source/Public/Set-PlexConfiguration.ps1).
 3. Try a command from the 'Simple Examples' below.
 
 <br>
@@ -140,3 +140,4 @@ A [repository has been created](https://github.com/robinmalik/PSPlexHelperScript
 
 * https://support.plex.tv/articles/201638786-plex-media-server-url-commands/
 https://docs.github.com/en/enterprise-server@3.5/actions/automating-builds-and-tests/building-and-testing-powershell
+https://code.google.com/archive/p/plex-api/wikis
