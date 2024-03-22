@@ -58,6 +58,12 @@ Remove-PlexPlaylist -Id 12345
 Remove-PlexShare -LibraryId 5 -Username 'yourfriend@theiremail.com'
 ```
 
+**Remove a collection called 'test' a library called 'movies'**
+```powershell
+$Library = Get-PlexLibrary -Name 'movies'
+Get-PlexCollection -LibraryId $Library | Where-Object { $_.title -eq 'test' } | Select -Expand ratingKey | Remove-PlexCollection
+```
+
 <br>
 
 # More complex examples:

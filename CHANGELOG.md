@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.15] - 2024-03-22
+
+* ✨ [New] `Remove-PlexCollection` for removing collections from Plex libraries (thanks to [solid03](https://github.com/solid03)).
+
 ## [1.0.14] - 2023-10-15
 
 * ✨ [New] `Set-PlexDefaultServer` for setting the default server to use for all future calls.
