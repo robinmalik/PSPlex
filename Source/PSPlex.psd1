@@ -27,7 +27,7 @@
     CompanyName          = 'N/A'
 
     # Copyright statement for this module
-    Copyright            = '(c) 2022 Robin Malik. All rights reserved.'
+    Copyright            = '(c) Robin Malik. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description          = 'A PowerShell module to aid Plex server management.'
