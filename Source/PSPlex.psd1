@@ -12,7 +12,7 @@
     RootModule           = 'PSPlex.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.0.14'
+    ModuleVersion        = '1.0.15'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -27,7 +27,7 @@
     CompanyName          = 'N/A'
 
     # Copyright statement for this module
-    Copyright            = '(c) 2022 Robin Malik. All rights reserved.'
+    Copyright            = '(c) Robin Malik. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description          = 'A PowerShell module to aid Plex server management.'
@@ -84,6 +84,7 @@
         'Get-PlexUser'
         'Get-PlexWatchHistory'
         'New-PlexPlaylist'
+        'Remove-PlexCollection'
         'Remove-PlexPlaylist'
         'Remove-PlexLabel'
         'Remove-PlexShare'
