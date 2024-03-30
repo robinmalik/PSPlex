@@ -1,11 +1,11 @@
 function Resolve-PlexFilter
 {
     <#
-		.SYNOPSIS
-			Parses filter string into Plex API query.
-		.DESCRIPTION
-			Parses filter string into Plex API query. Filter syntax is '<Attribute> <Operator> <Value>'. Clauses are separated by semi-colons (;)
-		.EXAMPLE
+        .SYNOPSIS
+            Parses filter string into Plex API query.
+        .DESCRIPTION
+            Parses filter string into Plex API query. Filter syntax is '<Attribute> <Operator> <Value>'. Clauses are separated by semi-colons (;)
+        .EXAMPLE
             Resolve-PlexFilter -MatchAll -Filter "Title BeginsWith Star Trek; Unplayed IsTrue"
         .EXAMPLE
             Resolve-PlexFilter -MatchAny -Filter "DateAdded IsNotInTheLast 2y; Unplayed IsTrue"
