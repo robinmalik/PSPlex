@@ -77,7 +77,7 @@ function Resolve-PlexFilter
 
         # Copied from Plex web GUI and translated into Plex DB attributes.
         $Attributes = @{
-            # NameinGUI        = @{ Class = "ClassName" ; Name = "NameInDB" }
+            # NameinGUI      = @{ Class = "ClassName" ; Name = "NameInDB" }
             Title            = @{ Class = "String" ; Name = "title" }
             Studio           = @{ Class = "String" ; Name = "studio" }
             Edition          = @{ Class = "String" ; Name = "editionTitle" }
@@ -133,6 +133,7 @@ function Resolve-PlexFilter
                 # Translate Exact class into Plex DB key
                 if ($Attribute.Class -eq 'Exact')
                 {
+                    # Import PlexConfigData
                     if (!$script:PlexConfigData)
                     {
                         try
@@ -144,11 +145,12 @@ function Resolve-PlexFilter
                             throw $_
                         }
                     }
-                    $Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$($PSBoundParameters.LibraryID)/$($Attribute.Name)" -ErrorAction Stop
+                    $Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$LibraryID/$($Attribute.Name)" -ErrorAction Stop
                     $Key = ((Invoke-RestMethod -Uri $Uri -Method Get -ErrorAction Stop).MediaContainer.Directory | Where-Object { $_.title -eq $Matches.Value }).key
+                    #TODO implement caching for attribute keys
                     if (-not ($Key -or $IKnowWhatImDoing))
                     {
-                        throw ("Unable to find key for '{0}' in library '{1}'." -f $Matches.Value, $PSBoundParameters.LibraryID)
+                        throw ("Unable to find key for '{0}' in library '{1}'." -f $Matches.Value, $LibraryID)
                     }
 
                     $Matches.Value = @($Matches.Value, $Key)[[bool]$Key] # Null check for key
