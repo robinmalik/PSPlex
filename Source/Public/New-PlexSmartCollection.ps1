@@ -10,7 +10,7 @@
         .PARAMETER LibraryID
             ID of the library to create the smart collection in.
         .PARAMETER Filter
-            Specifies the query string that retrieves the items in the smart collection. The syntax matches the Plex Web GUI as closely as possible. Clauses are separated by a semi-colon (;)
+            Specifies the query string that retrieves the items in the smart collection. The syntax matches the Plex Web GUI as closely as possible. Clauses are separated by a semi-colon ( ; ).
 
             Syntax:
 
@@ -82,11 +82,15 @@
                 - "DateAdded IsNotInTheLast 2y; Unplayed IsTrue"
                 - "Title BeginsWith Star Trek; Unplayed IsTrue"
                 - "Actor Is Jim Carrey; Genre Is Comedy"
+        .PARAMETER MatchType
+            Specifies how filter clauses are matched.
 
+            - MatchAll: Matches all clauses.
+            - MatchAny: Matches any cluase.
         .EXAMPLE
             New-PlexSmartCollection -Name "Star Trek" -LibraryID 1 -Filter "Title Contains Star Trek"
         .EXAMPLE
-            New-PlexSmartCollection -Name "80's" -LibraryID 1 -Filter "Decade Is 1980s"
+            New-PlexSmartCollection -Name "80's" -LibraryID 1 -Filter "Decade Is 1980"
         .EXAMPLE
             New-PlexSmartCollection -Name "Old Favorites" -LibraryID 1 -Filter "Plays IsGreaterThan 2; LastPlayed IsNotInTheLast 1y"
         .EXAMPLE
@@ -137,7 +141,7 @@
         }
     }
     catch {
-        $PSCmdlet.ThrowTerminatingErrorError($_)
+        $PSCmdlet.ThrowTerminatingError($_)
     }
     #EndRegion
 
