@@ -14,10 +14,10 @@
 
             Syntax:
 
-            <Atttribute> <Operator> <Value>
-            <Atttribute> <Operator> <Value>;<Atttribute> <Operator> <Value>
+            - <Atttribute> <Operator> <Value>
+            - <Atttribute> <Operator> <Value>;<Atttribute> <Operator> <Value>
 
-            Attributes:
+            - Attributes:
                 - String
                     - Title
                     - Studio
@@ -50,7 +50,7 @@
                     - DateAdded
                     - LastPlayed
 
-            Operators:
+                - Operators:
                 - String
                     - Contains
                     - DoesNotContain
@@ -77,11 +77,11 @@
                     - IsInTheLast
                     - IsNotInTheLast
 
-            Examples:
-
+            - Examples:
                 - "DateAdded IsNotInTheLast 2y; Unplayed IsTrue"
                 - "Title BeginsWith Star Trek; Unplayed IsTrue"
                 - "Actor Is Jim Carrey; Genre Is Comedy"
+
         .PARAMETER MatchType
             Specifies how filter clauses are matched.
 

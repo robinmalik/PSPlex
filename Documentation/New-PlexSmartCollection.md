@@ -81,74 +81,73 @@ Clauses are separated by a semi-colon ( ; ).
 
 Syntax:
 
-\<Atttribute\> \<Operator\> \<Value\>
-\<Atttribute\> \<Operator\> \<Value\>;\<Atttribute\> \<Operator\> \<Value\>
+- \<Atttribute\> \<Operator\> \<Value\>
+- \<Atttribute\> \<Operator\> \<Value\>;\<Atttribute\> \<Operator\> \<Value\>
 
-Attributes:
-    - String
-        - Title
-        - Studio
-        - Edition
-    - Numeric
-        - Rating
-        - Year
-        - Decade
-        - Plays
-    - Exact
-        - ContentRating
-        - Genre
-        - Collection
-        - Actor
-        - Country
-        - SubtitleLanguage
-        - AudioLanguage
-        - Label
-    - Boolean
-        - Unmatched
-        - Duplicate
-        - Unplayed
-        - HDR
-        - InProgress
-        - Trash
-    - Semi-Boolean
-        - Resolution
-    - Date
-        - ReleaseDate
-        - DateAdded
-        - LastPlayed
+- Attributes:
+  - String
+    - Title
+    - Studio
+    - Edition
+  - Numeric
+    - Rating
+    - Year
+    - Decade
+    - Plays
+  - Exact
+    - ContentRating
+    - Genre
+    - Collection
+    - Actor
+    - Country
+    - SubtitleLanguage
+    - AudioLanguage
+    - Label
+  - Boolean
+    - Unmatched
+    - Duplicate
+    - Unplayed
+    - HDR
+    - InProgress
+    - Trash
+  - Semi-Boolean
+    - Resolution
+  - Date
+    - ReleaseDate
+    - DateAdded
+    - LastPlayed
 
-Operators:
-    - String
-        - Contains
-        - DoesNotContain
-        - Is
-        - IsNot
-        - BeginsWith
-        - EndsWith
-    - Numeric
-        - Is
-        - IsNot
-        - IsGreaterThan
-        - IsLessThan
-    - Exact
-        - Is
-        - IsNot
-    - Boolean
-        - IsTrue
-        - IsFalse
-    - Semi-Boolean
-        - Is
-    - Date
-        - IsBefore (Value format: yyyy-mm-dd)
-        - IsAfter (Value format: yyyy-mm-dd)
-        - IsInTheLast
-        - IsNotInTheLast
+- Operators:
+  - String
+    - Contains
+    - DoesNotContain
+    - Is
+    - IsNot
+    - BeginsWith
+    - EndsWith
+  - Numeric
+    - Is
+    - IsNot
+    - IsGreaterThan
+    - IsLessThan
+  - Exact
+    - Is
+    - IsNot
+  - Boolean
+    - IsTrue
+    - IsFalse
+  - Semi-Boolean
+    - Is
+  - Date
+    - IsBefore (Value format: yyyy-mm-dd)
+    - IsAfter (Value format: yyyy-mm-dd)
+    - IsInTheLast
+    - IsNotInTheLast
 
-Examples:
-
-    - "DateAdded IsNotInTheLast 2y; Unplayed IsTrue"
-    - "Title BeginsWith Star Trek; Unplayed IsTrue"
-    - "Actor Is Jim Carrey; Genre Is Comedy"
+- Examples:
+  - "DateAdded IsNotInTheLast 2y; Unplayed IsTrue"
+  - "Title BeginsWith Star Trek; Unplayed IsTrue"
+  - "Actor Is Jim Carrey; Genre Is Comedy"
 
 ```yaml
 Type: String
