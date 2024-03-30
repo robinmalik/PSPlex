@@ -1,4 +1,4 @@
-function New-PlexSmartCollection
+﻿function New-PlexSmartCollection
 {
     <#
         .SYNOPSIS
@@ -89,9 +89,11 @@ function New-PlexSmartCollection
             New-PlexSmartCollection -Name "80's" -LibraryID 1 -Filter "Decade Is 1980s"
         .EXAMPLE
             New-PlexSmartCollection -Name "Old Favorites" -LibraryID 1 -Filter "Plays IsGreaterThan 2; LastPlayed IsNotInTheLast 1y"
+        .EXAMPLE
+            New-PlexSmartCollection -Name "Trek Wars" -LibraryID 1 -MatchType MatchAny -Filter "title contains star trek; title contains star wars"
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory)]
         [string]
@@ -160,23 +162,24 @@ function New-PlexSmartCollection
 	#Region Construct Uri
     try {
         $Items = Resolve-PlexFilter -MatchType $MatchType -LibraryID $LibraryID -Filter $Filter
-        $Params = @{
-            title = $Name
+        $Params = [ordered]@{
+            type = '1'
+            title = [System.Uri]::EscapeDataString($Name)
             smart = '1'
-            sectionID = $LibraryID
-            uri = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/$LibraryID/$Items"
+            sectionId = $LibraryID
+            uri = [System.Uri]::EscapeDataString("server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/$LibraryID/all?type=1&sort=titleSort&$Items")
         }
 
-        $DataUri = Get-PlexAPIUrl -RestEndpoint "library/sections/$LibraryID" -Params $Params
+        $DataUri = (Get-PlexAPIUri -RestEndpoint "library/collections" -Params $Params)
     }
     catch {
         $PSCmdlet.ThrowTerminatingError($_)
     }
     #EndRegion
-    
+
     #############################################################################
 	#Region Make request
-	if($PSCmdlet.ShouldProcess($Name, "Create Smart Collection '$Name'"))
+    if($PSCmdlet.ShouldProcess("Library $LibraryID", "Create Smart Collection '$Name'"))
 	{
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating Smart Collection $Name in Libary '$LibraryID'"
 		try
