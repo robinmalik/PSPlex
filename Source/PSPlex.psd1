@@ -84,6 +84,7 @@
         'Get-PlexUser'
         'Get-PlexWatchHistory'
         'New-PlexPlaylist'
+        'New-PlexSmartCollection'
         'Remove-PlexCollection'
         'Remove-PlexPlaylist'
         'Remove-PlexLabel'
