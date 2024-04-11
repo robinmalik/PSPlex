@@ -10,7 +10,7 @@ function Remove-PlexCollection
 		.EXAMPLE
 			Remove-PlexCollection -Id 12345
         .EXAMPLE
-            Get-PlexCollection | Where-object {[int]$_.childCount -lt 5} | Select-Object -ExpandProperty ratingKey | Remove-PlexCollection
+            Get-PlexCollection -LibraryId 1 | Where-object {[int]$_.childCount -lt 5} | Select-Object -ExpandProperty ratingKey | Remove-PlexCollection
 	#>
 
     [CmdletBinding(SupportsShouldProcess)]
