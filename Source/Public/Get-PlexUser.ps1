@@ -77,6 +77,10 @@ function Get-PlexUser
 	{
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Filtering by username"
 		[array]$Results = $Data.MediaContainer.User | Where-Object { $_.username -eq $Username }
+		if(!$Results)
+		{
+			throw "Username '$Username' not found."
+		}
 	}
 	else
 	{

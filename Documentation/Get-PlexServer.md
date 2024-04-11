@@ -13,7 +13,7 @@ Returns a list of online Plex Servers that you have access to (remote access mus
 ## SYNTAX
 
 ```
-Get-PlexServer [[-Name] <String>] [<CommonParameters>]
+Get-PlexServer [[-Name] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -43,6 +43,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -50,7 +65,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### ```
 ### accessToken       : abcd123456ABCDEFG
 ### name              : thor
 ### address           : 87.50.66.123
@@ -80,7 +94,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### sourceTitle       : username_of_friend
 ### ownerId           : 6728195
 ### home              : 0
-### ```
 ## NOTES
 
 ## RELATED LINKS

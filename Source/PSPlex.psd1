@@ -12,7 +12,7 @@
     RootModule           = 'PSPlex.psm1'
 
     # Version number of this module.
-    ModuleVersion        = '1.0.15'
+    ModuleVersion        = '1.0.16'
 
     # Supported PSEditions
     CompatiblePSEditions = 'Core', 'Desktop'
@@ -84,6 +84,7 @@
         'Get-PlexUser'
         'Get-PlexWatchHistory'
         'New-PlexPlaylist'
+        'New-PlexSmartCollection'
         'Remove-PlexCollection'
         'Remove-PlexPlaylist'
         'Remove-PlexLabel'

@@ -14,12 +14,12 @@ Get a specific item.
 
 ### Id
 ```
-Get-PlexItem -Id <String> [-IncludeTracks] [<CommonParameters>]
+Get-PlexItem -Id <String> [-IncludeTracks] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Library
 ```
-Get-PlexItem -LibraryTitle <String> [<CommonParameters>]
+Get-PlexItem -LibraryTitle <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -84,6 +84,21 @@ Parameter Sets: Library
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
