@@ -13,6 +13,10 @@ function Set-PlexItemWatchStatus
 			Token for another user.
 		.EXAMPLE
 			Set-PlexItemWatchStatus -Id 1234 -Status played
+		.EXAMPLE
+			Set the watch status for item Id 1234 to 'played' for another user:
+			$User = Get-PlexUser -Username 'username' -IncludeToken
+			Set-PlexItemWatchStatus -Id 1234 -Status played -AlternativeToken $User.Token
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
