@@ -15,6 +15,9 @@ function Get-PlexCollection
 			Get-PlexCollection -LibraryId 1
 		.EXAMPLE
 			Get-PlexCollection -Id 723 -IncludeItems
+		.EXAMPLE
+			# Get all collections from library 1 with the name, id (ratingkey) and number of items in the collection:
+			Get-PlexCollection -LibraryId 1 | Select-Object title,ratingkey,childcount
 	#>
 
 	[CmdletBinding()]
