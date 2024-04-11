@@ -58,10 +58,17 @@ Remove-PlexPlaylist -Id 12345
 Remove-PlexShare -LibraryId 5 -Username 'yourfriend@theiremail.com'
 ```
 
+**Create a smart collection:**
+
+```powershell
+$Library = Get-PlexLibrary -Name 'movies'
+New-PlexSmartCollection -Name "Harry Potter" -LibraryId $Library.key -Filter "Title Contains Harry Potter"
+```
+
 **Remove a collection called 'test' a library called 'movies'**
 ```powershell
 $Library = Get-PlexLibrary -Name 'movies'
-Get-PlexCollection -LibraryId $Library | Where-Object { $_.title -eq 'test' } | Select -Expand ratingKey | Remove-PlexCollection
+Get-PlexCollection -LibraryId $Library.key | Where-Object { $_.title -eq 'test' } | Select -Expand ratingKey | Remove-PlexCollection
 ```
 
 <br>

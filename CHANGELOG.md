@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.16] - 2024-04-11
+
+* * ✨ [New] `New-PlexSmartCollection` for creating new smart collections in Plex libraries (thanks to [solid03](https://github.com/solid03)).
+
 ## [1.0.15] - 2024-03-22
 
 * ✨ [New] `Remove-PlexCollection` for removing collections from Plex libraries (thanks to [solid03](https://github.com/solid03)).
