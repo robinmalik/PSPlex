@@ -14,12 +14,13 @@ Gets collections.
 
 ### CollectionId
 ```
-Get-PlexCollection -Id <PSObject> [-IncludeItems] [<CommonParameters>]
+Get-PlexCollection -Id <PSObject> [-IncludeItems] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### LibraryId
 ```
-Get-PlexCollection -LibraryId <PSObject> [-IncludeItems] [<CommonParameters>]
+Get-PlexCollection -LibraryId <PSObject> [-IncludeItems] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,6 +36,12 @@ Get-PlexCollection -LibraryId 1
 ### EXAMPLE 2
 ```
 Get-PlexCollection -Id 723 -IncludeItems
+```
+
+### EXAMPLE 3
+```
+# Get all collections from library 1 with the name, id (ratingkey) and number of items in the collection:
+Get-PlexCollection -LibraryId 1 | Select-Object title,ratingkey,childcount
 ```
 
 ## PARAMETERS
@@ -80,6 +87,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

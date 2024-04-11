@@ -13,7 +13,8 @@ Removes a Plex collection.
 ## SYNTAX
 
 ```
-Remove-PlexCollection [-Id] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-PlexCollection [-Id] <String> [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -28,7 +29,7 @@ Remove-PlexCollection -Id 12345
 
 ### EXAMPLE 2
 ```
-Get-PlexCollection | Where-object {[int]$_.childCount -lt 5} | Select-Object -ExpandProperty ratingKey | Remove-PlexCollection
+Get-PlexCollection -LibraryId 1 | Where-object {[int]$_.childCount -lt 5} | Select-Object -ExpandProperty ratingKey | Remove-PlexCollection
 ```
 
 ## PARAMETERS
@@ -71,6 +72,21 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

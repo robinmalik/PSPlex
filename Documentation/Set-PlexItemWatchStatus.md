@@ -13,8 +13,8 @@ Set the watch status for a Plex item.
 ## SYNTAX
 
 ```
-Set-PlexItemWatchStatus [-Id] <String> [-Status] <String> [[-AlternativeToken] <String>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-PlexItemWatchStatus [-Id] <String> [-Status] <String> [[-AlternativeToken] <String>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,6 +25,13 @@ Set the watch status for a Plex item.
 ### EXAMPLE 1
 ```
 Set-PlexItemWatchStatus -Id 1234 -Status played
+```
+
+### EXAMPLE 2
+```
+Set the watch status for item Id 1234 to 'played' for another user:
+$User = Get-PlexUser -Username 'username' -IncludeToken
+Set-PlexItemWatchStatus -Id 1234 -Status played -AlternativeToken $User.Token
 ```
 
 ## PARAMETERS
@@ -98,6 +105,21 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

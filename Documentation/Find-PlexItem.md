@@ -14,7 +14,7 @@ This function uses the search ability of Plex find items on your Plex server.
 
 ```
 Find-PlexItem [-ItemName] <String> [[-ItemType] <String>] [[-LibraryTitle] <String>] [[-Year] <Int32>]
- [-ExactNameMatch] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-ExactNameMatch] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -142,6 +142,21 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

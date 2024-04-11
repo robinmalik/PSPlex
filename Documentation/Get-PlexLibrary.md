@@ -14,17 +14,17 @@ By default, returns a list of libraries on a Plex server.
 
 ### All (Default)
 ```
-Get-PlexLibrary [<CommonParameters>]
+Get-PlexLibrary [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Id
 ```
-Get-PlexLibrary [-Id <String>] [<CommonParameters>]
+Get-PlexLibrary [-Id <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Name
 ```
-Get-PlexLibrary [-Name <String>] [<CommonParameters>]
+Get-PlexLibrary [-Name <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -62,6 +62,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: Name
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named
