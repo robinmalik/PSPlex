@@ -7,7 +7,7 @@
             Creates a new smart collection.
         .PARAMETER Name
             Name of the smart collection.
-        .PARAMETER LibraryID
+        .PARAMETER LibraryId
             ID of the library to create the smart collection in.
         .PARAMETER Filter
             Specifies the query string that retrieves the items in the smart collection. The syntax matches the Plex Web GUI as closely as possible. Clauses are separated by a semi-colon ( ; ).
@@ -88,13 +88,13 @@
             - MatchAll: Matches all clauses.
             - MatchAny: Matches any cluase.
         .EXAMPLE
-            New-PlexSmartCollection -Name "Star Trek" -LibraryID 1 -Filter "Title Contains Star Trek"
+            New-PlexSmartCollection -Name "Star Trek" -LibraryId 1 -Filter "Title Contains Star Trek"
         .EXAMPLE
-            New-PlexSmartCollection -Name "80's" -LibraryID 1 -Filter "Decade Is 1980"
+            New-PlexSmartCollection -Name "80's" -LibraryId 1 -Filter "Decade Is 1980"
         .EXAMPLE
-            New-PlexSmartCollection -Name "Old Favorites" -LibraryID 1 -Filter "Plays IsGreaterThan 2; LastPlayed IsNotInTheLast 1y"
+            New-PlexSmartCollection -Name "Old Favorites" -LibraryId 1 -Filter "Plays IsGreaterThan 2; LastPlayed IsNotInTheLast 1y"
         .EXAMPLE
-            New-PlexSmartCollection -Name "Trek Wars" -LibraryID 1 -MatchType MatchAny -Filter "title contains star trek; title contains star wars"
+            New-PlexSmartCollection -Name "Trek Wars" -LibraryId 1 -MatchType MatchAny -Filter "title contains star trek; title contains star wars"
     #>
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -105,7 +105,7 @@
 
         [Parameter(Mandatory)]
         [string]
-        $LibraryID,
+        $LibraryId,
 
         [Parameter(Mandatory)]
         [string]
@@ -135,7 +135,7 @@
     #############################################################################
 	#Region Check if collection already exists
     try {
-        $Collections = Get-PlexCollection -LibraryId $LibraryID
+        $Collections = Get-PlexCollection -LibraryId $LibraryId
         if ($Collections.title -contains $Name){
             throw "Collection '$Name' already exits"
         }
@@ -165,13 +165,13 @@
     #############################################################################
 	#Region Construct Uri
     try {
-        $Items = Resolve-PlexFilter -MatchType $MatchType -LibraryID $LibraryID -Filter $Filter
+        $Items = Resolve-PlexFilter -MatchType $MatchType -LibraryId $LibraryId -Filter $Filter
         $Params = [ordered]@{
             type = '1'
             title = [System.Uri]::EscapeDataString($Name)
             smart = '1'
-            sectionId = $LibraryID
-            uri = [System.Uri]::EscapeDataString("server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/$LibraryID/all?type=1&sort=titleSort&$Items")
+            sectionId = $LibraryId
+            uri = [System.Uri]::EscapeDataString("server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/$LibraryId/all?type=1&sort=titleSort&$Items")
         }
 
         $DataUri = (Get-PlexAPIUri -RestEndpoint "library/collections" -Params $Params)
@@ -183,9 +183,9 @@
 
     #############################################################################
 	#Region Make request
-    if($PSCmdlet.ShouldProcess("Library $LibraryID", "Create Smart Collection '$Name'"))
+    if($PSCmdlet.ShouldProcess("Library $LibraryId", "Create Smart Collection '$Name'"))
 	{
-		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating Smart Collection $Name in Libary '$LibraryID'"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating Smart Collection $Name in Libary '$LibraryId'"
 		try
 		{
 			$Data = Invoke-RestMethod -Uri $DataUri -Method POST

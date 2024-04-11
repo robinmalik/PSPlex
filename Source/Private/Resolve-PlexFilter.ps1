@@ -10,7 +10,7 @@ function Resolve-PlexFilter
         .EXAMPLE
             Resolve-PlexFilter -MatchAny -Filter "DateAdded IsNotInTheLast 2y; Unplayed IsTrue"
         .EXAMPLE
-            Resolve-PlexFilter -MatchAll -Filter "Actor IsNot Robert Pattinson; Title BeginsWith bat" -LibraryID 1
+            Resolve-PlexFilter -MatchAll -Filter "Actor IsNot Robert Pattinson; Title BeginsWith bat" -LibraryId 1
 	#>
 
     [CmdletBinding()]
@@ -27,7 +27,7 @@ function Resolve-PlexFilter
 
         [Parameter()]
         [string]
-        $LibraryID,
+        $LibraryId,
 
         [Parameter(DontShow)]
         [switch]
@@ -145,12 +145,12 @@ function Resolve-PlexFilter
                             throw $_
                         }
                     }
-                    $Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$LibraryID/$($Attribute.Name)" -ErrorAction Stop
+                    $Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$LibraryId/$($Attribute.Name)" -ErrorAction Stop
                     $Key = ((Invoke-RestMethod -Uri $Uri -Method Get -ErrorAction Stop).MediaContainer.Directory | Where-Object { $_.title -eq $Matches.Value }).key
                     #TODO implement caching for attribute keys
                     if (-not ($Key -or $IKnowWhatImDoing))
                     {
-                        throw ("Unable to find key for '{0}' in library '{1}'." -f $Matches.Value, $LibraryID)
+                        throw ("Unable to find key for '{0}' in library '{1}'." -f $Matches.Value, $LibraryId)
                     }
 
                     $Matches.Value = @($Matches.Value, $Key)[[bool]$Key] # Null check for key
