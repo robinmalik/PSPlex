@@ -1,8 +1,12 @@
 # Changelog
 
+## [1.0.17] - 2024-05-04
+
+* 🐛 [Fixed] Attempt to cater to servers that do not have remote access enabled (i.e. private/local LAN). Users will need to run Set-PlexConfiguration again and reopen PowerShell.
+
 ## [1.0.16] - 2024-04-11
 
-* * ✨ [New] `New-PlexSmartCollection` for creating new smart collections in Plex libraries (thanks to [solid03](https://github.com/solid03)).
+* ✨ [New] `New-PlexSmartCollection` for creating new smart collections in Plex libraries (thanks to [solid03](https://github.com/solid03)).
 
 ## [1.0.15] - 2024-03-22
 
