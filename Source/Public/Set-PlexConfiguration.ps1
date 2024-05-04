@@ -123,6 +123,7 @@ function Set-PlexConfiguration
 				$Default = $false
 			}
 
+			Write-Verbose -Message "Adding server $($Server.name) to configuration data."
 			$ConfigurationData.Add(
 				[PSCustomObject]@{
 					PlexServer       = $Server.name
