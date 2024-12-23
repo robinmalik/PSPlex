@@ -97,11 +97,8 @@ function Get-PlexUser
 		# There isn't a way to selective query, so just get all user tokens:
 		try
 		{
-			# Make a request for server data to get the machine identifier:
-			$PlexServer = Get-PlexServer -Name $DefaultPlexServer.PlexServer -ErrorAction Stop
-
 			# Get all user tokens:
-			$UserTokens = Get-PlexUserToken -MachineIdentifier $PlexServer.machineIdentifier -ErrorAction Stop
+			$UserTokens = Get-PlexUserToken -MachineIdentifier $DefaultPlexServer.ClientIdentifier -ErrorAction Stop
 
 			# On the token objects, repeat the logic earlier by setting username to equal title if username is null.
 			# Subtly different this time because the property exists on the object returned so we don't *create* a new

@@ -52,13 +52,13 @@ function Get-PlexServer
 	try
 	{
 		Import-PlexConfiguration -WhatIf:$False
-		$DefaultPlexServer = $PlexConfigData | Where-Object { $_.Default -eq $True }
 	}
 	catch
 	{
 		throw $_
 	}
 	#EndRegion
+
 
 	#############################################################################
 	#Region Get Servers

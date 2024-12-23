@@ -156,23 +156,6 @@ function Copy-PlexPlaylist
 
 
 	#############################################################################
-	#Region Get the machine Id property for the current plex server we're working with:
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting list of Plex servers"
-	try
-	{
-		$CurrentPlexServer = Get-PlexServer -Name $DefaultPlexServer.PlexServer -ErrorAction Stop
-		if(!$CurrentPlexServer)
-		{
-			throw "Could not find $CurrentPlexServer in $($Servers -join ', ')"
-		}
-	}
-	catch
-	{
-		throw $_
-	}
-	#EndRegion
-
-	#############################################################################
 	# Establish whether the playlist is smart or not; this will determine how we create it:
 	# If playlist is not smart:
 	if($Playlist.smart -eq 0)
@@ -190,7 +173,7 @@ function Copy-PlexPlaylist
 					type           = $Playlist.playlistType
 					title          = $PlaylistTitle
 					smart          = 0
-					uri            = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd"
+					uri            = "server://$($DefaultPlexServer.ClientIdentifier)/com.plexapp.plugins.library/library/metadata/$ItemsToAdd"
 					'X-Plex-Token' = $User.token
 				}
 				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params
@@ -223,7 +206,7 @@ function Copy-PlexPlaylist
 					type           = $Playlist.playlistType
 					title          = $PlaylistTitle
 					smart          = 1
-					uri            = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$($SmartPlaylistParams)"
+					uri            = "server://$($DefaultPlexServer.ClientIdentifier)/com.plexapp.plugins.library/library/sections/2/all?$($SmartPlaylistParams)"
 					'X-Plex-Token' = $User.token
 				}
 				$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params

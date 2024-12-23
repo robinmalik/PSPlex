@@ -40,22 +40,6 @@ function Add-PlexItemToPlaylist
 	}
 	#EndRegion
 
-	#############################################################################
-	#Region Get machine identifier
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting list of Plex servers (to get machine identifier)"
-	try
-	{
-		$CurrentPlexServer = Get-PlexServer -Name $DefaultPlexServer.PlexServer -ErrorAction Stop
-		if(!$CurrentPlexServer)
-		{
-			throw "Could not find $CurrentPlexServer in $($Servers -join ', ')"
-		}
-	}
-	catch
-	{
-		throw $_
-	}
-	#EndRegion
 
 	#############################################################################
 	#Region Construct Uri
@@ -63,7 +47,7 @@ function Add-PlexItemToPlaylist
 	{
 		$Items = $ItemId -join ","
 		$Params = [Ordered]@{
-			uri = "server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/metadata/$Items"
+			uri = "server://$($DefaultPlexServer.ClientIdentifier)/com.plexapp.plugins.library/library/metadata/$Items"
 		}
 		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$PlaylistID/items" -Params $Params
 	}
