@@ -9,7 +9,7 @@ See the [Changelog](CHANGELOG.md) for a list of changes.
 # Getting Started:
 
 1. Install the module from the PowerShell Gallery: `Install-Module -Name PSPlex`.
-2. Run: `Set-PlexConfiguration`. You will be prompted to enter your Plex account name and password.
+2. Run: `Set-PlexConfiguration`. You will be prompted to enter your Plex account name and password. If you have MFA enabled, add `,` to the end of your password followed by the code.
     * To inspect the code for this function, see: [Set-PlexConfiguration.ps1](/Source/Public/Set-PlexConfiguration.ps1).
 3. Try a command from the 'Simple Examples' below.
 
