@@ -22,6 +22,10 @@ function Get-PlexConfigFileLocation
 	elseif($IsLinux -or $IsMacOS)
 	{
 		return "$HOME/.PSPlex/$FileName"
+		# We could use
+		# [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::ApplicationData)
+		# Or
+		# [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::LocalApplicationData)
 	}
 	else
 	{

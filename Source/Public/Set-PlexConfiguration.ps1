@@ -56,7 +56,7 @@ function Set-PlexConfiguration
 
 		# Refine to only servers that are online and owned by the user:
 		Write-Verbose -Message "Refining to only owned and online servers."
-		[Array]$OwnedAndOnline = $ResourceData | Where-Object { $_.product -eq 'Plex Media Server' -and $_.owned -eq 1 }
+		[Array]$OwnedAndOnline = $ResourceData | Where-Object { $_.product -eq 'Plex Media Server' -and $_.owned -eq 1 -and $_.presence -eq $True }
 		if(!$OwnedAndOnline)
 		{
 			throw "No owned servers online."
@@ -74,42 +74,106 @@ function Set-PlexConfiguration
 		$ConfigurationData = [System.Collections.ArrayList]@()
 		foreach($Server in $OwnedAndOnline)
 		{
-			# When storing the configuration data for each server we need an accessible uri.
-			# For servers with a public IP address in the .connections.address property, we can use the
-			# .connections.uri property; this will be an address of the format:
-			# https://<public-ip>.someidentifier.plex.direct:32400
+			<#
+				When storing the configuration data for each server we need an accessible uri.
+				Servers can have multiple connections defined in the .connections property.
 
-			# For servers without a public IP in the .connections.address property, this suggests remote
-			# access is turned off. Instead we can construct a locally accessible uri from the following
-			# properties: "http://" + .connections.address + ":" + .connections.port
-			# Note: From my testing even though .connections.protocol is https, it's still accessible over
-			# http and we won't have to do any insecure certificate bypassing.
+				Example for a server where remote access is turned off:
 
-			# Note also: .connections.local is useful to show public/private addresses but we can't use it
-			# otherwise we may end up with duplicate entries in the configuration file (one with IP, one with hostname)
+				protocol : https
+				address  : 192.168.0.100
+				port     : 32400
+				uri      : https://192-168-0-100.someidentifier.plex.direct:32400
+				local    : True
+				relay    : False
+				IPv6     : False
 
-			# .connections property could be an array of objects each with an 'address' property.
-			# Find an address where it's a public IP address and 'uri' matches 'plex.direct':
-			$PublicConnection = $Server.connections | Where-Object { $_.address -notmatch '(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2[0-9]\.)|(^172\.3[0-1]\.)' -and $_.uri -match "plex.direct" }
-			if($PublicConnection)
+
+				Example for a server with remote access enabled. Note the public IP address in the .connections.address property
+				and multiple plex.direct uris:
+
+				protocol : https
+				address  : 172.17.0.5
+				port     : 32400
+				uri      : https://172-17-0-5.someidentifier.plex.direct:32400
+				local    : True
+				relay    : False
+				IPv6     : False
+
+				protocol : https
+				address  : 219.153.56.22
+				port     : 32400
+				uri      : https://219-153-56-22.someidentifier.plex.direct:32400
+				local    : False
+				relay    : False
+				IPv6     : False
+
+
+				Example for a server where remote access is turned off but we are advertising a custom uri for discovery by clients
+				Note the only way we can access this particular server if it's on another network, is via the custom uri (as this IP
+				is an internal docker IP address).
+
+				protocol : https
+				address  : mydomain.com
+				port     : 443
+				uri      : https://mydomain.com:443
+				local    : False
+				relay    : False
+				IPv6     : False
+
+				protocol : https
+				address  : 172.18.0.2
+				port     : 32400
+				uri      : https://172-18-0-2.someidentifier.plex.direct:32400
+				local    : True
+				relay    : False
+				IPv6     : False
+
+				There might be a more elegant way to select the connection we want but for now we'll go with this for a priority ordering:
+
+				1)	A direct to the server connection (not via .plex.direct) that is secured with https via a domain name (not an IP address).
+					Example: mydomain.com:443
+				2)	A secured plex.direct connection. There could be multiple. Prioritise the non-local one but fallback to the local one if necessary.
+				3)	A direct to the server connection (not via .plex.direct) that is not secured with https.
+					Example: 192.168.0.100:32400
+			#>
+
+			$DirectToServerConnection = $Server.connections | Where-Object { $_.uri -notmatch "plex.direct" -and $_.uri -match "^https" -and $_.address -notmatch "(\d{1,3}\.){3}\d{1,3}" }
+			if($DirectToServerConnection)
 			{
-				$Uri = $PublicConnection.uri
-				$Port = $PublicConnection.port
+				Write-Verbose -Message "Found a direct to server connection that is secured with https via a domain name: $($DirectToServerConnection.uri)"
+				$Uri = $DirectToServerConnection.uri
+				$Port = $DirectToServerConnection.port
 			}
 			else
 			{
-				# Look for a private connection:
-				$PrivateConnection = $Server.connections | Where-Object { $_.address -match '(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2[0-9]\.)|(^172\.3[0-1]\.)' }
-				if($PrivateConnection)
+				[Array]$PlexDirectConnection = $Server.connections | Where-Object { $_.uri -match "plex.direct" }
+
+				# If there are multiple plex.direct connections, prioritise the non-local one:
+				$NonLocalPlexDirectConnection = $PlexDirectConnection | Where-Object { $_.local -eq $False }
+				if($NonLocalPlexDirectConnection)
 				{
-					$Uri = "http://$($PrivateConnection.address):$($PrivateConnection.port)"
-					$Port = $PrivateConnection.port
+					Write-Verbose -Message "Found a non-local plex.direct connection: $($NonLocalPlexDirectConnection.uri)"
+					$Uri = $NonLocalPlexDirectConnection.uri
+					$Port = $NonLocalPlexDirectConnection.port
+				}
+				else
+				{
+					$LocalPlexDirectConnection = $PlexDirectConnection | Where-Object { $_.local -eq $True }
+					if($LocalPlexDirectConnection)
+					{
+						Write-Verbose -Message "Found a local plex.direct connection: $($LocalPlexDirectConnection.uri)"
+						$Uri = $LocalPlexDirectConnection.uri
+						$Port = $LocalPlexDirectConnection.port
+					}
 				}
 			}
+
 
 			if(!$Uri)
 			{
 				# We didn't find a suitable connection to use so skip this server
+				Write-Verbose -Message "No suitable connection found for server $($Server.name). Skipping."
 				continue
 			}
 

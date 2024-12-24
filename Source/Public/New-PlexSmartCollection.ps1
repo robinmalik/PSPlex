@@ -148,22 +148,6 @@ function New-PlexSmartCollection
 	}
 	#EndRegion
 
-	#############################################################################
-	#Region Get machine identifier
-	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting list of Plex servers (to get machine identifier)"
-	try
-	{
-		$CurrentPlexServer = Get-PlexServer -Name $DefaultPlexServer.PlexServer -ErrorAction Stop
-		if(!$CurrentPlexServer)
-		{
-			throw "Could not find $CurrentPlexServer in $($Servers -join ', ')"
-		}
-	}
-	catch
-	{
-		throw $_
-	}
-	#EndRegion
 
 	#############################################################################
 	#Region Construct Uri
@@ -175,7 +159,7 @@ function New-PlexSmartCollection
 			title     = [System.Uri]::EscapeDataString($Name)
 			smart     = '1'
 			sectionId = $LibraryId
-			uri       = [System.Uri]::EscapeDataString("server://$($CurrentPlexServer.machineIdentifier)/com.plexapp.plugins.library/library/sections/$LibraryId/all?type=1&sort=titleSort&$Items")
+			uri       = [System.Uri]::EscapeDataString("server://$($DefaultPlexServer.ClientIdentifier)/com.plexapp.plugins.library/library/sections/$LibraryId/all?type=1&sort=titleSort&$Items")
 		}
 
 		$DataUri = (Get-PlexAPIUri -RestEndpoint "library/collections" -Params $Params)
