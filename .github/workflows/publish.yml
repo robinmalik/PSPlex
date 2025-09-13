@@ -9,13 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      # Run a Get-PSResourceRepository command to work around bug listed at: https://github.com/PowerShell/PSResourceGet/issues/1806
-      - name: Get-PSResourceRepository
-        uses: PowerShell/PowerShell@v3
-        with:
-          inlineScript: Get-PSResourceRepository
+        uses: actions/checkout@v4
 
       - name: Build and publish
         uses: natescherer/publish-powershell-action@v1
