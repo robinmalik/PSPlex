@@ -13,7 +13,7 @@ function Stop-PlexSession
 		.PARAMETER Reason
 			Optional reason for stopping the session. Will be shown to the streamer.
 		.EXAMPLE
-			$Session = Get-Session (assumes only 1 stream)
+			$Session = Get-PlexSession (assumes only 1 stream)
 			Stop-PlexSession -Id $Session.Session.id
 	#>
 

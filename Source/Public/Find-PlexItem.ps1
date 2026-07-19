@@ -11,6 +11,8 @@ function Find-PlexItem
 			Name of what you wish to find.
 		.PARAMETER ItemType
 			Refines the output by type.
+		.PARAMETER LibraryTitle
+			The name of the library.
 		.PARAMETER Year
 			Refine by year.
 		.PARAMETER ExactNameMatch

@@ -7,6 +7,8 @@ function Set-PlexConfiguration
 			Used to save Plex configuration to disk, which is used by all other functions.
 		.PARAMETER Credential
 			Credential object containing your Plex username and password.
+		.PARAMETER DefaultServerName
+			The name of the server you want to set as the default server.
 		.EXAMPLE
 			Set-PlexConfiguration -Credential (Get-Credential)
 	#>

@@ -12,10 +12,10 @@ function New-PlexPlaylist
 		.PARAMETER Id
 			Id (ratingKey) of the Plex items to add. Can be a single item, comma separated list, or an array.
 		.EXAMPLE
-			New-PlexPlaylist -Name "My Playlist" -Type video -Id 123,456,789
+			New-PlexPlaylist -Name "My Playlist" -Type video -ItemId 123,456,789
 		.EXAMPLE
 			$Item = Find-PlexItem -Name "Some Movie"
-			New-PlexPlaylist -Name "My Playlist" -Type video -Id $Item.ratingKey
+			New-PlexPlaylist -Name "My Playlist" -Type video -ItemId $Item.ratingKey
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]

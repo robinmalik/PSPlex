@@ -102,6 +102,7 @@ function Get-PlexPlaylist
 			# If the playlist is smart skip it, as it doesn't have a static item list:
 			if($Playlist.smart)
 			{
+				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Item query for smart playlist not required. Skipping playlist $($Playlist.title)"
 				continue
 			}
 

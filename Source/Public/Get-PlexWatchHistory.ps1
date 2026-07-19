@@ -49,6 +49,7 @@ function Get-PlexWatchHistory
 	}
 	#EndRegion
 
+
 	#############################################################################
 	#Region Construct Uri
 	try
