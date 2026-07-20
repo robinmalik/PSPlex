@@ -56,15 +56,8 @@ function Get-PlexWatchHistory
 	{
 		$RestEndpoint = "status/sessions/history/all"
 
-		$Offset = 0
-		$size = 100
-		$TotalSize = 0
-
 		$Params = [Ordered]@{
-			sort      = "viewedAt:desc"
-			Offset    = $Offset
-			size      = $size
-			totalSize = $TotalSize
+			sort = "viewedAt:desc"
 		}
 
 		# If we have a username, add it to the query
@@ -85,21 +78,45 @@ function Get-PlexWatchHistory
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting watch history for $Username."
 	try
 	{
-		$Data = Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET
-		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): $($Data.MediaContainer.size) items found."
-		# The query seems to return all results so we don't need to page through them.
+		# Plex caps the number of items returned per request, so page through the results using
+		# X-Plex-Container-Start / X-Plex-Container-Size until we have collected everything.
+		$ContainerStart = 0
+		$ContainerSize = 1000
+		$Results = [System.Collections.Generic.List[object]]::new()
+
+		do
+		{
+			$PageParams = [Ordered]@{}
+			foreach($Key in $Params.Keys) { $PageParams[$Key] = $Params[$Key] }
+			$PageParams['X-Plex-Container-Start'] = $ContainerStart
+			$PageParams['X-Plex-Container-Size'] = $ContainerSize
+
+			$Data = Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $PageParams -Method GET
+
+			$TotalSize = [Int]$Data.MediaContainer.totalSize
+			[array]$Page = $Data.MediaContainer.Metadata
+			if($Page)
+			{
+				$Results.AddRange($Page)
+			}
+
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Retrieved $($Results.Count) of $TotalSize items."
+			# Advance by the number actually returned, in case Plex returns fewer than requested.
+			$ContainerStart += $Page.Count
+		}
+		while($Results.Count -lt $TotalSize -and $Page.Count -gt 0)
 
 		# Append a human readable "viewedAt" property to the object.
-		$Data.MediaContainer.Metadata | ForEach-Object {
+		$Results | ForEach-Object {
 			if($Null -ne $_.viewedAt) { $_ | Add-Member -NotePropertyName 'lastViewedAtDateTime' -NotePropertyValue (ConvertFrom-UnixTime $_.viewedAt) -Force }
 		}
 
 		#############################################################################
 		# Append type for readability
-		$Data.MediaContainer.Metadata | ForEach-Object { $_.psobject.TypeNames.Insert(0, "PSPlex.WatchHistory") }
+		$Results | ForEach-Object { $_.psobject.TypeNames.Insert(0, "PSPlex.WatchHistory") }
 
 		# Return results:
-		$Data.MediaContainer.Metadata
+		$Results
 	}
 	catch
 	{
