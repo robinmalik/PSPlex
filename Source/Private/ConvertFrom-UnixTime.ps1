@@ -11,5 +11,5 @@ Function ConvertFrom-UnixTime($UnixDate)
 			ConvertFrom-UnixTime -UnixDate 1234567890
 	#>
 
-	[timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds($UnixDate))
+	[DateTimeOffset]::FromUnixTimeSeconds($UnixDate).LocalDateTime
 }
