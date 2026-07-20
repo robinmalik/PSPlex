@@ -9,12 +9,12 @@ function New-PlexPlaylist
 			Name of the playlist.
 		.PARAMETER Type
 			Type of playlist. Currently only 'video' is supported.
-		.PARAMETER Id
+		.PARAMETER ItemId
 			Id (ratingKey) of the Plex items to add. Can be a single item, comma separated list, or an array.
 		.EXAMPLE
 			New-PlexPlaylist -Name "My Playlist" -Type video -ItemId 123,456,789
 		.EXAMPLE
-			$Item = Find-PlexItem -Name "Some Movie"
+			$Item = Find-PlexItem -ItemName "Some Movie"
 			New-PlexPlaylist -Name "My Playlist" -Type video -ItemId $Item.ratingKey
 	#>
 
@@ -85,9 +85,9 @@ function New-PlexPlaylist
 
 	#############################################################################
 	#Region Make request
-	if($PSCmdlet.ShouldProcess($Item.title, "Add label '$Label'"))
+	if($PSCmdlet.ShouldProcess($Name, "Create playlist"))
 	{
-		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding label '$Label' to item '$($Item.title)'"
+		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist '$Name'"
 		try
 		{
 			$Data = Invoke-PlexRequest -RestEndpoint "playlists" -Params $Params -Method POST
