@@ -169,8 +169,15 @@ function Copy-PlexPlaylist
 
 		# Smart playlists return a .content property which we need to parse to get the smart playlist parameters, and source library id.
 
-		# Get the smart playlist parameters:
-		$SmartPlaylistParams = ($Playlist.content -split 'all%3F')[1]
+		# The content is a URI like: server://<id>/.../library/sections/<n>/all?<smartFilterParams>
+		# where the '?' may be URL-encoded as '%3F'. Split on either form (the -split operator is
+		# case-insensitive, so '%3f' is covered too), keeping the parameters in their original
+		# encoding so they can be passed through verbatim when recreating the playlist.
+		$SmartPlaylistParams = ($Playlist.content -split 'all(?:%3F|\?)', 2)[1]
+		if(!$SmartPlaylistParams)
+		{
+			throw "Could not extract smart playlist parameters from playlist content: $($Playlist.content)."
+		}
 
 		# Uri decode and extract the library section ID:
 		$Playlist.content = [System.Web.HttpUtility]::UrlDecode($Playlist.content)
