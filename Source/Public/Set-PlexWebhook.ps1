@@ -13,16 +13,17 @@ function Set-PlexWebhook
 
 	[CmdletBinding(SupportsShouldProcess)]
 	param (
-		[ValidateScript(
+		[Parameter(Mandatory = $True)]
+		[ValidateScript({
+			if($null -ne ([System.URI]$_).AbsoluteURI)
 			{
-				if($null -ne ([System.URI]$_).AbsoluteURI)
-				{
-					$True
-				}
-				Else
-				{
-					throw "$_ is not a valid Url"
-				} })]
+				$True
+			}
+			Else
+			{
+				throw "$_ is not a valid Url"
+			}
+		})]
 		[String]$Url
 	)
 
