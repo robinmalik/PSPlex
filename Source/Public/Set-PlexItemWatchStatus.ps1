@@ -66,12 +66,6 @@ function Set-PlexItemWatchStatus
 		identifier = 'com.plexapp.plugins.library'
 		key        = $Id
 	}
-
-	if($AlternativeToken)
-	{
-		$Params.Add('X-Plex-Token', $AlternativeToken)
-	}
-
 	#EndRegion
 
 	#############################################################################
@@ -81,7 +75,7 @@ function Set-PlexItemWatchStatus
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Setting watch status for item Id $Id to $Status"
 		try
 		{
-			Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET | Out-Null
+			Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET -Token $AlternativeToken | Out-Null
 		}
 		catch
 		{

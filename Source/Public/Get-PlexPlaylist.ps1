@@ -59,13 +59,8 @@ function Get-PlexPlaylist
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting playlist(s)"
 	try
 	{
-		if($AlternativeToken)
-		{
-			$Params = @{'X-Plex-Token' = $AlternativeToken }
-		}
-
 		# If called with -Id, use the $Id, otherwise it'll return all playlists (and we can refine by name if specified)
-		$Data = Invoke-PlexRequest -RestEndpoint "playlists/$Id" -Params $Params -Method GET
+		$Data = Invoke-PlexRequest -RestEndpoint "playlists/$Id" -Method GET -Token $AlternativeToken
 
 		[array]$Results = $Data.MediaContainer.Metadata
 		if($Name)

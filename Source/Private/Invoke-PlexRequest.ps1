@@ -8,11 +8,16 @@ function Invoke-PlexRequest
 			It handles PS5.1/PS7 compatibility, TLS setup, UTF-8 decoding, JSON/XML content
 			negotiation, and consistent error handling. Token values are redacted from verbose output.
 		.PARAMETER RestEndpoint
-			Relative endpoint on the default Plex server. The full URI is built by Get-PlexAPIUri.
+			Relative endpoint on the default Plex server. The full URI is built from the
+			default server's base address, this endpoint and any query parameters.
 		.PARAMETER Params
 			Hashtable of query parameters for the Endpoint parameter set.
 		.PARAMETER Uri
-			Absolute URI (e.g. for plex.tv calls). No configuration import is performed.
+			Absolute URI (e.g. for plex.tv calls). No configuration import is performed and
+			no token header is added; the caller is responsible for authentication.
+		.PARAMETER Token
+			Overrides the default server token when talking to the default Plex server,
+			e.g. to make a request as another user. Sent as the X-Plex-Token header.
 		.PARAMETER Method
 			HTTP method. Defaults to GET.
 		.PARAMETER Headers
@@ -48,6 +53,10 @@ function Invoke-PlexRequest
 		[Parameter(Mandatory = $true, ParameterSetName = 'Uri')]
 		[String]
 		$Uri,
+
+		[Parameter(Mandatory = $false)]
+		[String]
+		$Token,
 
 		[Parameter(Mandatory = $false)]
 		[ValidateSet('GET', 'POST', 'PUT', 'DELETE')]
@@ -100,7 +109,7 @@ function Invoke-PlexRequest
 	#EndRegion
 
 	#############################################################################
-	#Region Build URI for Endpoint parameter set
+	#Region Build URI and resolve token for the Endpoint parameter set
 	if($PSCmdlet.ParameterSetName -eq 'Endpoint')
 	{
 		if(!$script:PlexConfigData)
@@ -108,7 +117,24 @@ function Invoke-PlexRequest
 			Import-PlexConfiguration -WhatIf:$False
 		}
 
-		$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
+		# Build the request URI from the default server's address, the endpoint and any query parameters.
+		$Endpoint = $RestEndpoint.TrimStart('/')
+		if($Params -and $Params.Count -gt 0)
+		{
+			$QueryString = ($Params.GetEnumerator() | ForEach-Object { "$($_.Name)=$($_.Value)" }) -join '&'
+			$Uri = "$($script:DefaultPlexServer.Uri)/$($Endpoint)?$($QueryString)"
+		}
+		else
+		{
+			$Uri = "$($script:DefaultPlexServer.Uri)/$($Endpoint)"
+		}
+
+		# The token travels as a header, not a query parameter. Use an explicit token if one
+		# was supplied (e.g. to act as another user), otherwise the default server's token.
+		if(!$Token)
+		{
+			$Token = $script:DefaultPlexServer.Token
+		}
 	}
 	#EndRegion
 
@@ -121,6 +147,11 @@ function Invoke-PlexRequest
 		ErrorAction     = 'Stop'
 		TimeoutSec      = $TimeoutSec
 		Headers         = @{ 'Accept' = 'application/json, text/plain, */*' }
+	}
+
+	if($Token)
+	{
+		$RequestParams.Headers['X-Plex-Token'] = $Token
 	}
 
 	if($Headers)

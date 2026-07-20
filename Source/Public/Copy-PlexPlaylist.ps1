@@ -201,13 +201,12 @@ function Copy-PlexPlaylist
 		{
 			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating playlist"
 			$Params = [Ordered]@{
-				type           = $Playlist.playlistType
-				title          = $PlaylistTitle
-				smart          = $Playlist.smart
-				uri            = $PlaylistUri
-				'X-Plex-Token' = $User.token
+				type  = $Playlist.playlistType
+				title = $PlaylistTitle
+				smart = $Playlist.smart
+				uri   = $PlaylistUri
 			}
-			$Data = Invoke-PlexRequest -RestEndpoint "playlists" -Params $Params -Method POST
+			$Data = Invoke-PlexRequest -RestEndpoint "playlists" -Params $Params -Method POST -Token $User.token
 			return $Data.MediaContainer.Playlist
 		}
 		catch

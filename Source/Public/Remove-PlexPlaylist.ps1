@@ -47,11 +47,7 @@ function Remove-PlexPlaylist
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing playlist"
 		try
 		{
-			if($AlternativeToken)
-			{
-				$Params = @{'X-Plex-Token' = $AlternativeToken }
-			}
-			Invoke-PlexRequest -RestEndpoint "playlists/$Id" -Params $Params -Method DELETE | Out-Null
+			Invoke-PlexRequest -RestEndpoint "playlists/$Id" -Method DELETE -Token $AlternativeToken | Out-Null
 		}
 		catch
 		{

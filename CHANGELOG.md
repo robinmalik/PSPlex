@@ -2,7 +2,8 @@
 
 ## [1.0.20] - 2026-07-20
 
-- 🔨 [Changed] Centralised all HTTP calls through a new private `Invoke-PlexRequest` gateway function.
+- 🔨 [Changed] Centralised all HTTP calls through a new private `Invoke-PlexRequest` gateway function, folding in the old `Get-PlexAPIUri` URI builder.
+- 🔨 [Changed] The Plex token is now sent as the `X-Plex-Token` header rather than a query-string parameter, keeping it out of URLs and logs.
 - 🔨 [Changed] Removed implicit `$PSDefaultParameterValues` from `Import-PlexConfiguration`; all request defaults are now explicit inside `Invoke-PlexRequest`.
 - 🐛 [Fixed] Improved UTF-8 decoding on Windows PowerShell 5.1 (e.g. emoji in playlist titles).
 - 🔨 [Changed] Better, token-redacted error messages including a 401 re-configuration hint.
