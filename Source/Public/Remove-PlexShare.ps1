@@ -36,7 +36,7 @@ function Remove-PlexShare
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

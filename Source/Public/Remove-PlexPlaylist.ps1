@@ -31,7 +31,7 @@ function Remove-PlexPlaylist
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

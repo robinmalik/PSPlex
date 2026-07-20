@@ -32,7 +32,7 @@ function Set-PlexWebhook
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

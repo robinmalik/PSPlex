@@ -24,7 +24,7 @@ function Get-PlexWatchHistory
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

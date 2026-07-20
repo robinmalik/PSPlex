@@ -51,7 +51,7 @@ function Get-PlexServer
 	#Region Import Plex Configuration
 	try
 	{
-		Import-PlexConfiguration -WhatIf:$False
+		Import-PlexConfiguration
 	}
 	catch
 	{

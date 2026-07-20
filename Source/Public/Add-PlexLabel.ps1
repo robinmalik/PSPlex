@@ -34,7 +34,7 @@ function Add-PlexLabel
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

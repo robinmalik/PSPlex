@@ -46,7 +46,7 @@ function Copy-PlexPlaylist
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

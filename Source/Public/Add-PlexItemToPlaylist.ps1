@@ -31,7 +31,7 @@ function Add-PlexItemToPlaylist
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

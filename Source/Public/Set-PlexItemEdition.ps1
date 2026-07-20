@@ -30,7 +30,7 @@ function Set-PlexItemEdition
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

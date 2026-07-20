@@ -34,7 +34,7 @@ function Remove-PlexLabel
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

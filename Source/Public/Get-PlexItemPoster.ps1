@@ -36,7 +36,7 @@ function Get-PlexItemPoster
 		{
 			try
 			{
-				Import-PlexConfiguration -WhatIf:$False
+				Import-PlexConfiguration
 			}
 			catch
 			{

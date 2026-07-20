@@ -40,7 +40,7 @@ function New-PlexPlaylist
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

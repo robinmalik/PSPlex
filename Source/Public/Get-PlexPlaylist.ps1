@@ -45,7 +45,7 @@ function Get-PlexPlaylist
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

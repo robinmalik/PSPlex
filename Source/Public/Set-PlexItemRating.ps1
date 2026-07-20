@@ -31,7 +31,7 @@ function Set-PlexItemRating
 	{
 		try
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 		catch
 		{

@@ -114,7 +114,7 @@ function Invoke-PlexRequest
 	{
 		if(!$script:PlexConfigData)
 		{
-			Import-PlexConfiguration -WhatIf:$False
+			Import-PlexConfiguration
 		}
 
 		# Build the request URI from the default server's address, the endpoint and any query parameters.
