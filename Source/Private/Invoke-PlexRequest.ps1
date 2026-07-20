@@ -49,27 +49,35 @@ function Invoke-PlexRequest
 		[String]
 		$Uri,
 
+		[Parameter(Mandatory = $false)]
 		[ValidateSet('GET', 'POST', 'PUT', 'DELETE')]
 		[String]
 		$Method = 'GET',
 
+		[Parameter(Mandatory = $false)]
 		[System.Collections.IDictionary]
 		$Headers,
 
+		[Parameter(Mandatory = $false)]
 		$Body,
 
+		[Parameter(Mandatory = $false)]
 		[String]
 		$ContentType,
 
+		[Parameter(Mandatory = $false)]
 		[String]
 		$UserAgent,
 
+		[Parameter(Mandatory = $false)]
 		[String]
 		$OutFile,
 
+		[Parameter(Mandatory = $false)]
 		[Switch]
 		$Raw,
 
+		[Parameter(Mandatory = $false)]
 		[Int]
 		$TimeoutSec = 30
 	)
