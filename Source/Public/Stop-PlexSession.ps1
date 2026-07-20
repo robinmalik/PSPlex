@@ -56,9 +56,6 @@ function Stop-PlexSession
 				}
 			}
 		}
-		else
-		{
-		}
 	}
 	process
 	{
@@ -66,7 +63,7 @@ function Stop-PlexSession
 		{
 			if($PSCmdlet.ShouldProcess($Session.Session.Id, 'Stop Plex Session'))
 			{
-				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Terminating session: $($Session.Id)"
+				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Terminating session: $($Session.Session.Id) with reason: $Reason"
 				try
 				{
 					$RestEndpoint = "status/sessions/terminate"
