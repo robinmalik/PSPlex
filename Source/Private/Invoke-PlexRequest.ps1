@@ -193,7 +193,10 @@ function Invoke-PlexRequest
 	#Region Send request and decode response
 	try
 	{
+		$OriginalProgressPreference = $ProgressPreference
+		$ProgressPreference = 'SilentlyContinue'
 		$Response = Invoke-WebRequest @RequestParams
+		$ProgressPreference = $OriginalProgressPreference
 
 		# If writing to a file, the body is already saved; return nothing.
 		if($OutFile)
