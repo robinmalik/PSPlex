@@ -76,6 +76,10 @@ function Set-PlexConfiguration
 		$ConfigurationData = [System.Collections.ArrayList]@()
 		foreach($Server in $OwnedAndOnline)
 		{
+			# Reset per server, otherwise a server with no suitable connection inherits the previous server's values:
+			$Uri = $null
+			$Port = $null
+
 			<#
 				When storing the configuration data for each server we need an accessible uri.
 				Servers can have multiple connections defined in the .connections property.
