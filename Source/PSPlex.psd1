@@ -76,7 +76,6 @@
         'Find-PlexItem'
         'Get-PlexCollection'
         'Get-PlexItem'
-        'Get-PlexItemPoster'
         'Get-PlexLibrary'
         'Get-PlexPlaylist'
         'Get-PlexServer'
