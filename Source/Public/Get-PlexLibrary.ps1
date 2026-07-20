@@ -57,7 +57,7 @@ function Get-PlexLibrary
 		{
 			if($Name)
 			{
-				$Data.MediaContainer.Directory | Where-Object -FilterScript { $_.title -eq $Name }
+				[array]$Results = $Data.MediaContainer.Directory | Where-Object -FilterScript { $_.title -eq $Name }
 			}
 			else
 			{
