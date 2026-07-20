@@ -79,7 +79,7 @@ function Copy-PlexPlaylist
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting user."
 	try
 	{
-		$User = Get-PlexUser -User $Username -IncludeToken -ErrorAction Stop
+		$User = Get-PlexUser -Username $Username -IncludeToken -ErrorAction Stop
 		if(($Null -eq $User) -or ($User.count -eq 0))
 		{
 			throw "Could not get user: $Username"

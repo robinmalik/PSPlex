@@ -50,7 +50,7 @@ function Remove-PlexShare
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting user."
 	try
 	{
-		$User = Get-PlexUser -User $Username -ErrorAction Stop
+		$User = Get-PlexUser -Username $Username -ErrorAction Stop
 		if(($Null -eq $User) -or ($User.count -eq 0))
 		{
 			throw "Could not get the user '$Username'"
