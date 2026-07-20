@@ -9,7 +9,7 @@ function Get-PlexSession
 			Get-PlexSession
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 	)
 

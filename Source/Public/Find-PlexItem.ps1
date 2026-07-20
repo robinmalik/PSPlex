@@ -28,7 +28,7 @@ function Find-PlexItem
 			Find-PlexItem -ItemName 'spider' -LibraryTitle 'TV'
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $true)]
 		[String]

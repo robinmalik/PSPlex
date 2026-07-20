@@ -11,7 +11,7 @@ function Get-PlexWatchHistory
 			Get-PlexWatchHistory
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $false)]
 		[String]

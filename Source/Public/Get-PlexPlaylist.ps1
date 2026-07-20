@@ -19,7 +19,7 @@ function Get-PlexPlaylist
 			Get-PlexPlaylist -AlternativeToken $User.Token
 	#>
 
-	[CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = "All")]
+	[CmdletBinding(DefaultParameterSetName = "All")]
 	param(
 		[Parameter(Mandatory = $false, ParameterSetName = "Id")]
 		[String]

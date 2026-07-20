@@ -31,7 +31,7 @@ function Get-PlexShare
 			person2  0         {Section, Section, Section, Section...} 08/01/2022 20:15:31
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $false, ParameterSetName = 'username')]
 		[String]

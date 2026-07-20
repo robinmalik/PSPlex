@@ -14,7 +14,7 @@ function Get-PlexUser
 			Get-PlexUser
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 		[Parameter(Mandatory = $false)]
 		[String]

@@ -12,7 +12,7 @@ function Import-PlexConfiguration
 			Import-PlexConfiguration
 	#>
 
-	[CmdletBinding(SupportsShouldProcess)]
+	[CmdletBinding()]
 	param(
 	)
 
