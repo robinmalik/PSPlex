@@ -69,14 +69,13 @@ function Get-PlexCollection
 		}
 	}
 
-	$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
 	#EndRegion
 
 	#############################################################################
 	#Region Get data
 	try
 	{
-		$Data = Invoke-RestMethod -Uri $DataUri -Method GET
+		$Data = Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET
 		if($Data.MediaContainer.metadata.count -eq 0)
 		{
 			return
@@ -100,8 +99,7 @@ function Get-PlexCollection
 				$Params = [Ordered]@{
 					excludeAllLeaves = 1
 				}
-				$ItemsUri = Get-PlexAPIUri -RestEndpoint "library/collections/$($Id)/children" -Params $Params
-				$Items = Invoke-RestMethod -Uri $ItemsUri -Method GET
+				$Items = Invoke-PlexRequest -RestEndpoint "library/collections/$($Id)/children" -Params $Params -Method GET
 				$Data.MediaContainer.metadata | Add-Member -NotePropertyName 'Items' -NotePropertyValue $Items.MediaContainer.metadata
 			}
 			catch
@@ -120,8 +118,7 @@ function Get-PlexCollection
 					$Params = [Ordered]@{
 						excludeAllLeaves = 1
 					}
-					$ItemsUri = Get-PlexAPIUri -RestEndpoint "library/collections/$($Collection.RatingKey)/children" -Params $Params
-					$Items = Invoke-RestMethod -Uri $ItemsUri -Method GET
+					$Items = Invoke-PlexRequest -RestEndpoint "library/collections/$($Collection.RatingKey)/children" -Params $Params -Method GET
 					$Collection | Add-Member -NotePropertyName 'Items' -NotePropertyValue $Items.MediaContainer.Metadata
 				}
 				catch

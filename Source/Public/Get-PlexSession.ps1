@@ -33,20 +33,7 @@ function Get-PlexSession
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting all sessions"
 	try
 	{
-		$DataUri = Get-PlexAPIUri -RestEndpoint "status/sessions"
-		$Data = Invoke-RestMethod -Uri $DataUri -Method GET -ErrorAction Stop
-		if($Data.gettype().Name -eq 'String')
-		{
-			# Let's go with renaming the lowercase keys. Using .Replace rather than -replace as it should be faster.
-			$Data = $Data.toString().Replace('"guid"', '"_guid"').Replace('"rating"', '"_rating"')
-			# Convert back into JSON:
-			$Data = $Data | ConvertFrom-Json
-		}
-		else
-		{
-			# $Data should be JSON already.
-		}
-
+		$Data = Invoke-PlexRequest -RestEndpoint "status/sessions" -Method GET
 		if($Data.MediaContainer.Size -eq 0)
 		{
 			return

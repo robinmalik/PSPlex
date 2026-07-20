@@ -87,7 +87,6 @@ function Add-PlexLabel
 			$Params.Add("label[$($Index)].tag.tag", $String)
 			$Index++
 		}
-		$DataUri = Get-PlexAPIUri -RestEndpoint "$($Item.librarySectionKey)/all" -Params $Params
 	}
 	catch
 	{
@@ -102,7 +101,7 @@ function Add-PlexLabel
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding label '$Label' to item '$($Item.title)'"
 		try
 		{
-			Invoke-RestMethod -Uri $DataUri -Method PUT
+			Invoke-PlexRequest -RestEndpoint "$($Item.librarySectionKey)/all" -Params $Params -Method PUT
 		}
 		catch
 		{

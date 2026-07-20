@@ -49,7 +49,6 @@ function Add-PlexItemToPlaylist
 		$Params = [Ordered]@{
 			uri = "server://$($DefaultPlexServer.ClientIdentifier)/com.plexapp.plugins.library/library/metadata/$Items"
 		}
-		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$PlaylistID/items" -Params $Params
 	}
 	catch
 	{
@@ -64,7 +63,7 @@ function Add-PlexItemToPlaylist
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding item to playlist."
 		try
 		{
-			Invoke-RestMethod -Uri $DataUri -Method PUT | Out-Null
+			Invoke-PlexRequest -RestEndpoint "playlists/$PlaylistID/items" -Params $Params -Method PUT | Out-Null
 		}
 		catch
 		{

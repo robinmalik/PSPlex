@@ -97,7 +97,6 @@ function Remove-PlexLabel
 		# Finally, to remove the label we need to add it like so:
 		$Params.Add('label[].tag.tag-', $Label)
 
-		$DataUri = Get-PlexAPIUri -RestEndpoint "$($Item.librarySectionKey)/all" -Params $Params
 	}
 	catch
 	{
@@ -112,7 +111,7 @@ function Remove-PlexLabel
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing label '$Label' from item '$($Item.title)'"
 		try
 		{
-			Invoke-RestMethod -Uri $DataUri -Method PUT
+			Invoke-PlexRequest -RestEndpoint "$($Item.librarySectionKey)/all" -Params $Params -Method PUT
 		}
 		catch
 		{

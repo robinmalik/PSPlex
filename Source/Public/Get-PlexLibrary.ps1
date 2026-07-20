@@ -48,8 +48,7 @@ function Get-PlexLibrary
 	#Region Make request
 	try
 	{
-		$DataUri = Get-PlexAPIUri -RestEndpoint "library/sections/$Id"
-		[array]$Data = Invoke-RestMethod -Uri $DataUri -Method GET
+		[array]$Data = Invoke-PlexRequest -RestEndpoint "library/sections/$Id" -Method GET
 		if($Id)
 		{
 			[array]$Results = $Data.MediaContainer

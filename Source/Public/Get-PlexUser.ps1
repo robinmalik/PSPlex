@@ -45,7 +45,7 @@ function Get-PlexUser
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting all users"
 	try
 	{
-		$Data = Invoke-RestMethod -Uri "https://plex.tv/api/users`?X-Plex-Token=$($DefaultPlexServer.Token)" -Method GET -ErrorAction Stop
+		$Data = Invoke-PlexRequest -Uri "https://plex.tv/api/users?X-Plex-Token=$($DefaultPlexServer.Token)" -Method GET
 		if($Data.MediaContainer.Size -eq 0)
 		{
 			return

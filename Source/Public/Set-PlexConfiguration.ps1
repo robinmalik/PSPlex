@@ -30,13 +30,13 @@ function Set-PlexConfiguration
 	try
 	{
 		$Base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $Credential.GetNetworkCredential().UserName, $Credential.GetNetworkCredential().Password)))
-		$Data = Invoke-RestMethod -Uri "https://plex.tv/users/sign_in.json" -Method POST -Headers @{
+		$Data = Invoke-PlexRequest -Uri "https://plex.tv/users/sign_in.json" -Method POST -Headers @{
 			'Authorization'            = ("Basic {0}" -f $Base64AuthInfo);
 			'X-Plex-Client-Identifier' = "PowerShell-Test";
 			'X-Plex-Product'           = 'PowerShell-Test';
 			'X-Plex-Version'           = "V0.01";
 			'X-Plex-Username'          = $Credential.GetNetworkCredential().UserName;
-		} -ErrorAction Stop
+		}
 	}
 	catch
 	{
@@ -48,7 +48,7 @@ function Set-PlexConfiguration
 	Write-Verbose -Message "Getting list of accessible servers"
 	try
 	{
-		$ResourceData = Invoke-RestMethod -Uri "https://plex.tv/api/v2/resources?includeHttps=1&X-Plex-Token=$($Data.user.authentication_token)&X-Plex-Client-Identifier=PSPlex" -Method GET -UseBasicParsing -Headers @{"Accept" = "application/json, text/plain, */*" }
+		$ResourceData = Invoke-PlexRequest -Uri "https://plex.tv/api/v2/resources?includeHttps=1&X-Plex-Token=$($Data.user.authentication_token)&X-Plex-Client-Identifier=PSPlex" -Method GET
 		if(!$ResourceData)
 		{
 			throw "Could not get resource data."

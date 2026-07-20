@@ -64,7 +64,7 @@ function Get-PlexServer
 	#Region Get Servers
 	try
 	{
-		$Data = Invoke-RestMethod -Uri "https://plex.tv/api/servers`?`X-Plex-Token=$($DefaultPlexServer.Token)" -Method GET -UseBasicParsing
+		$Data = Invoke-PlexRequest -Uri "https://plex.tv/api/servers?X-Plex-Token=$($DefaultPlexServer.Token)" -Method GET
 		if($Name)
 		{
 			[array]$Results = $Data.MediaContainer.Server | Where-Object { $_.name -eq $Name }

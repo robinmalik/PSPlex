@@ -68,8 +68,7 @@ function Set-PlexItemEdition
 				id                   = $Id
 				"editionTitle.value" = $Edition
 			}
-			$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
-			Invoke-RestMethod -Uri $Uri -Method Put
+			Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method PUT
 		}
 		catch
 		{

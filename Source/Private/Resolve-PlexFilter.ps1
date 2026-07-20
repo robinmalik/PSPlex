@@ -145,8 +145,7 @@ function Resolve-PlexFilter
 							throw $_
 						}
 					}
-					$Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$LibraryId/$($Attribute.Name)" -ErrorAction Stop
-					$Key = ((Invoke-RestMethod -Uri $Uri -Method Get -ErrorAction Stop).MediaContainer.Directory | Where-Object { $_.title -eq $Matches.Value }).key
+					$Key = ((Invoke-PlexRequest -RestEndpoint "library/sections/$LibraryId/$($Attribute.Name)" -Method GET).MediaContainer.Directory | Where-Object { $_.title -eq $Matches.Value }).key
 					#TODO implement caching for attribute keys
 					if (-not ($Key -or $IKnowWhatImDoing))
 					{

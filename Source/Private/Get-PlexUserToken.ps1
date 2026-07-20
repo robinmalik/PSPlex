@@ -29,7 +29,7 @@ function Get-PlexUserToken
 	try
 	{
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting all access tokens for server $MachineIdentifier"
-		$Data = Invoke-RestMethod -Uri "https://plex.tv/api/servers/$($MachineIdentifier)/access_tokens.xml?auth_token=$($DefaultPlexServer.Token)&includeProfiles=1&includeProviders=1" -ErrorAction Stop
+		$Data = Invoke-PlexRequest -Uri "https://plex.tv/api/servers/$($MachineIdentifier)/access_tokens.xml?auth_token=$($DefaultPlexServer.Token)&includeProfiles=1&includeProviders=1"
 		<#
 			Example user object:
 

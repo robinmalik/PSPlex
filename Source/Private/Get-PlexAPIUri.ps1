@@ -18,7 +18,6 @@ function Get-PlexAPIUri
 			}
 			$RestEndpoint = "library/sections/1/all"
 			$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
-			Invoke-RestMethod -Uri $DataUri -Method GET
 	#>
 
 	[CmdletBinding()]

@@ -59,30 +59,21 @@ function Get-PlexPlaylist
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting playlist(s)"
 	try
 	{
-		# Plex decided to automatically create Playlists with heart emojis in for music playlists.
-		# When calling Invoke-RestMethod, PowerShell ends up converting these to squiggly a characters.
-		# To work around this, we have to use Invoke-WebRequest and take the RawContentStream property
-		# and use that.
 		if($AlternativeToken)
 		{
 			$Params = @{'X-Plex-Token' = $AlternativeToken }
 		}
 
 		# If called with -Id, use the $Id, otherwise it'll return all playlists (and we can refine by name if specified)
-		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists/$Id" -Params $Params
-		$Data = Invoke-WebRequest -Uri $DataUri -ErrorAction Stop
+		$Data = Invoke-PlexRequest -RestEndpoint "playlists/$Id" -Params $Params -Method GET
 
-		if($Data)
+		[array]$Results = $Data.MediaContainer.Metadata
+		if($Name)
 		{
-			$UTF8String = [system.Text.Encoding]::UTF8.GetString($Data.RawContentStream.ToArray())
-			[array]$Results = ($UTF8String | ConvertFrom-Json).MediaContainer.Metadata
-			if($Name)
-			{
-				Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Filtering for name '$Name'"
-				$Results = $Results | Where-Object { $_.title -eq $Name }
-			}
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Filtering for name '$Name'"
+			$Results = $Results | Where-Object { $_.title -eq $Name }
 		}
-		else
+		if(!$Results)
 		{
 			return
 		}
@@ -107,11 +98,10 @@ function Get-PlexPlaylist
 			}
 
 			# We don't need -AlternativeToken here as the playlists have unique IDs
-			$ItemsUri = Get-PlexAPIUri -RestEndpoint "playlists/$($Playlist.ratingKey)/items"
-			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting and appending playlist item(s) for playlist $($playlist.title)"
+			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting and appending playlist item(s) for playlist $($Playlist.title)"
 			try
 			{
-				[array]$Items = Invoke-RestMethod -Uri $ItemsUri -ErrorAction Stop
+				[array]$Items = Invoke-PlexRequest -RestEndpoint "playlists/$($Playlist.ratingKey)/items" -Method GET
 				$Playlist | Add-Member -NotePropertyName 'Items' -NotePropertyValue $Items.MediaContainer.Metadata
 			}
 			catch

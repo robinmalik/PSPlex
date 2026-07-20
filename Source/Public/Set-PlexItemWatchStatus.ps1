@@ -72,7 +72,6 @@ function Set-PlexItemWatchStatus
 		$Params.Add('X-Plex-Token', $AlternativeToken)
 	}
 
-	$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
 	#EndRegion
 
 	#############################################################################
@@ -82,7 +81,7 @@ function Set-PlexItemWatchStatus
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Setting watch status for item Id $Id to $Status"
 		try
 		{
-			Invoke-RestMethod -Uri $DataUri -Method "GET" | Out-Null
+			Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET | Out-Null
 		}
 		catch
 		{

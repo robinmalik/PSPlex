@@ -48,14 +48,11 @@ function Set-PlexWebhook
 	$stringencoded = [System.Web.HttpUtility]::UrlEncode($string)
 	$stringencoded = $stringencoded -replace '%3d', '='
 
-	$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-	$session.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
-
 	if($PSCmdlet.ShouldProcess($DefaultPlexServer.PlexServer, "Set webhook to $Url"))
 	{
-		Invoke-WebRequest -UseBasicParsing -Uri "https://plex.tv/api/v2/user/webhooks?X-Plex-Token=$($DefaultPlexServer.Token)" `
+		Invoke-PlexRequest -Uri "https://plex.tv/api/v2/user/webhooks?X-Plex-Token=$($DefaultPlexServer.Token)" `
 			-Method POST `
-			-WebSession $session `
+			-UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36" `
 			-ContentType "application/x-www-form-urlencoded; charset=UTF-8" `
 			-Body $stringencoded
 	}

@@ -76,7 +76,6 @@ function New-PlexPlaylist
 			smart = 0
 			uri   = "server://$($DefaultPlexServer.ClientIdentifier)/com.plexapp.plugins.library/library/metadata/$Items"
 		}
-		$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params
 	}
 	catch
 	{
@@ -91,7 +90,7 @@ function New-PlexPlaylist
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Adding label '$Label' to item '$($Item.title)'"
 		try
 		{
-			$Data = Invoke-RestMethod -Uri $DataUri -Method POST
+			$Data = Invoke-PlexRequest -RestEndpoint "playlists" -Params $Params -Method POST
 			return $Data.mediacontainer.metadata
 		}
 		catch

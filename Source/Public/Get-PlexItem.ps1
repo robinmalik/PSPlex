@@ -56,7 +56,8 @@ function Get-PlexItem
 	#Region Construct Uri
 	if($Id)
 	{
-		$DataUri = Get-PlexAPIUri -RestEndpoint "library/metadata/$Id"
+		$RestEndpoint = "library/metadata/$Id"
+		$Params = $Null
 	}
 	elseif($LibraryTitle)
 	{
@@ -103,7 +104,7 @@ function Get-PlexItem
 				asyncRefreshAnalysis        = 0
 				asyncRefreshLocalMediaAgent = 0
 			}
-			$DataUri = Get-PlexAPIUri -RestEndpoint "library/sections/$Key/all" -Params $Params
+			$RestEndpoint = "library/sections/$Key/all"
 		}
 	}
 	else {}
@@ -113,33 +114,14 @@ function Get-PlexItem
 	#Region Get data
 	try
 	{
-		$Data = Invoke-RestMethod -Uri $DataUri -Method GET
-
-		# The metadata returned from Plex often contains duplicate values which breaks the (inherent) conversion into JSON, ending up as a string. Known cases:
-		# guid and Guid
-		# rating and Rating
-		# The uppercase versions seem to be arrays of richer data, e.g. Guid contains IDs from various other metadata sources, as does Rating.
-
-		# This isn't always the case however, so we need to check the object type:
-		if($Data.gettype().Name -eq 'String')
-		{
-			# Let's go with renaming the lowercase keys. Using .Replace rather than -replace as it should be faster.
-			$Data = $Data.toString().Replace('"guid"', '"_guid"').Replace('"rating"', '"_rating"')
-			# Convert back into JSON:
-			$Data = $Data | ConvertFrom-Json
-		}
-		else
-		{
-			# $Data should be JSON already.
-		}
+		$Data = Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET
 
 		# If this is an album, respect -IncludeTracks and get track data:
 		if($Data.MediaContainer.Metadata.type -eq 'album' -and $IncludeTracks)
 		{
 			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Making additional lookup for album tracks"
 			# $Data returned above has a key property on albums which equals: /library/metadata/{ratingKey}/children
-			$TrackURi = Get-PlexAPIUri -RestEndpoint $Data.MediaContainer.Metadata.key
-			$ChildData = Invoke-RestMethod -Uri $TrackURi -Method GET
+			$ChildData = Invoke-PlexRequest -RestEndpoint $Data.MediaContainer.Metadata.key -Method GET
 			# Append:
 			$Data.MediaContainer.Metadata | Add-Member -MemberType NoteProperty -Name 'Tracks' -Value $ChildData.MediaContainer.Metadata
 		}

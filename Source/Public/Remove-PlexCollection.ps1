@@ -48,8 +48,7 @@ function Remove-PlexCollection
             Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing collection"
             try
             {
-                $Uri = Get-PlexAPIUri -RestEndpoint "library/collections/$Id"
-                Invoke-RestMethod -Uri $Uri -Method DELETE -ErrorAction Stop | Out-Null
+                Invoke-PlexRequest -RestEndpoint "library/collections/$Id" -Method DELETE | Out-Null
             }
             catch
             {

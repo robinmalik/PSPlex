@@ -74,10 +74,8 @@ function Stop-PlexSession
 						reason    = $Reason
 						sessionId = $Session.Session.Id
 					}
-					$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
-
 					# A successful termination returns nothing from the API
-					Invoke-RestMethod -Uri $Uri -Method GET -ErrorAction Stop
+					Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET
 				}
 				catch
 				{

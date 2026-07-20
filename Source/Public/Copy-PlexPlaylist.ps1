@@ -207,8 +207,7 @@ function Copy-PlexPlaylist
 				uri            = $PlaylistUri
 				'X-Plex-Token' = $User.token
 			}
-			$DataUri = Get-PlexAPIUri -RestEndpoint "playlists" -Params $Params
-			$Data = Invoke-RestMethod -Uri $DataUri -Method POST
+			$Data = Invoke-PlexRequest -RestEndpoint "playlists" -Params $Params -Method POST
 			return $Data.MediaContainer.Playlist
 		}
 		catch

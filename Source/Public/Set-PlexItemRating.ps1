@@ -53,8 +53,7 @@ function Set-PlexItemRating
 				rating     = $($Rating * 2)
 				identifier = 'com.plexapp.plugins.library'
 			}
-			$Uri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
-			Invoke-RestMethod -Uri $Uri -Method Put
+			Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method PUT
 		}
 		catch
 		{

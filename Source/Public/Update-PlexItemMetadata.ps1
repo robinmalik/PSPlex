@@ -41,8 +41,7 @@ function Update-PlexItemMetadata
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Initiating metadata refresh for item Id $Id"
 		try
 		{
-			$Uri = Get-PlexAPIUri -RestEndpoint "library/metadata/$Id/refresh"
-			Invoke-RestMethod -Uri $Uri -Method PUT | Out-Null
+			Invoke-PlexRequest -RestEndpoint "library/metadata/$Id/refresh" -Method PUT | Out-Null
 		}
 		catch
 		{

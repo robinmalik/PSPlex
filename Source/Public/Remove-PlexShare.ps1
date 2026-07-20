@@ -78,7 +78,7 @@ function Remove-PlexShare
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Checking User Access to Library"
 	try
 	{
-		$DataForUser = Invoke-RestMethod -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer`?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method GET -ErrorAction Stop
+		$DataForUser = Invoke-PlexRequest -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method GET
 		if(($Null -eq $DataForUser.libraries) -or ($DataForUser.libraries.count -eq 0))
 		{
 			throw "No shared libraries with user: $Username"
@@ -127,7 +127,7 @@ function Remove-PlexShare
 		{
 			$Method = 'DELETE'
 			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing library with $($Method)"
-			Invoke-RestMethod -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer`?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method $Method -ErrorAction Stop | Out-Null
+			Invoke-PlexRequest -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method $Method | Out-Null
 			return
 		}
 		else
@@ -154,7 +154,7 @@ function Remove-PlexShare
 				} | ConvertTo-Json -Compress
 			}
 			Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Removing library with $($Method): $LibraryTitle"
-			Invoke-RestMethod -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer`?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method $Method -ContentType "application/json" -Body $Body -ErrorAction Stop | Out-Null
+			Invoke-PlexRequest -Uri "https://plex.tv/api/v2/shared_servers/$UserIdOnServer?X-Plex-Token=$($DefaultPlexServer.Token)&X-Plex-Client-Identifier=PowerShell" -Method $Method -ContentType "application/json" -Body $Body | Out-Null
 		}
 	}
 	catch

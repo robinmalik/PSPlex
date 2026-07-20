@@ -73,7 +73,6 @@ function Get-PlexWatchHistory
 			$Params.Add("accountID", $UsernameId)
 		}
 
-		$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
 	}
 	catch
 	{
@@ -86,7 +85,7 @@ function Get-PlexWatchHistory
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Getting watch history for $Username."
 	try
 	{
-		$Data = Invoke-RestMethod -Uri $DataUri -Method GET
+		$Data = Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): $($Data.MediaContainer.size) items found."
 		# The query seems to return all results so we don't need to page through them.
 

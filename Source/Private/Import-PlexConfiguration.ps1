@@ -17,16 +17,6 @@ function Import-PlexConfiguration
 	)
 
 	#############################################################################
-	# Set some defaults for all cmdlet calls
-	$PSDefaultParameterValues["Import-PlexConfiguration:WhatIf"] = $false
-	$PSDefaultParameterValues["Invoke-RestMethod:UseBasicParsing"] = $true
-	$PSDefaultParameterValues["Invoke-RestMethod:Headers"] = @{"Accept" = "application/json, text/plain, */*" }
-	$PSDefaultParameterValues["Invoke-RestMethod:ErrorAction"] = "Stop"
-	$PSDefaultParameterValues["Invoke-WebRequest:UseBasicParsing"] = $true
-	$PSDefaultParameterValues["Invoke-WebRequest:Headers"] = @{"Accept" = "application/json, text/plain, */*" }
-	$PSDefaultParameterValues["Invoke-WebRequest:ErrorAction"] = "Stop"
-
-	#############################################################################
 	#Region Get path to the config file (varies by OS):
 	try
 	{

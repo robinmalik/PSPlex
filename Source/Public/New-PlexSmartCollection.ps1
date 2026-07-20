@@ -162,7 +162,6 @@ function New-PlexSmartCollection
 			uri       = [System.Uri]::EscapeDataString("server://$($DefaultPlexServer.ClientIdentifier)/com.plexapp.plugins.library/library/sections/$LibraryId/all?type=1&sort=titleSort&$Items")
 		}
 
-		$DataUri = (Get-PlexAPIUri -RestEndpoint "library/collections" -Params $Params)
 	}
 	catch
 	{
@@ -177,7 +176,7 @@ function New-PlexSmartCollection
 		Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Creating Smart Collection $Name in Libary '$LibraryId'"
 		try
 		{
-			$Data = Invoke-RestMethod -Uri $DataUri -Method POST
+			$Data = Invoke-PlexRequest -RestEndpoint "library/collections" -Params $Params -Method POST
 			return $Data.mediacontainer.metadata
 		}
 		catch

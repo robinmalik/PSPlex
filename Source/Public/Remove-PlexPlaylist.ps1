@@ -51,8 +51,7 @@ function Remove-PlexPlaylist
 			{
 				$Params = @{'X-Plex-Token' = $AlternativeToken }
 			}
-			$Uri = Get-PlexAPIUri -RestEndpoint "playlists/$Id" -Params $Params
-			Invoke-RestMethod -Uri $Uri -Method DELETE -ErrorAction Stop | Out-Null
+			Invoke-PlexRequest -RestEndpoint "playlists/$Id" -Params $Params -Method DELETE | Out-Null
 		}
 		catch
 		{

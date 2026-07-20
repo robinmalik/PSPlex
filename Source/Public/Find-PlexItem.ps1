@@ -83,7 +83,6 @@ function Find-PlexItem
 			'limit'              = 50
 		}
 
-		$DataUri = Get-PlexAPIUri -RestEndpoint $RestEndpoint -Params $Params
 	}
 	catch
 	{
@@ -96,7 +95,7 @@ function Find-PlexItem
 	Write-Verbose -Message "Function: $($MyInvocation.MyCommand): Searching for $ItemName."
 	try
 	{
-		[Array]$Data = Invoke-RestMethod -Uri $DataUri -Method GET
+		[Array]$Data = Invoke-PlexRequest -RestEndpoint $RestEndpoint -Params $Params -Method GET
 	}
 	catch
 	{
