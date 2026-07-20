@@ -142,14 +142,14 @@ function Remove-PlexShare
 			if($LibraryIdsToKeep.Count -gt 1)
 			{
 				$Body = @{
-					machineIdentifier = "$($MatchingServer.machineIdentifier)"
+					machineIdentifier = "$($DefaultPlexServer.ClientIdentifier)"
 					librarySectionIds = $LibraryIdsToKeep
 				} | ConvertTo-Json -Compress
 			}
 			else
 			{
 				$Body = @{
-					machineIdentifier = "$($MatchingServer.machineIdentifier)"
+					machineIdentifier = "$($DefaultPlexServer.ClientIdentifier)"
 					librarySectionIds = @($LibraryIdsToKeep)
 				} | ConvertTo-Json -Compress
 			}
