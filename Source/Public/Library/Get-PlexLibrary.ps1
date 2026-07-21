@@ -51,21 +51,24 @@ function Get-PlexLibrary
 	#Region Make request
 	try
 	{
-		[array]$Data = Invoke-PlexRequest -RestEndpoint "library/sections/$Id" -Method GET
+		<#
+			When querying /sections Plex returns a MediaContainer object with a Directory property that contains the list of libraries.
+			Querying /sections/{id} Plex returns a MediaContainer object with a Directory property that contains a different set of properties
+			like 'title1' instead of 'title', which then breaks output formatting with the default view.
+			Fall back to in-line filtering.
+		#>
+		[array]$global:Data = Invoke-PlexRequest -RestEndpoint "library/sections" -Method GET
 		if($Id)
 		{
-			[array]$Results = $Data.MediaContainer
+			[array]$Results = $Data.MediaContainer.Directory | Where-Object -FilterScript { $_.key -eq $Id }
+		}
+		elseif($Name)
+		{
+			[array]$Results = $Data.MediaContainer.Directory | Where-Object -FilterScript { $_.title -eq $Name }
 		}
 		else
 		{
-			if($Name)
-			{
-				[array]$Results = $Data.MediaContainer.Directory | Where-Object -FilterScript { $_.title -eq $Name }
-			}
-			else
-			{
-				[array]$Results = $Data.MediaContainer.Directory
-			}
+			[array]$Results = $Data.MediaContainer.Directory
 		}
 	}
 	catch
