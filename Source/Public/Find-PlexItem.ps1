@@ -116,18 +116,6 @@ function Find-PlexItem
 
 	if($Results.Count -gt 0)
 	{
-		# Refine by the ItemName to attempt an exact match:
-		if($ExactNameMatch)
-		{
-			[Array]$Results = $Results | Where-Object { $_.title -eq $ItemName }
-			# There could still be more than one result with an exact title match due to the same item being in multiple libraries
-			# or even in the same library!
-			if($Results.count -gt 1)
-			{
-				Write-Warning -Message "Exact match was specified but there was more than 1 result for $ItemName."
-			}
-		}
-
 		# Refine by library name:
 		if($LibraryTitle)
 		{
@@ -141,6 +129,18 @@ function Find-PlexItem
 			#[Array]$Results = $Results | Where-Object { ($_.originallyAvailableAt.split('-')[0]) -match $Year }
 			Write-Verbose "Refining results by Year: $Year"
 			[Array]$Results = $Results | Where-Object { $_.year -eq $Year }
+		}
+
+		# Refine by the ItemName to attempt an exact match:
+		if($ExactNameMatch)
+		{
+			[Array]$Results = $Results | Where-Object { $_.title -eq $ItemName }
+			# There could still be more than one result with an exact title match due to the same item being in multiple libraries
+			# or even in the same library!
+			if($Results.count -gt 1)
+			{
+				Write-Warning -Message "Exact match was specified but there was more than 1 result for $ItemName."
+			}
 		}
 
 		# Add datetime objects so we don't have to work with unixtimes...
