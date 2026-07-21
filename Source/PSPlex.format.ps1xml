@@ -228,5 +228,50 @@
 				</TableRowEntries>
 			</TableControl>
 		</View>
+		<View>
+			<Name>DefaultView</Name>
+			<ViewSelectedBy>
+				<TypeName>PSPlex.Library</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Width>5</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>30</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>10</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>30</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>key</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>title</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>type</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>agent</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>scanner</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
 	</ViewDefinitions>
 </Configuration>

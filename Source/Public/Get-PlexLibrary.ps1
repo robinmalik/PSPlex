@@ -6,16 +6,19 @@ function Get-PlexLibrary
 		.DESCRIPTION
 			By default, returns a list of libraries on a Plex server.
 			If -Id is specified, a single library is returned with
-		.PARAMETER PlexServerHostname
-			Fully qualified hostname for the Plex server (e.g. myserver.mydomain.com)
-		.PARAMETER Protocol
-			http or https
-		.PARAMETER Port
-			Parameter description
 		.PARAMETER Id
 			If specified, returns a specific library.
+		.PARAMETER Name
+			If specified, returns a specific library by name.
 		.EXAMPLE
+			# Returns all libraries on the default Plex server.
 			Get-PlexLibrary
+		.EXAMPLE
+			# Returns the library with Id 1 on the default Plex server.
+			Get-PlexLibrary -Id 1
+		.EXAMPLE
+			# Returns the library with name "Movies" on the default Plex server.
+			Get-PlexLibrary -Name "Movies"
 	#>
 
 	[CmdletBinding(DefaultParameterSetName = "All")]
@@ -71,5 +74,8 @@ function Get-PlexLibrary
 	}
 	#EndRegion
 
+	#############################################################################
+	# Append type and return results
+	$Results | ForEach-Object { $_.psobject.TypeNames.Insert(0, "PSPlex.Library") }
 	return $Results
 }
