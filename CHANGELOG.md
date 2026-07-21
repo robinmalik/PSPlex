@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.20] - 2026-07-20
+## [1.0.20] - 2026-07-21
 
 - ⚠️ [Breaking] `AddPlexItemToPlaylist` is renamed to `Add-PlexPlaylistItem`.
 - ✨ [New] Committed some basic Pester tests (relies on a local `./Secrets/.env`)
