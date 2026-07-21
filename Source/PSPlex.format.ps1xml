@@ -245,9 +245,10 @@
 						<Width>10</Width>
 					</TableColumnHeader>
 					<TableColumnHeader>
-						<Width>30</Width>
+						<Width>14</Width>
 					</TableColumnHeader>
 					<TableColumnHeader>
+						<Width>14</Width>
 					</TableColumnHeader>
 				</TableHeaders>
 				<TableRowEntries>
@@ -263,10 +264,10 @@
 								<PropertyName>type</PropertyName>
 							</TableColumnItem>
 							<TableColumnItem>
-								<PropertyName>agent</PropertyName>
+								<PropertyName>createdAt</PropertyName>
 							</TableColumnItem>
 							<TableColumnItem>
-								<PropertyName>scanner</PropertyName>
+								<PropertyName>updatedAt</PropertyName>
 							</TableColumnItem>
 						</TableColumnItems>
 					</TableRowEntry>
