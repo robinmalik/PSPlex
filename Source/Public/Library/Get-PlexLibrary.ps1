@@ -5,7 +5,7 @@ function Get-PlexLibrary
 			By default, returns a list of libraries on a Plex server.
 		.DESCRIPTION
 			By default, returns a list of libraries on a Plex server.
-			If -Id is specified, a single library is returned with
+			If -Id or -Name is specified, the results are filtered client-side to preserve consistent property names.
 		.PARAMETER Id
 			If specified, returns a specific library.
 		.PARAMETER Name
@@ -57,7 +57,7 @@ function Get-PlexLibrary
 			like 'title1' instead of 'title', which then breaks output formatting with the default view.
 			Fall back to in-line filtering.
 		#>
-		[array]$global:Data = Invoke-PlexRequest -RestEndpoint "library/sections" -Method GET
+		[array]$Data = Invoke-PlexRequest -RestEndpoint "library/sections" -Method GET
 		if($Id)
 		{
 			[array]$Results = $Data.MediaContainer.Directory | Where-Object -FilterScript { $_.key -eq $Id }

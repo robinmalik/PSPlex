@@ -5,9 +5,9 @@ BeforeDiscovery {
 Describe "Collection Tests" {
 
 	BeforeAll {
-		Get-Content -Path "$PSScriptRoot/../Secrets/.env" -Force | Where { $_ -like "*=*" } | ForEach-Object {
-			$LineSplit = $_ -split '='
-			[System.Environment]::SetEnvironmentVariable($LineSplit[0], $LineSplit[1])
+		Get-Content -Path "$PSScriptRoot/../Secrets/.env" -Force | Where-Object { $_ -like "*=*" } | ForEach-Object {
+			$LineSplit = $_ -split '=', 2
+			[System.Environment]::SetEnvironmentVariable($LineSplit[0].Trim(), $LineSplit[1].Trim())
 		}
 	}
 
