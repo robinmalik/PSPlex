@@ -23,10 +23,15 @@ See the [Changelog](CHANGELOG.md) for a list of changes.
 Get-PlexUser
 ```
 
-**Get a list of libraries and select the title, type and key (Id):**
+**Get a list of libraries:**
 
 ```powershell
-Get-PlexLibrary | Select title,type,key
+Get-PlexLibrary
+
+key title type  createdAt           updatedAt
+--- ----- ----  ---------           ---------
+2   Films movie 21/02/2019 01:15:42 21/07/2026 21:17:30
+3   TV    show  27/02/2019 05:56:37 21/07/2026 21:22:37
 ```
 
 **Get all the items from a library called 'Films' that are unwatched:**
