@@ -1,8 +1,12 @@
 # Changelog
 
+## [1.0.21] - 2026-07-21
+
+- 🔨 [Changed] Adjust environment variable importing for Pester tests based on Copilot suggestions (that was only noticed after merging in `1.0.20`).
+
 ## [1.0.20] - 2026-07-21
 
-- ⚠️ [Breaking] `AddPlexItemToPlaylist` is renamed to `Add-PlexPlaylistItem`.
+- ⚠️ [Breaking] `Add-PlexItemToPlaylist` is renamed to `Add-PlexPlaylistItem`.
 - ✨ [New] Committed some basic Pester tests (relies on a local `./Secrets/.env`)
 - 🔨 [Changed] Centralised all HTTP calls through a new private `Invoke-PlexRequest` gateway function, folding in the old `Get-PlexAPIUri` URI builder.
 - 🔨 [Changed] The Plex token is now sent as the `X-Plex-Token` header rather than a query-string parameter, keeping it out of URLs and logs.
