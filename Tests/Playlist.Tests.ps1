@@ -27,7 +27,7 @@ Describe "Playlist Tests" {
 	}
 
 	It "Tests Add-PlexPlaylistItem (adding $($env:PlaylistItemAddedTitle))" {
-		$Item = Find-PlexItem -ItemName $env:PlaylistItemAddedTitle -ExactNameMatch -LibraryTitle $env:FilmLibraryTitle
+		$Item = Find-PlexItem -ItemName $env:PlaylistItemAddedTitle -ExactNameMatch -LibraryTitle $env:MovieLibraryTitle
 		$Playlist = Get-PlexPlaylist | Where-Object { $_.title -eq $env:PlaylistTitle }
 		Add-PlexPlaylistItem -PlaylistId $Playlist.ratingKey -ItemId $Item.ratingKey
 		$Playlist = Get-PlexPlaylist -IncludeItems | Where-Object { $_.title -eq $env:PlaylistTitle }
