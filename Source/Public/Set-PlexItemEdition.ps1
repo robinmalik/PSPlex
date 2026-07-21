@@ -10,7 +10,7 @@ function Set-PlexItemEdition
 		.PARAMETER Edition
 			Edition value.
 		.EXAMPLE
-			Set-PlexItemRating -Id 12345 -Edition "Director's Cut"
+			Set-PlexItemEdition -Id 12345 -Edition "Director's Cut"
 	#>
 
 	[CmdletBinding(SupportsShouldProcess)]
