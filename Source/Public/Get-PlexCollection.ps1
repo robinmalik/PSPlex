@@ -20,7 +20,7 @@ function Get-PlexCollection
 			Get-PlexCollection -LibraryId 1 | Select-Object title,ratingkey,childcount
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(DefaultParameterSetName = "LibraryId")]
 	param(
 		[Parameter(Mandatory = $true, ParameterSetName = "CollectionId")]
 		[PSObject]
