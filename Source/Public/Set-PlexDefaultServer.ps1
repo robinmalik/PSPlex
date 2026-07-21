@@ -8,9 +8,8 @@ function Set-PlexDefaultServer
 		.PARAMETER Name
 			Name of the server to set as default.
 		.EXAMPLE
-			An example
-		.NOTES
-			General notes
+			Set-PlexDefaultServer -Name "MyPlexServer"
+			Sets the default Plex server to "MyPlexServer".
 	#>
 
 	[CmdletBinding()]

@@ -143,7 +143,7 @@
 							</TableColumnItem>
 							<TableColumnItem>
 								<ScriptBlock>
-									[timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds($_.invitedAt))
+									ConvertFrom-UnixTime $_.invitedAt
 								</ScriptBlock>
 							</TableColumnItem>
 						</TableColumnItems>
@@ -201,6 +201,9 @@
 					<TableColumnHeader>
 						<Width>20</Width>
 					</TableColumnHeader>
+					<TableColumnHeader>
+						<Width>9</Width>
+					</TableColumnHeader>
 				</TableHeaders>
 				<TableRowEntries>
 					<TableRowEntry>
@@ -216,6 +219,59 @@
 							</TableColumnItem>
 							<TableColumnItem>
 								<PropertyName>lastViewedAtDateTime</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>accountID</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+		<View>
+			<Name>DefaultView</Name>
+			<ViewSelectedBy>
+				<TypeName>PSPlex.Library</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>key</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>title</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>type</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>createdAt</Label>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>updatedAt</Label>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>key</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>title</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>type</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<scriptBlock>
+									ConvertFrom-UnixTime $_.createdAt
+								</scriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<scriptBlock>
+									ConvertFrom-UnixTime $_.updatedAt
+								</scriptBlock>
 							</TableColumnItem>
 						</TableColumnItems>
 					</TableRowEntry>

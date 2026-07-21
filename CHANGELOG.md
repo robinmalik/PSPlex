@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.20] - 2026-07-21
+
+- ⚠️ [Breaking] `AddPlexItemToPlaylist` is renamed to `Add-PlexPlaylistItem`.
+- ✨ [New] Committed some basic Pester tests (relies on a local `./Secrets/.env`)
+- 🔨 [Changed] Centralised all HTTP calls through a new private `Invoke-PlexRequest` gateway function, folding in the old `Get-PlexAPIUri` URI builder.
+- 🔨 [Changed] The Plex token is now sent as the `X-Plex-Token` header rather than a query-string parameter, keeping it out of URLs and logs.
+- 🔨 [Changed] Removed implicit `$PSDefaultParameterValues` from `Import-PlexConfiguration`; all request defaults are now explicit inside `Invoke-PlexRequest`.
+- 🐛 [Fixed] Improved UTF-8 decoding on Windows PowerShell 5.1 (e.g. emoji in playlist titles).
+- 🔨 [Changed] Better, token-redacted error messages including a 401 re-configuration hint.
+
 ## [1.0.19] - 2025-09-13
 
 - 🐛 [Fixed] Fixed hardcoded library reference in [Copy-PlexPlaylist](https://github.com/robinmalik/PSPlex/issues/19).

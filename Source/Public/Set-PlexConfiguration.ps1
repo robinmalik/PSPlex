@@ -7,7 +7,10 @@ function Set-PlexConfiguration
 			Used to save Plex configuration to disk, which is used by all other functions.
 		.PARAMETER Credential
 			Credential object containing your Plex username and password.
+		.PARAMETER DefaultServerName
+			The name of the server you want to set as the default server.
 		.EXAMPLE
+			# This example will prompt for your Plex username and password, then save the configuration to disk.
 			Set-PlexConfiguration -Credential (Get-Credential)
 	#>
 
@@ -28,13 +31,13 @@ function Set-PlexConfiguration
 	try
 	{
 		$Base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $Credential.GetNetworkCredential().UserName, $Credential.GetNetworkCredential().Password)))
-		$Data = Invoke-RestMethod -Uri "https://plex.tv/users/sign_in.json" -Method POST -Headers @{
+		$Data = Invoke-PlexRequest -Uri "https://plex.tv/users/sign_in.json" -Method POST -Headers @{
 			'Authorization'            = ("Basic {0}" -f $Base64AuthInfo);
-			'X-Plex-Client-Identifier' = "PowerShell-Test";
-			'X-Plex-Product'           = 'PowerShell-Test';
+			'X-Plex-Client-Identifier' = "PowerShell";
+			'X-Plex-Product'           = 'PowerShell';
 			'X-Plex-Version'           = "V0.01";
 			'X-Plex-Username'          = $Credential.GetNetworkCredential().UserName;
-		} -ErrorAction Stop
+		}
 	}
 	catch
 	{
@@ -46,7 +49,7 @@ function Set-PlexConfiguration
 	Write-Verbose -Message "Getting list of accessible servers"
 	try
 	{
-		$ResourceData = Invoke-RestMethod -Uri "https://plex.tv/api/v2/resources?includeHttps=1&X-Plex-Token=$($Data.user.authentication_token)&X-Plex-Client-Identifier=PSPlex" -Method GET -UseBasicParsing -Headers @{"Accept" = "application/json, text/plain, */*" }
+		$ResourceData = Invoke-PlexRequest -Uri "https://plex.tv/api/v2/resources?includeHttps=1&X-Plex-Token=$($Data.user.authentication_token)&X-Plex-Client-Identifier=PowerShell" -Method GET
 		if(!$ResourceData)
 		{
 			throw "Could not get resource data."
@@ -74,6 +77,10 @@ function Set-PlexConfiguration
 		$ConfigurationData = [System.Collections.ArrayList]@()
 		foreach($Server in $OwnedAndOnline)
 		{
+			# Reset per server, otherwise a server with no suitable connection inherits the previous server's values:
+			$Uri = $null
+			$Port = $null
+
 			<#
 				When storing the configuration data for each server we need an accessible uri.
 				Servers can have multiple connections defined in the .connections property.

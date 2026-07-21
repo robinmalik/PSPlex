@@ -4,7 +4,7 @@ function Resolve-PlexFilter
 		.SYNOPSIS
 			Parses filter string into Plex API query.
 		.DESCRIPTION
-			Parses filter string into Plex API query. Filter syntax is '<Attribute> <Operator> <Value>'. Clauses are separated by semi-colons (;)
+			Parses filter string into Plex API query. Filter syntax is '<Attribute> <Operator> <Value>'. Clauses are separated by semi-colons (;), so a filter value itself cannot contain a semi-colon.
 		.EXAMPLE
 			Resolve-PlexFilter -MatchAll -Filter "Title BeginsWith Star Trek; Unplayed IsTrue"
 		.EXAMPLE
@@ -138,15 +138,14 @@ function Resolve-PlexFilter
 					{
 						try
 						{
-							Import-PlexConfiguration -WhatIf:$False
+							Import-PlexConfiguration
 						}
 						catch
 						{
 							throw $_
 						}
 					}
-					$Uri = Get-PlexAPIUri -RestEndpoint "library/sections/$LibraryId/$($Attribute.Name)" -ErrorAction Stop
-					$Key = ((Invoke-RestMethod -Uri $Uri -Method Get -ErrorAction Stop).MediaContainer.Directory | Where-Object { $_.title -eq $Matches.Value }).key
+					$Key = ((Invoke-PlexRequest -RestEndpoint "library/sections/$LibraryId/$($Attribute.Name)" -Method GET).MediaContainer.Directory | Where-Object { $_.title -eq $Matches.Value }).key
 					#TODO implement caching for attribute keys
 					if (-not ($Key -or $IKnowWhatImDoing))
 					{
@@ -156,8 +155,10 @@ function Resolve-PlexFilter
 					$Matches.Value = @($Matches.Value, $Key)[[bool]$Key] # Null check for key
 				}
 
-				# Return API query
-				$Attribute.Name, $Operator, $Matches.Value -join ''
+				# Return API query. The value is URL-encoded so that characters such as space, '&'
+				# and '%' survive being parsed as part of the (itself url-encoded) smart-filter query
+				# string. The attribute name and operator are Plex query syntax and must stay literal.
+				$Attribute.Name, $Operator, [System.Uri]::EscapeDataString([String]$Matches.Value) -join ''
 			}
 
 			# Return entire API query
