@@ -1,4 +1,4 @@
-function Add-PlexItemToPlaylist
+function Add-PlexPlaylistItem
 {
 	<#
 		.SYNOPSIS
