@@ -49,17 +49,24 @@ function Set-PlexConfiguration
 	Write-Verbose -Message "Getting list of accessible servers"
 	try
 	{
-		$ResourceData = Invoke-PlexRequest -Uri "https://plex.tv/api/v2/resources?includeHttps=1&X-Plex-Token=$($Data.user.authentication_token)&X-Plex-Client-Identifier=PowerShell" -Method GET
+		$ResourceData = Invoke-PlexRequest -Uri "https://plex.tv/api/v2/resources?includeHttps=1&X-Plex-Token=$($Data.user.authentication_token)&X-Plex-Client-Identifier=PowerShell" -Method GET -ErrorAction Stop
 		if(!$ResourceData)
 		{
 			throw "Could not get resource data."
 		}
 
+		if($ResourceData.resources.resource.Count -eq 0)
+		{
+			throw "Resource data contained no servers."
+		}
+
+		$ResourceData = $ResourceData.resources.resource
+
 		Write-Verbose -Message "The following servers were returned: $(($ResourceData.name | Sort-Object) -join ", ")"
 
 		# Refine to only servers that are online and owned by the user:
 		Write-Verbose -Message "Refining to only owned and online servers."
-		[Array]$OwnedAndOnline = $ResourceData | Where-Object { $_.product -eq 'Plex Media Server' -and $_.owned -eq 1 -and $_.presence -eq $True }
+		[Array]$OwnedAndOnline = $ResourceData | Where-Object { $_.product -eq 'Plex Media Server' -and $_.owned -eq 1 -and $_.presence -eq 1 }
 		if(!$OwnedAndOnline)
 		{
 			throw "No owned servers online."
@@ -83,7 +90,7 @@ function Set-PlexConfiguration
 
 			<#
 				When storing the configuration data for each server we need an accessible uri.
-				Servers can have multiple connections defined in the .connections property.
+				Servers can have multiple connections defined in the .connections.connection property.
 
 				Example for a server where remote access is turned off:
 
@@ -145,7 +152,7 @@ function Set-PlexConfiguration
 					Example: 192.168.0.100:32400
 			#>
 
-			$DirectToServerConnection = $Server.connections | Where-Object { $_.uri -notmatch "plex.direct" -and $_.uri -match "^https" -and $_.address -notmatch "(\d{1,3}\.){3}\d{1,3}" }
+			$DirectToServerConnection = $Server.connections.connection | Where-Object { $_.uri -notmatch "plex.direct" -and $_.uri -match "^https" -and $_.address -notmatch "(\d{1,3}\.){3}\d{1,3}" }
 			if($DirectToServerConnection)
 			{
 				Write-Verbose -Message "Found a direct to server connection that is secured with https via a domain name: $($DirectToServerConnection.uri)"
@@ -154,7 +161,7 @@ function Set-PlexConfiguration
 			}
 			else
 			{
-				[Array]$PlexDirectConnection = $Server.connections | Where-Object { $_.uri -match "plex.direct" }
+				[Array]$PlexDirectConnection = $Server.connections.connection | Where-Object { $_.uri -match "plex.direct" }
 
 				# If there are multiple plex.direct connections, prioritise the non-local one:
 				$NonLocalPlexDirectConnection = $PlexDirectConnection | Where-Object { $_.local -eq $False }

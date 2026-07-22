@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.0.22] - 2026-07-22
+
+- 🐛 [Fixed] Resolved an issue whereby `Invoke-PlexRequest` refactor resulted owned and online servers not being detected in `Set-PlexConfiguration`.
+
 ## [1.0.21] - 2026-07-21
 
 - 🔨 [Changed] Adjust environment variable importing for Pester tests based on Copilot suggestions (that was only noticed after merging in `1.0.20`).
